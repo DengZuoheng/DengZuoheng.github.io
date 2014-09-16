@@ -2,7 +2,7 @@
 layout: post
 title: 暨南大学电气信息学院团委学生会2013-2014学年第二学期总结大会策划书
 description: 对这一学年的团委学生会的工作进行总结，辅导老师，主席团，各部门对这一学年的学生工作进行总结。
-category: planning
+category: note
 ---
 
 <style>

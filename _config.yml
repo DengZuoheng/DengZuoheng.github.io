@@ -1,0 +1,11 @@
+auto: true
+
+markdown: rdiscount
+pygments: true
+paginate: 8
+permalink: /:title
+
+title: 小邓的博客
+url: http://doc.eicsu.com
+feed: /atom.xml
+

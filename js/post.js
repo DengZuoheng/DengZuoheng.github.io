@@ -198,7 +198,7 @@ $(document).ready(function(){
         }
     })();
 
-    $.getScript('js/prettify/prettify.js',function(){
+    $.getScript('http://dengzuoheng.github.io/js/prettify/prettify.js',function(){
         prettyPrint();
     });
 

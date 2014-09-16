@@ -52,27 +52,27 @@ category: note
 3. 然后就可以选择不同的编辑器了
 4. ChoiceEditor目录下的ChoiceEditor.ini就是打开菜单的配置文件,看起来像这样:
 <pre>
-	[Options]
-	Language=0
-	CheckCursor=1
-	CheckKey=27
-	AlwaysChecked=1
-	[General]
-	DisplayName0=Notepad++ 
-	Editor0=C:\Program Files (x86)\Notepad++\notepad++.exe
-	Ext0=*
-	DisplayName1=Google Chrome
-	Editor1=C:\Program Files (x86)\Google\Chrome\Application\chrome.exe
-	Ext1=HTML
-	DisplayName2=WinMerge
-	Editor2=C:\Program Files (x86)\WinMerge\WinMergeU.exe
-	Ext2=*
-	DisplayName3=Kingsoft Spreadsheets
-	Editor3=C:\Users\Administrator\AppData\Local\Kingsoft\WPS Office\9.1.0.4843\office6\et.exe
-	Ext3=XLSX
-	DisplayName4=MarkdownPad 2
-	Editor4=C:\Portable Application\MarkdownPad 2 Pro Portable v2.4.3.39518\MarkdownPad2.exe
-	Ext4=MD
+[Options]
+Language=0
+CheckCursor=1
+CheckKey=27
+AlwaysChecked=1
+[General]
+DisplayName0=Notepad++ 
+Editor0=C:\Program Files (x86)\Notepad++\notepad++.exe
+Ext0=*
+DisplayName1=Google Chrome
+Editor1=C:\Program Files (x86)\Google\Chrome\Application\chrome.exe
+Ext1=HTML
+DisplayName2=WinMerge
+Editor2=C:\Program Files (x86)\WinMerge\WinMergeU.exe
+Ext2=*
+DisplayName3=Kingsoft Spreadsheets
+Editor3=C:\Users\Administrator\AppData\Local\Kingsoft\WPS Office\9.1.0.4843\office6\et.exe
+Ext3=XLSX
+DisplayName4=MarkdownPad 2
+Editor4=C:\Portable Application\MarkdownPad 2 Pro Portable v2.4.3.39518\MarkdownPad2.exe
+Ext4=MD
 </pre>
 
 可以根据自己的需要手动添加打开方式.比如上面的配置就对所有文件都增加了notepad++和WinMerge的打开,因为这是我最常用的;通常情况下ChoiceEditor能识别出系统的默认查看程序,但是偶尔也会抽风,故还是自己设置比较顺心.

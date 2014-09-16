@@ -9,7 +9,7 @@ category: note
 ###文件
 - 新建文件:shift+F4
 - 新建文件夹:F7
-- 重命名:shift+F6
+- 重命名:shift+F6(完了记得敲回车)
 - 批量重命名:Ctrl+M
 - 复制文件名:Alt+M+Y
 - 复制文件名加路径:Alt+M+p

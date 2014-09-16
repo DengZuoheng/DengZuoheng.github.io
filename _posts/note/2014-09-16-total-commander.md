@@ -1,3 +1,11 @@
+---
+layout: post
+title: Total Commamder常用命令
+description: 简记一些TC的用法,方便复习
+category: note
+---
+
+
 ##文件
 - 新建文件:shift+F4
 - 新建文件夹:F7

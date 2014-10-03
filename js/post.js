@@ -91,6 +91,7 @@ $(document).ready(function(){
             var tmpl = '<ul><li class="h1"><a href="#">' + h1txt + '</a></li>';
 
             var heading = initHeading();
+            console.log(heading);
             var h2 = heading.h2;
             var h3 = heading.h3;
             var h4 = heading.h4;

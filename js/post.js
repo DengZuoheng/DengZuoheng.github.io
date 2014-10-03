@@ -21,7 +21,7 @@ $(document).ready(function(){
         }
     };
 
-    $('pre').addClass('prettyprint linenums'); //添加Google code Hight需要的class
+    $('pre,code').addClass('prettyprint linenums'); //添加Google code Hight需要的class
 
     
     window.disqus_shortname = 'dengzuohenggithubio'; // required: replace example with your forum shortname
@@ -51,28 +51,39 @@ $(document).ready(function(){
         function initHeading(){
             var h2 = [];
             var h3 = [];
+            var h4 = [];
             var h2index = 0;
+            var h3index = 0;
 
-            $.each($('.entry h3, .entry h4'),function(index,item){
-                if(item.tagName.toLowerCase() == 'h3'){
+            $.each($('.entry h2, .entry h3, .entry h4'),function(index,item){
+                if(item.tagName.toLowerCase() == 'h2'){
                     var h2item = {};
                     h2item.name = $(item).text();
                     h2item.id = 'menuIndex'+index;
                     h2.push(h2item);
                     h2index++;
-                }else{
+                }else if(item.tagName.toLowerCase()=='h3'){
                     var h3item = {};
-                    h3item.name = $(item).text();
-                    h3item.id = 'menuIndex'+index;
+                    h3item.name=$(item).text();
+                    h3item.id='menuIndex'+index;
                     if(!h3[h2index-1]){
-                        h3[h2index-1] = [];
+                        h3[h2index-1]=[];
                     }
                     h3[h2index-1].push(h3item);
+                    
+                }else{
+                    var h4item = {};
+                    h4item.name = $(item).text();
+                    h4item.id = 'menuIndex'+index;
+                    if(!h4[h3index-1]){
+                        h4[h3index-1] = [];
+                    }
+                    h4[h3index-1].push(h4item);
                 }
                 item.id = 'menuIndex' + index;
             });
 
-            return {h2:h2,h3:h3}
+            return {h2:h2,h3:h3,h4:h4}
         }
 
         function genTmpl(){
@@ -82,6 +93,7 @@ $(document).ready(function(){
             var heading = initHeading();
             var h2 = heading.h2;
             var h3 = heading.h3;
+            var h4 = heading.h4;
 
             for(var i=0;i<h2.length;i++){
                 tmpl += '<li><a href="#" data-id="'+h2[i].id+'">'+h2[i].name+'</a></li>';
@@ -89,6 +101,12 @@ $(document).ready(function(){
                 if(h3[i]){
                     for(var j=0;j<h3[i].length;j++){
                         tmpl += '<li class="h3"><a href="#" data-id="'+h3[i][j].id+'">'+h3[i][j].name+'</a></li>';
+                        
+                        if(h4[j]){
+                            for(var k=0;k<h4[j].length;k++){
+                                tmpl+='<li class="h4"><a href="#" data-id="'+h4[i][j][k].id+'">'+h4[i][j][k].name+'</a></li>';
+                            }
+                        }
                     }
                 }
             }

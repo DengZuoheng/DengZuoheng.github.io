@@ -70,6 +70,7 @@ $(document).ready(function(){
                         h3[h2index-1]=[];
                     }
                     h3[h2index-1].push(h3item);
+                    h3index++;
                     
                 }else{
                     var h4item = {};

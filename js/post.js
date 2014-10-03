@@ -21,7 +21,7 @@ $(document).ready(function(){
         }
     };
 
-    $('pre,code').addClass('prettyprint linenums'); //添加Google code Hight需要的class
+    $('pre').addClass('prettyprint linenums'); //添加Google code Hight需要的class
 
     
     window.disqus_shortname = 'dengzuohenggithubio'; // required: replace example with your forum shortname
@@ -112,7 +112,7 @@ $(document).ready(function(){
                 }
             }
             tmpl += '</ul>';
-
+            console.log(tmpl);
             return tmpl;
         }
 

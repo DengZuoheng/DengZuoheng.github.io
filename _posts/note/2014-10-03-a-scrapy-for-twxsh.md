@@ -166,16 +166,16 @@ class TwxshSpider4NewsText(Spider):
 其中读取url是读取刚刚抓取到的url,我把他们写到同一个文件了.
 <del>看到这里的xpath多折磨人了吧,旧站的开发者你出来,我保证不打死你- -</del>
 
-###注意事项
+###3.注意事项
 ####xpath
 - `text()`只是用于标签中的纯文本提取,如果标签中还有其他标签,用`text()`提取出来的就是空白符之类的没用的东西,或者啥也没给你提取出来,如果要提取html文本,就用`div/*`或`div/node()`这样的方法,把这个div内的所有内容提取出来\[2\],如:
 
 <pre><code>
 	response.xpath('//div[@id="main_content"]').extract()
-	#提取结果:"<div id="main_content"><p>测试文本</p></div>"
+	#提取结果:"&lt;div id="main_content"&gt;&lt;p&gt;测试文本&lt;/p&gt;&lt;/div&gt;"
 	
 	response.xpath('//div[@id="main_content"]/*').extract()
-	#提取结果:"<p>测试文本</p>,某些情况也可能提取不完整
+	#提取结果:"&lt;p>测试文本&lt;/p&gt;,某些情况也可能提取不完整
 	
 	response.xpath('//div[@id="main_content"]/node()').extract()
 	#同上,但更保险

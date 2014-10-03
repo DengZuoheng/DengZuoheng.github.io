@@ -169,7 +169,8 @@ class TwxshSpider4NewsText(Spider):
 ###注意事项
 ####xpath
 - `text()`只是用于标签中的纯文本提取,如果标签中还有其他标签,用`text()`提取出来的就是空白符之类的没用的东西,或者啥也没给你提取出来,如果要提取html文本,就用`div/*`或`div/node()`这样的方法,把这个div内的所有内容提取出来\[2\],如:
-	<pre>
+
+<pre><code>
 	response.xpath('//div[@id="main_content"]').extract()
 	#提取结果:"<div id="main_content"><p>测试文本</p></div>"
 	
@@ -178,31 +179,31 @@ class TwxshSpider4NewsText(Spider):
 	
 	response.xpath('//div[@id="main_content"]/node()').extract()
 	#同上,但更保险
-	</pre>
+</code></pre>
 
 - Scrapy的xpath的节点序号是从1开始计数的,比如要提取第一个td元素,应该是`td[1]`
 
 ####css选择器
 除了xpath外,Scrapy还提供CSS风格的选择器,于是可以像CSS和jQuery那样选择元素,对于结构明确的html文本用起来还是很爽的,[官方教程][7]和下面的例子可以感受一下:
-<pre>
-from scrapy import Selector
-doc = """
-    <div>
-         <ul>
-             <li id="theid" class="item-0"><a href="link1.html">first item</a></li>
-             <li class="item-1"><a href="link2.html">second item</a></li>
-             <li class="item-inactive"><a href="link3.html">third item</a></li>
-             <li class="item-1"><a href="link4.html">fourth item</a></li>
-             <li class="item-0"><a href="link5.html">fifth item</a></li>
-        </ul>
-     </div>
-    """
-sel = Selector(text=doc, type="html")
-print(sel.css('#theid').extract())
-print(sel.css('#theid::attr(class)').extract())
-print(sel.css('a[href]').extract())
-print(sel.css('a::text').extract())
-</pre>
+
+	from scrapy import Selector
+	doc = """
+	    <div>
+	       <ul>
+	             <li id="theid" class="item-0"><a href="link1.html">first item</a></li>
+	             <li class="item-1"><a href="link2.html">second item</a></li>
+	             <li class="item-inactive"><a href="link3.html">third item</a></li>
+	             <li class="item-1"><a href="link4.html">fourth item</a></li>
+	             <li class="item-0"><a href="link5.html">fifth item</a></li>
+	        </ul>
+	     </div>
+	    """
+	sel = Selector(text=doc, type="html")
+	print(sel.css('#theid').extract())
+	print(sel.css('#theid::attr(class)').extract())
+	print(sel.css('a[href]').extract())
+	print(sel.css('a::text').extract())
+
 
 ####中文字符串
 - python源码中使用非ASCII字符的话需要在代码最前面加:

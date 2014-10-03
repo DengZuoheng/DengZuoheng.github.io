@@ -106,7 +106,7 @@ $(document).ready(function(){
                         
                         if(h4[j]){
                             for(var k=0;k<h4[j].length;k++){
-                                tmpl+='<li class="h4"><a href="#" data-id="'+h4[i][j][k].id+'">'+h4[i][j][k].name+'</a></li>';
+                                tmpl+='<li class="h4"><a href="#" data-id="'+h4[j][k].id+'">'+h4[j][k].name+'</a></li>';
                             }
                         }
                     }

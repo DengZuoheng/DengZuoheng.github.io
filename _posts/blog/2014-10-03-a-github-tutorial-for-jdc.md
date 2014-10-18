@@ -80,6 +80,7 @@ window下GUI右上角齿轮状按钮可以打开,选择`Options...`开始设置,
 ###1.4.新建仓库
 所谓仓库,可以简单地认为是一个文件夹或目录,里面存放着这个项目中所有你想用Github来版本控制的文件.通常用来放代码,文档,程序要用到的图片,因为Github对每个免费仓库是有大小限制的(我记得是300M来着,一般项目足够了),所以实在没必要的就别往里放了.
 假设你在上述步骤已经把默认路径设置为`C:\\Projects`了,创建仓库有一下几种方法:
+
 ####1.4.1从头开始建
 - 点击图形UI左上角的加号,然后填写Name,Name是新建后由Github创建的文件夹名,也是在github.com上能看到的项目名,所以别起得太low了,也别指望中文(所有文件名最好都用英文且不要加空格),就建一个`github-tutorial`吧
 
@@ -91,7 +92,7 @@ window下GUI右上角齿轮状按钮可以打开,选择`Options...`开始设置,
 
 然后`C:\\projects\`下就多了个`github-tutorial`文件夹了,里面有两个文件(貌似是隐藏的):`.gitattributes`和`.gitignore`,后者就是刚才说到的忽略规则,用文本编辑器打开看需要编辑就好,还有个隐藏的`.git`目录,用于存放仓库信息,文件快照啥的(这个绝对不能手滑删了),文件结构像这样:
 
-<pre><code>
+<pre>
     Projects/
         github-tutorial/
             .gitattributes
@@ -100,7 +101,7 @@ window下GUI右上角齿轮状按钮可以打开,选择`Options...`开始设置,
                  hooks
                  info
                  ...
-</code></pre>	
+</pre>	
 
 ####1.4.2以现有的目录为仓库
 如果已经写了一些代码了,不想从头来过,可以把这个目录用鼠标拖到图形UI的..左边吧,然后放开鼠标,不出意外的话就一路默认就好,除了意外,看下面吧
@@ -111,6 +112,16 @@ window下GUI右上角齿轮状按钮可以打开,选择`Options...`开始设置,
 	git init
 
 然后会像上面一样自动生成`.git`目录,但是`.gitattributes`和`.gitignore`不会自动生成.怎么挂载到图形UI嘛...还是用鼠标拖比较方便...
+
+####1.4.4在github.com在线创建
+首先登陆.
+打开`https://github.com/DengZuoheng?tab=repositories`其中`DengZuoheng`换成你的用户名,然后是这样的:
+
+![在线创建仓库][5]
+
+然后该填什么填什么:
+
+![在线创建仓库2][6]
 
 ###1.5.提交与同步
 ####1.5.1添加文件
@@ -171,13 +182,41 @@ summary写你这次提交概述啥的,description详细描述这次提交的变�
     git push 
 
 其他环境下`git push`是带其他参数的,这里就先不讲了.
+
+如果没有远程仓库,是不会成功push的,创建github的远程仓库有两种方法,一种是上面说的用GUI,另一种是在你的github主页上repositories标签那new一个.
 在冲突的情况下push会失败,你必须解决冲突,再commit,再push,这些后面处理冲突的部分会讲到.
+
 
 ###6.查看提交历史
 
 ###7.移动与删除
 
 ###8.撤销操作
+####8.1 修改最后一次提交
+如果觉得刚刚的commit不合适,比如加少文件啦,提交信息没写好啦,想撤销这次操作(前提是你没同步或没push),就可以用--amend重新提交:
+
+    git commit --amend
+
+事情就像:
+
+    git commit -m "提交信息" #发现不对,加少文件了
+    git add a.txt #再加上你要提交的文件
+    git commit --amend #打开默认编辑器重写提交信息
+
+####8.2 取消已经暂存的文件
+`git add`之后还没commit,突然发现不应该add某个文件,可以用:
+
+    git reset HEAD a.txt
+
+事实上,`git add`之后`git status`命令的话会提示这个命令用于撤销add,所以记不住问题也不大.
+
+####8.3 取消最近一次对文件的修改
+当你修改或删除文件后`git status',会提示`git add <file>`和`git checkout -- <file>`两种命令,后者就是撤销本次修改和删除(当然是git add之前):
+
+    git checkout -- a.txt
+
+
+
 
 ###9.处理冲突
 
@@ -218,3 +257,5 @@ summary写你这次提交概述啥的,description详细描述这次提交的变�
 [2]:http://dengzuoheng.github.io/images/2014-10-3-19-54-51.png
 [3]:http://dengzuoheng.github.io/images/2014-10-3-20-14-21.png
 [4]:http://dengzuoheng.github.io/images/2014-10-3-21-47-24.png
+[5]:http://dengzuoheng.github.io/images/2014-10-18-20-20-50.png
+[6]:http://dengzuoheng.github.io/images/2014-10-18-20-23-08.png

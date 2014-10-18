@@ -36,6 +36,7 @@ category: note
 - 返回根目录:Ctrl+\
 - 打开标签收藏夹:Ctrl+D
 - 刷新:F2
+- 改变当前路径: 光标指向返回上级目录项,Shift+F6
 
 ###系统
 - 在当前路径打开cmd:Alt+C+D

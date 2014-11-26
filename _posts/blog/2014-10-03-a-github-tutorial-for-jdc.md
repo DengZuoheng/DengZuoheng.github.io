@@ -210,42 +210,79 @@ summary写你这次提交概述啥的,description详细描述这次提交的变�
 
 事实上,`git add`之后`git status`命令的话会提示这个命令用于撤销add,所以记不住问题也不大.
 
-####8.3 取消最近一次对文件的修改
+####8.3 取消未提交的文件修改
 当你修改或删除文件后`git status',会提示`git add <file>`和`git checkout -- <file>`两种命令,后者就是撤销本次修改和删除(当然是git add之前):
 
     git checkout -- a.txt
 
-###9.处理冲突
+如果已经把整个工作目录弄乱了,可以一次重置(恢复到最近一次提交的状态):
 
+    git reset --hard HEAD
+
+
+
+###9.处理冲突
+//TO DO
 ###10.添加协作者
+Collaborator,姑且翻译成协作者吧,翻译不对就到评论区喷吧.
+
+所谓协作者,就是可以直接向你的仓库提交代码的其他github用户,对同一个团队的人来说,还是加为协作者比较好,不然每次提交代码都要pull request就痛苦了.
+
+对于github,添加协作者只能在github网页上操作:
+
+- 打开你的仓库地址,比如:https://github.com/dengzuoheng/dengzuoheng.github.io
+- 右中下有个`setting`,点进去
+- 之后左边有个`Collaborators`,点进去,点的过程可能需要验证一次密码
+- 然后就可以输入协作者的用户名了,注意得输入全名,比如`dengzuoheng`, 然后系统提示我的全名`DengZuoheng`,你得选这个,才能成功填写协作者
+- 也就是说,不允许随便打个名字就加为协作者,必须是系统检索到真有这个人才能添加
 
 ###11.取得既有项目的仓库
+
+取得既有项目的仓库,就是,现在已经有一个仓库了,你想下载代码下来用,或者你被添加成协作者了,你需要下载代码来修改.
+
+其实就是把远程的代码弄下来.
+
+方法很简单,主要有两个:
+
+1. 到网页上操作:
+    - 所有仓库页面,比如https://github.com/dengzuoheng/dengzuoheng.github.io右下角都有一个`Clone in Desktop`按钮,如果你安装了github for Windowsk客户端,你点这个按钮,就会调用这个客户端来克隆,最新版本的可以选择的克隆的目标路径,默认自然是github客户端设置的默认路径.
+    - 然后克隆成功的话,客户端会自动挂载这个仓库,然后你就该干嘛干嘛了
+    
+2. 命令行:
+    - 命令行就简单了,cd到你要存放的目录,然后`git clone 仓库地址.git`,仓库地址可以是ssh的,也可以是https的,比如:
+    <pre>
+    #ssh版
+    git clone git@github.com:DengZuoheng/DengZuoheng.github.io.git
+    #https版
+    git clone https://github.com/DengZuoheng/DengZuoheng.github.io.git
+    </pre>
+    
 
 ###12.MarkDown
 
 ##2.分支
 ###1.分支概念
-
+//TO DO
 ###2.分支新建与合并
-
+//TO DO
 ###3.冲突时的分支合并
-
+//TO DO
 ###4.分支工作流
-
+//TO DO
 ###5.rebase
-
+//TO DO
 ##3.github开源项目
 ###1.fork
-
+//TO DO
 ###2.pull request
-
+//TO DO
 ###3.子模块
-
+//TO DO
 ###4.github pages
-
+//TO DO
 ##4.git与其它系统
 ###1.从svn迁移到git
-
+//TO DO
 
 **参考文献**
 \[1\] : [版本控制](http://zh.wikipedia.org/wiki/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6).wikipedia.org.

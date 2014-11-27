@@ -250,12 +250,12 @@ Collaborator,姑且翻译成协作者吧,翻译不对就到评论区喷吧.
     
 2. 命令行:
     - 命令行就简单了,cd到你要存放的目录,然后`git clone 仓库地址.git`,仓库地址可以是ssh的,也可以是https的,比如:
-    <pre>
-    #ssh版
-    git clone git@github.com:DengZuoheng/DengZuoheng.github.io.git
-    #https版
-    git clone https://github.com/DengZuoheng/DengZuoheng.github.io.git
-    </pre>
+<pre>
+#ssh版
+git clone git@github.com:DengZuoheng/DengZuoheng.github.io.git
+#https版
+git clone https://github.com/DengZuoheng/DengZuoheng.github.io.git
+</pre>
     
 
 ###12.MarkDown
@@ -285,7 +285,7 @@ Collaborator,姑且翻译成协作者吧,翻译不对就到评论区喷吧.
 //TO DO
 
 **参考文献**
-\[1\] : [版本控制](http://zh.wikipedia.org/wiki/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6).wikipedia.org.
+\[1\] : [版本控制](http://zh.wikipedia.org/wiki/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6)
 
 [1]:https://windows.github.com/
 [2]:http://dengzuoheng.github.io/images/2014-10-3-19-54-51.png

@@ -188,9 +188,9 @@ summary写你这次提交概述啥的,description详细描述这次提交的变�
 
 
 ###6.查看提交历史
-
+//TO DO
 ###7.移动与删除
-
+//TO DO
 ###8.撤销操作
 ####8.1 修改最后一次提交
 如果觉得刚刚的commit不合适,比如加少文件啦,提交信息没写好啦,想撤销这次操作(前提是你没同步或没push),就可以用--amend重新提交:
@@ -284,7 +284,7 @@ git clone https://github.com/DengZuoheng/DengZuoheng.github.io.git
 ###1.从svn迁移到git
 //TO DO
 
-**参考文献**
+**参考文献**  
 \[1\] : [版本控制](http://zh.wikipedia.org/wiki/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6)
 
 [1]:https://windows.github.com/

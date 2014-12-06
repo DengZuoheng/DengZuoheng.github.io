@@ -260,3 +260,21 @@ void CwakeupdiskDlg::SetRunOnStartUp(bool bFlag)
 
 ## 开机启动的问题
 当系统启动时,主程序启动了,但是却没法正常读取json文件,如果单独在资源管理器启动程序,却可以正常读取json文件.这个问题原因都还没找到,不过计划是让程序第一次读取失败的话,休眠个半分钟再尝试读一遍,不过,下次有空再写吧
+
+## 修复开机启动问题
+据说,开机启动时,相对路径是不安全的,所以程序没有成功读取配置文件,要顺利读取配置文件的话,就需要配置文件的绝对路径,但是,通常配置文件都放在程序的同一目录下,所以,获取了程序的绝对路径,就可以构造出配置文件的绝对路径了.
+
+`::GetModuleFileNameA(NULL, FilePath, MAX_PATH);`就是这么个函数,第一个参数填NULL的话,获取的就是当前程序的路径(其他参数谷歌去吧),但是获取的路径是放到一个字符数组里面的,并没有结束符,所以我们得手动加上,用strrchr函数找到最后一个`\\`的位置,然后在其下一个位置加上结束符`\0`.
+
+完整的示例如下,传入一个配置文件名,函数获取当前路径然后拼接好绝对路径名返回:
+
+<pre>
+std::string GetModuleProfileName(std::string basic_file_name)
+{
+    char FilePath[MAX_PATH];
+    ::GetModuleFileNameA(NULL, FilePath, MAX_PATH);
+    (strrchr(FilePath, '\\'))[1] = 0;
+    std::string retpath(FilePath);
+    return retpath + basic_file_name;
+}
+</pre>

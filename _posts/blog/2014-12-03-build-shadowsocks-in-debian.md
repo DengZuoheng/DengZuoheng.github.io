@@ -61,3 +61,6 @@ Windows下我喜欢用yingwa,很傻瓜很简单,尤其是你需要教会小白�
     echo "nohup /usr/local/bin/ss-server -s IP地址 -p 端口 -k 密码 -m 加密方式 &" >> /etc/rc.local
 
 如果没有设置开机启动的话,每次开机都需要自行一次2.3的启动命令.
+
+**参考文献**  
+[1]CentOS、Debian下搭建shadowsocks-libev服务端:http://www.ilucong.net/lulu/centos-debian-shadowsocks-libev.html

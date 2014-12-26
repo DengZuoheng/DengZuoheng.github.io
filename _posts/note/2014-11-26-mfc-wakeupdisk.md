@@ -278,3 +278,20 @@ std::string GetModuleProfileName(std::string basic_file_name)
     return retpath + basic_file_name;
 }
 </pre>
+
+##启动自动隐藏
+成功设置开机启动后, 又碰到一个问题, 就是每次开机启动都有生成窗口, 还得手动关掉, 很是不爽, 于是就想让它启动时自动隐藏到托盘, 搜索了一圈, 什么`showWindow(SW_HIDE)`亲测无效, 最后找到了一个`SetWindowPlacement`的方法, 效果还可以, 就用了, 代码如下:
+
+<pre>
+//首先你得有个成员来保存正常的WindowPlacement以便回复
+//然后在OnInitDialog添加
+GetWindowPlacement(&m_wp); //恢复时用
+ModifyStyleEx(WS_EX_APPWINDOW, WS_EX_TOOLWINDOW);//从任务栏中去掉.
+WINDOWPLACEMENT wp;
+wp.length = sizeof(WINDOWPLACEMENT);
+wp.flags = WPF_RESTORETOMAXIMIZED;
+wp.showCmd = SW_HIDE;
+SetWindowPlacement(&wp);
+</pre>
+
+然后该恢复的时候恢复就好了, 不过恢复的时候默认会跑到左上角, 这个问题还没解决, 不过影响不大, 因为我基本上不会再点开它.

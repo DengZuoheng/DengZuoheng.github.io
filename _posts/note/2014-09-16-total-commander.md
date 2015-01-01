@@ -16,7 +16,9 @@ category: note
 - 快速查看:Ctrl+Q
 - 关闭快速查看:Ctrl+Q
 - 快速筛选:输入字母(需设置)
+- 快速搜索:Ctrl+S(可用`*`做通配符,如`*.cpp`)
 - 展开所有文件夹:Ctrl+B
+- 收回展开:Ctrl+B
 - 打开默认编辑器:F4
 - 复制:F5
 - 移动:F6
@@ -76,6 +78,10 @@ Editor4=C:\Portable Application\MarkdownPad 2 Pro Portable v2.4.3.39518\Markdown
 Ext4=MD
 </pre>
 
-可以根据自己的需要手动添加打开方式.比如上面的配置就对所有文件都增加了notepad++和WinMerge的打开,因为这是我最常用的;通常情况下ChoiceEditor能识别出系统的默认查看程序,但是偶尔也会抽风,故还是自己设置比较顺心.
+可以根据自己的需要手动添加打开方式.
+
+比如上面的配置就对所有文件都增加了notepad++和WinMerge的打开,因为这是我最常用的;
+
+通常情况下ChoiceEditor能识别出系统的默认查看程序,但是偶尔也会抽风,故还是自己设置比较顺心.
 
 [1]:http://www.totalcmd.net/plugring/ChoiceEditor_patched.html

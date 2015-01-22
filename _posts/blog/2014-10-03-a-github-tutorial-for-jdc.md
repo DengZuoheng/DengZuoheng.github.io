@@ -303,6 +303,7 @@ git clone https://github.com/DengZuoheng/DengZuoheng.github.io.git
 
 **参考文献**  
 \[1\] : [版本控制](http://zh.wikipedia.org/wiki/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6)
+\[2\] :  涂根华的博客. Git使用教程. http://www.cnblogs.com/tugenhua0707/p/4050072.html
 
 [1]:https://windows.github.com/
 [2]:http://dengzuoheng.github.io/images/2014-10-3-19-54-51.png

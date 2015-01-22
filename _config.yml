@@ -5,7 +5,7 @@ pygments: true
 paginate: 8
 permalink: /:title
 
-title: 小邓的博客
+title: 邓作恒的博客
 url: http://dengzuoheng.github.io
 feed: /atom.xml
 

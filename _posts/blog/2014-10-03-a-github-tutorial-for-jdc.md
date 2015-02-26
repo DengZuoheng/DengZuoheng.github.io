@@ -303,10 +303,30 @@ fork之后, 你就可以clone下来更改了, 但是, 为了与源项目, 或者
     upstream  https://github.com/DengZuoheng/DengZuoheng.github.io.git (fetch)
     upstream  https://github.com/DengZuoheng/DengZuoheng.github.io.git (push)
 
+然后, 就可以用git rebase导入上游仓库的更新了, 同理也可以用git merge将更新合并到你在修改的分支. 
+
 另外, 如果改改你自己用的话, 在主分支上改也没关系, 但是如果你打算pull request的话, 还是为你的修改新建一个分支吧. 
   
 ###2.pull request
-//TO DO
+在你fork出来的仓库的页面`https://github.com/YOUR_USERNAME/DengZuoheng.github.io`点`pull request`, 然后`new pull request`,然后左边选择base branch，右边选择head branch.
+
+base branch是你希望pull request被merge到上游项目的哪个branch里, head branch你希望自己开发库里的哪个branch被用来进行pull request(就是被你修改了的那个分支)
+
+发送pull request之后, 在这个pull request被关闭之前, 你在这个分支上新的commit都会被自动追加到这个pull request, 不用另起pull request. 
+
+如果你是被pull request的那个, `git pull`, `git merge`等命令就可以合并了, 具体参数吗, 上网找找...另外, github上的pull request不会自动关闭, 需要手动, 打开你项目的pull request然后找到已经完事的那项, 点`delete`之类的.
+
+有些时候pull request也称`pr`, 毕竟pull request这么长, 打起字很累....
+
+建议自己弄两账号, 再弄以仓库, 多pr几次就明白了. 
+
+官方也是有帮助的, 可参考:
+
+- Using Pull Requests: https://help.github.com/articles/using-pull-requests
+- Merging a pull request: https://help.github.com/articles/merging-a-pull-request
+- Closing a pull request: https://help.github.com/articles/closing-a-pull-request
+- Tidying up Pull Requests: https://help.github.com/articles/tidying-up-pull-requests
+
 ###3.子模块
 //TO DO
 ###4.github pages
@@ -317,7 +337,7 @@ fork之后, 你就可以clone下来更改了, 但是, 为了与源项目, 或者
 
 **Reference:**  
 \[1\] : [版本控制](http://zh.wikipedia.org/wiki/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6)  
-\[2\] :  涂根华的博客. Git使用教程. http://www.cnblogs.com/tugenhua0707/p/4050072.html  
+\[2\] : 涂根华的博客. Git使用教程. http://www.cnblogs.com/tugenhua0707/p/4050072.html  
 \[3\] : Mort. Pull Request的正确打开方式（如何在GitHub上贡献开源项目）. http://www.soimort.org/posts/149/  
 \[4\] : Github help. Fork A Repo. https://help.github.com/articles/fork-a-repo/
 

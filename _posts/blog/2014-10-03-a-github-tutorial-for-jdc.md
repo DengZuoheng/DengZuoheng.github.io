@@ -290,7 +290,21 @@ git clone https://github.com/DengZuoheng/DengZuoheng.github.io.git
 //TO DO
 ##3.github开源项目
 ###1.fork
-//TO DO
+fork 相当于复制一个仓库到你账号下, fork后就可以在你fork回来的仓库中乱搞而不影响原仓库. fork很简单, 随便打开个什么仓库你总能看到"fork"按钮, 比如`https://github.com/DengZuoheng/DengZuoheng.github.io`右上附近就是了.
+
+fork之后, 你就可以clone下来更改了, 但是, 为了与源项目, 或者说上游项目保持同步(否则别人更新了你没跟着更新), 你得用git remote add添加上游远程库的地址. 参考官方帮助第3步:
+
+    git remote add upstream https://github.com/DengZuoheng/DengZuoheng.github.io.git
+
+这样, 你用`git remote -v`查看, 应该是这样子的:
+
+    origin    https://github.com/YOUR_USERNAME/DengZuoheng.github.io.git (fetch)
+    origin    https://github.com/YOUR_USERNAME/DengZuoheng.github.io.git (push)
+    upstream  https://github.com/DengZuoheng/DengZuoheng.github.io.git (fetch)
+    upstream  https://github.com/DengZuoheng/DengZuoheng.github.io.git (push)
+
+另外, 如果改改你自己用的话, 在主分支上改也没关系, 但是如果你打算pull request的话, 还是为你的修改新建一个分支吧. 
+  
 ###2.pull request
 //TO DO
 ###3.子模块
@@ -301,9 +315,11 @@ git clone https://github.com/DengZuoheng/DengZuoheng.github.io.git
 ###1.从svn迁移到git
 //TO DO
 
-**参考文献**  
-\[1\] : [版本控制](http://zh.wikipedia.org/wiki/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6)
-\[2\] :  涂根华的博客. Git使用教程. http://www.cnblogs.com/tugenhua0707/p/4050072.html
+**Reference:**  
+\[1\] : [版本控制](http://zh.wikipedia.org/wiki/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6)  
+\[2\] :  涂根华的博客. Git使用教程. http://www.cnblogs.com/tugenhua0707/p/4050072.html  
+\[3\] : Mort. Pull Request的正确打开方式（如何在GitHub上贡献开源项目）. http://www.soimort.org/posts/149/  
+\[4\] : Github help. Fork A Repo. https://help.github.com/articles/fork-a-repo/
 
 [1]:https://windows.github.com/
 [2]:http://dengzuoheng.github.io/images/2014-10-3-19-54-51.png

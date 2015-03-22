@@ -51,24 +51,24 @@ category: blog
 不够直观的话, 我们跑个32位程序试试:
 
 基本数据类型的:
-
-    #include<iostream>
-    using namespace std;
-    int main()
-    {
-        cout << "char:" << sizeof(char) << endl//1
-            << "short:" << sizeof(short) << endl//1
-            << "int:" << sizeof(int) << endl//4
-            << "long:" << sizeof(long) << endl//4
-            << "float:" << sizeof(float) << endl//4
-            << "double:" << sizeof(double) << endl//8
-            << "long long:" << sizeof(long long) << endl//8
-            << "long double:" << sizeof(long double) << endl//8
-            << "char*:" << sizeof(char*) << endl//4
-            << "int*:" << sizeof(int*) << endl;//4
-        return 0;
-    }
-
+<pre>
+#include<iostream>
+using namespace std;
+int main()
+{
+    cout << "char:" << sizeof(char) << endl//1
+        << "short:" << sizeof(short) << endl//1
+        << "int:" << sizeof(int) << endl//4
+        << "long:" << sizeof(long) << endl//4
+        << "float:" << sizeof(float) << endl//4
+        << "double:" << sizeof(double) << endl//8
+        << "long long:" << sizeof(long long) << endl//8
+        << "long double:" << sizeof(long double) << endl//8
+        << "char*:" << sizeof(char*) << endl//4
+        << "int*:" << sizeof(int*) << endl;//4
+    return 0;
+}
+</pre>
 数组的:
 
     #include<iostream>

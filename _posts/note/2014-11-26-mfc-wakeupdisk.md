@@ -88,30 +88,12 @@ pButton->SetCheck(STATUS_CHECKED);//STATUS_CHECKED是自己定义的宏
     "frequency": "60000",
     "disksetting":
     {
-        "C": "true",
-        "D": "true",
-        "E": "true",
-        "F": "true",
-        "G": "false",
-        "H": "true",
-        "I": "true",
-        "J": "true",
-        "K": "true",
-        "L": "true",
-        "M": "true",
-        "N": "false",
-        "O": "true",
-        "P": "true",
-        "Q": "true",
-        "R": "true",
-        "S": "false",
-        "T": "true",
-        "U": "true",
-        "V": "true",
-        "W": "true",
-        "X": "true",
-        "Y": "false",
-        "Z": "true"
+        "C": "true",    "D": "true",    "E": "true",    "F": "true",
+        "G": "false",   "H": "true",    "I": "true",    "J": "true",
+        "K": "true",    "L": "true",    "M": "true",    "N": "false",
+        "O": "true",    "P": "true",    "Q": "true",    "R": "true",
+        "S": "false",   "T": "true",    "U": "true",    "V": "true",
+        "W": "true",    "X": "true",    "Y": "false",   "Z": "true"
     }
 }
 

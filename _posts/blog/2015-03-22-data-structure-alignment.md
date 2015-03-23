@@ -56,16 +56,16 @@ struct MyStruct
 using namespace std;
 int main()
 {
-    cout << "char:" << sizeof(char) << endl//1
-        << "short:" << sizeof(short) << endl//1
-        << "int:" << sizeof(int) << endl//4
-        << "long:" << sizeof(long) << endl//4
-        << "float:" << sizeof(float) << endl//4
-        << "double:" << sizeof(double) << endl//8
-        << "long long:" << sizeof(long long) << endl//8
-        << "long double:" << sizeof(long double) << endl//8
-        << "char*:" << sizeof(char*) << endl//4
-        << "int*:" << sizeof(int*) << endl;//4
+    cout &lt;&lt; "char:" &lt;&lt; sizeof(char) &lt;&lt; endl//1
+        &lt;&lt; "short:" &lt;&lt; sizeof(short) &lt;&lt; endl//1
+        &lt;&lt; "int:" &lt;&lt; sizeof(int) &lt;&lt; endl//4
+        &lt;&lt; "long:" &lt;&lt; sizeof(long) &lt;&lt; endl//4
+        &lt;&lt; "float:" &lt;&lt; sizeof(float) &lt;&lt; endl//4
+        &lt;&lt; "double:" &lt;&lt; sizeof(double) &lt;&lt; endl//8
+        &lt;&lt; "long long:" &lt;&lt; sizeof(long long) &lt;&lt; endl//8
+        &lt;&lt; "long double:" &lt;&lt; sizeof(long double) &lt;&lt; endl//8
+        &lt;&lt; "char*:" &lt;&lt; sizeof(char*) &lt;&lt; endl//4
+        &lt;&lt; "int*:" &lt;&lt; sizeof(int*) &lt;&lt; endl;//4
     return 0;
 }
 </pre>
@@ -77,8 +77,8 @@ int main()
 {
     char str[] = "hello";
     int arr[8];
-    cout << "str:" << sizeof(str) << endl//6, 因为后面还有个'\0'
-        << "arr:" << sizeof(arr) << endl;//32
+    cout &lt;&lt; "str:" &lt;&lt; sizeof(str) &lt;&lt; endl//6, 因为后面还有个'\0'
+        &lt;&lt; "arr:" &lt;&lt; sizeof(arr) &lt;&lt; endl;//32
     return 0;
 }
 </pre>
@@ -90,9 +90,10 @@ int main()
 内存是一个byte一个byte地存的这个我们知道, 但是, CPU不是一个byte一个byte地读的, 因为, 我们老早就用上32位的CPU了, 应该说我们老早就用上64位的CPU了, 那么, CPU每个读周期就能(应该也只能)读32bit(64位的CPU应该读64bit); 如果, 这么巧, 一个int跨越了两次读周期, 完了还得高地位拼接, 那不就浪费时间了么; 于是, 人们想了写办法不让这种情况发生, 比如直接报错, 比如编译器默认给你对齐, 比如, 你自己设置对齐.
 
 我们设的话是怎么设的呢? 我见过的就`#pragma pack(n)`, 通常n都是2的某次幂, 具体参数可以删参考[2]查一下. `#pragma pack()`的位置时有影响的, `#pragma pack()`之后的, 才受这个设置影响, 否则按默认算. 比如:
-<pre>    
+
+<pre>
 //ubuntu14.04 x64 gcc
-#include<iostream>
+#include&lt;iostream&gt;
 struct s1
 {
     char a;
@@ -107,11 +108,12 @@ struct s2
 
 int main()
 {
-    std::cout<<sizeof(s1)<<std::endl;//8
-    std::cout<<sizeof(s2)<<std::endl;//6
+    std::cout&lt;&lt;sizeof(s1)&lt;&lt;std::endl;//8
+    std::cout&lt;&lt;sizeof(s2)&lt;&lt;std::endl;//6
     return 0;
 }
 </pre>
+
 就现象而言, 设置pack(n)后, **一个类型为type的成员数据的起始偏移就会是min(n,sizeof(type))的倍数**. 
 
 就像把内存分成了n byte n byte的块一样, 不会允许一个size小于等于一个块的数据跨越两个块, 比如, 现在我们pack(4), 第一个4byte放了个char, 占掉1byte, 现在你要放个int, 需要4byte, 如果直接放的话, 会用到第二个4byte, 这样CPU就得用两个读周期来读, 就慢了, 所以我们不能允许这样, 所以, 我们要把这个int放到第二个4byte去, 刚好4byte装完; 那刚刚那剩下的3byte怎么办, 空着就空着呗,<del> 反正内存便宜, </del>一般我们就把这空着的叫padding了.
@@ -141,11 +143,11 @@ struct s7{
     char a;double d;char e;
 };
 //main()
-std::cout<<sizeof(s3)<<std::endl;//16, 整个结构体的大小是n的倍数
-std::cout<<sizeof(s4)<<std::endl;//24, 整个结构体的大小是sizeof(double)的倍数
-std::cout<<sizeof(s5)<<std::endl;//3
-std::cout<<sizeof(s6)<<std::endl;//3
-std::cout<<sizeof(s7)<<std::endl;//24, 整个结构体的大小是sizeof(double)的倍数
+std::cout&lt;&lt;sizeof(s3)&lt;&lt;std::endl;//16, 整个结构体的大小是n的倍数
+std::cout&lt;&lt;sizeof(s4)&lt;&lt;std::endl;//24, 整个结构体的大小是sizeof(double)的倍数
+std::cout&lt;&lt;sizeof(s5)&lt;&lt;std::endl;//3
+std::cout&lt;&lt;sizeof(s6)&lt;&lt;std::endl;//3
+std::cout&lt;&lt;sizeof(s7)&lt;&lt;std::endl;//24, 整个结构体的大小是sizeof(double)的倍数
 </pre>
 
 ##字节对齐与结构体
@@ -174,7 +176,7 @@ menber: | a |padding|       b         |没了
 OK, 我们来看稍微复杂点的情况:
 
 <pre>
-#include<iostream>
+#include&lt;iostream&gt;
 #pragma pack(1)
 struct s1{char a;int b;char c;};
 
@@ -190,12 +192,12 @@ struct s4{char a;int b;char c;};
 struct s6{char a;int b;char c;double d};
 int main()
 {
-    std::cout<<sizeof(s1)<<std::endl;//6=1+4+1
-    std::cout<<sizeof(s2)<<std::endl;//8=2+4+2
-    std::cout<<sizeof(s3)<<std::endl;//12=4+4+4
-    std::cout<<sizeof(s4)<<std::endl;//12=4+4+4
-    std::cout<<sizeof(s5)<<std::endl;//20=4+4+4+8
-    std::cout<<sizeof(s6)<<std::endl;//24=4+4+8+8, d的偏移得是8的倍数
+    std::cout&lt;&lt;sizeof(s1)&lt;&lt;std::endl;//6=1+4+1
+    std::cout&lt;&lt;sizeof(s2)&lt;&lt;std::endl;//8=2+4+2
+    std::cout&lt;&lt;sizeof(s3)&lt;&lt;std::endl;//12=4+4+4
+    std::cout&lt;&lt;sizeof(s4)&lt;&lt;std::endl;//12=4+4+4
+    std::cout&lt;&lt;sizeof(s5)&lt;&lt;std::endl;//20=4+4+4+8
+    std::cout&lt;&lt;sizeof(s6)&lt;&lt;std::endl;//24=4+4+8+8, d的偏移得是8的倍数
     return 0;
 }
 </pre>
@@ -232,7 +234,7 @@ struct MyStruct
 </pre>
 测试代码(VS2013,32位):
 <pre>
-#include<iostream>
+#include&lt;iostream&gt;
 
 #pragma pack(8)
 using namespace std;
@@ -250,15 +252,15 @@ struct s1
 
 int main()
 {
-    cout << sizeof(s1) << endl;
-    cout << offsetof(s1, a) << " " 
-        << offsetof(s1, b) << " " 
-        << offsetof(s1, c) << " " 
-        << offsetof(s1, d) << " "
-        << offsetof(s1, e) << " " 
-        << offsetof(s1, f) << " " 
-        << offsetof(s1, g) << " " 
-        << offsetof(s1, h) << endl;
+    cout &lt;&lt; sizeof(s1) &lt;&lt; endl;
+    cout &lt;&lt; offsetof(s1, a) &lt;&lt; " " 
+        &lt;&lt; offsetof(s1, b) &lt;&lt; " " 
+        &lt;&lt; offsetof(s1, c) &lt;&lt; " " 
+        &lt;&lt; offsetof(s1, d) &lt;&lt; " "
+        &lt;&lt; offsetof(s1, e) &lt;&lt; " " 
+        &lt;&lt; offsetof(s1, f) &lt;&lt; " " 
+        &lt;&lt; offsetof(s1, g) &lt;&lt; " " 
+        &lt;&lt; offsetof(s1, h) &lt;&lt; endl;
     system("pause");
     return 0;
 }

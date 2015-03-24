@@ -20,12 +20,12 @@ struct MyStruct
     char* h;
 };//求sizeof(MyStruct)
 </pre>
-我说, 一个`char`1byte, `int`4byte, `float`4byte, `double`8byte, `int*`目测4byte(64位下目测8byte), 结果, 怎么都算不对啊...因为, 我完全没想起字节对齐那事...
+我说, 一个`char` 1 byte, `int` 4 byte, `float` 4 byte, `double` 8 byte, `int*`目测4 byte(64位下目测8 byte), 结果, 怎么都算不对啊...因为, 我完全没想起字节对齐那事...
 
 事实上, sizeof(MyStruct)==40, 不信可以直接跳到总结
 
 ## sizeof各种基本类型
-说字节对齐前, 我们得先清楚个种数据结构都是怎么算sizeof的, 为了偷懒, 我们先引一大段wiki的说法:
+说字节对齐前, 我们得先清楚各种数据结构都是怎么算sizeof的, 为了偷懒, 我们先引一大段wiki的说法:
 
 > The following typical alignments are valid for compilers from Microsoft (Visual C++), Borland/CodeGear (C++Builder), Digital Mars (DMC) and GNU (GCC) when compiling for 32-bit x86:  
 > 
@@ -165,7 +165,7 @@ struct s1
 这种情况, 按我们刚刚的分析, 应该是这样的:
 <pre>
 bytes:  | 1     2   |  3  4  |  5  6  |  7  8  |
-menber: | a |padding|       b         |没了
+member: | a |padding|       b         |没了
 </pre>
 所以, sizeof(s1)应该是6, 但在VS上测试, 结果是8, 用`offsetof()`查看, b的偏移确实是4了, 跟我们的预测不一致啊, 为什么呢? 呃, 先换个平台试下...
 

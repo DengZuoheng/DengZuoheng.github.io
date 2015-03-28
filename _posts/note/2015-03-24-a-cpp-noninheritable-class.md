@@ -8,7 +8,7 @@ category: note
 只要继承boost::noninheritable就好, 当然, boost的命名空间是我随便弄的. 
 
 <pre>
-#include<iostream>
+#include&lt;iostream&gt;
 
 using namespace std;
 
@@ -38,7 +38,7 @@ class Bilibili : private boost::noninheritable
 {
 public:
     Bilibili(){
-        cout << "Bilibili construct" << endl;
+        cout &lt;&lt; "Bilibili construct" &lt;&lt; endl;
     }
 };
 /*

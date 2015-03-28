@@ -215,6 +215,7 @@ VS下是直接支持offsetof(type,member)的, gcc要用的话, 可以:
 - 字节对齐我们可以用`#pragma pack(n)`来设置, VS默认为8
 - 对于结构的每一成员, 设其类型为type, 其地址偏移不为0的时候, 就是min(n,sizeof(type))的倍数
 - 对于整个结构, 设其最大的成员的类型为largest_type, 则整个结构的体积填充至min(n,sizeof(largest_type))的倍数
+- 静态成员不算在sizeof里面, 毕竟那时种结构体共有的. 
 
 现在, 回到我们最开始的问题:
 <pre>

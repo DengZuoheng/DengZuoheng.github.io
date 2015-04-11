@@ -198,7 +198,13 @@ GUI上查看提交历史就如1.5.1图所示, 会自动列举, 不过时间不�
 `git reflog`同时会给出7位的版本号.
 
 ### 1.7 移动与删除
-//TO DO
+`git mv`是移动文件的命令, 但是就像linux的移动文件操作一样, 并不会携带以往记录一起移动, 所以, 用`git status`看起来, 就像是新增了一个文件然后删除了一个文件一样. 
+
+`git rm`是删除文件的命令, 同时也会使文件脱离git的版本控制, 而且, 也能选择是否在硬盘中留下该文件:
+
+    git rm -f -r file #强制删除, 不留文件, -r可以帮助你递归删除file目录里的所有文件
+    git rm --cached file #从版本控制中删除, 但是保留硬盘中的文件
+
 ### 1.8 撤销操作
 #### 1.8.1 修改最后一次提交
 如果觉得刚刚的commit不合适,比如加少文件啦,提交信息没写好啦,想撤销这次操作(前提是你没同步或没push),就可以用--amend重新提交:
@@ -239,7 +245,36 @@ GUI上查看提交历史就如1.5.1图所示, 会自动列举, 不过时间不�
 因为回退版本的话, 本回退那次commit所有修改过的文件都会受影响, 所以, 每次commit都应该小一些, 否则回退了也是凌乱, 如果有大量变动, 就应该建一个分支再回退, 确定自己搞不搞得定, 搞不定的话, 还是老实看日志自己手动改回去吧.
 
 ###9.处理冲突
-//TO DO
+当你的合作者与你同时改了同一个文件, 然后还push了, 那么就发生冲突了, 因为程序无法判断以谁为准, 所以后push的人会push失败;
+
+如果你改了一个文件, 你的合作者也改了这个文件, 而且还push了, 你在不commit的情况下, 想pull的话, 就会失败, 应该, 你也改动的, 程序不能覆盖掉你的改动;
+
+你有两个分支, 都改动了同一个文件, 合并的时候会提示冲突, 要求手动处理...
+
+以上这些情况就是所谓冲突, 一般都会被标出为`conflict`, 处理冲突其实很简单, 只要手动编辑冲突的文件, 然后再commit就可以了.
+
+冲突的文件都会将冲突的地方用特殊的符号标出来, 比如:
+
+<pre>
+&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;HEAD 
+你刚刚改的代码
+=========
+远程仓库的代码
+&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; 仓库最后一次提交的版本
+</pre>
+
+你只需要把这堆东西编辑好, 然后提交就好了.
+
+有些特别的情况, 比如命名冲突了, 你却碰巧把别人的pull下来, 然后你的没push上去, 也没提示冲突, 这种情况, 以我的经验, 先把我的改动备份下来, 回滚版本, 在把我的改回去. 这就引出了处理冲突的终极大法:
+
+- 备份你的改动, 重新克隆仓库, 然后再改回去
+
+当然这只是落后一两个commit的情况下的办法, 不到万不得已还是不要用的好.
+
+需要注意的是, 并不是说编辑了同一文件就一定冲突, 严谨的说法是编辑了同一文件的统一区域会产生冲突. 不同区域的话, git会自动合并.
+
+还需要注意的是, git只会提醒编辑统一区域的那种冲突, 你要是改了文件名啥的, git当然是不会提示冲突的, 所以, 多跑测试, 你说测试代码也冲突了? 别问我, 我也不知道...
+
 ###10.添加协作者
 Collaborator,姑且翻译成协作者吧,翻译不对就到评论区喷吧.
 
@@ -275,7 +310,18 @@ git clone https://github.com/DengZuoheng/DengZuoheng.github.io.git
 </pre>
     
 
-###12.MarkDown
+###12.Markdown
+Markdown是一种轻量级标记语言, 用存文本表现出结构的那种, 可以转换成HTML, 通常, 程序猿用它来写邮件.
+
+我们扯出markdown做怎么呢? 因为, github的readme就是用markdown写的; 相信你在很多仓库中都见过一个`README.md`的文件, 在github网页中会以一定排版显示出来, readme是做什么的相信我不用多说了, 但是这个`.md`代表着这是根据markdown格式编写的, github会自动解释. 所以, 人民也提喜欢用markdown来写文档. 另外, github的wiki也是用markdown编辑的. 
+
+markdown的语法也是颇为简单, 一般一两天就能学致日常使用了, 详细语法参考:
+
+- [http://wowubuntu.com/markdown/](http://wowubuntu.com/markdown/)
+
+当然, github不仅支持markdown, 还有一些类似的轻量级的标记语言, 如: AsciiDoc, Creole, MediaWiki, Org-mode, Pod, RDoc, Textitle, reStructureText.
+
+通常学会一种就够用了, 不过, 参与到别人的项目的时候, 别人用什么写, 你也得用什么写, 所以, 其实迟早都得学. 
 
 ##2.分支
 ###1.分支概念
@@ -340,6 +386,7 @@ base branch是你希望pull request被merge到上游项目的哪个branch里, he
 \[2\] : 涂根华的博客. Git使用教程. http://www.cnblogs.com/tugenhua0707/p/4050072.html  
 \[3\] : Mort. Pull Request的正确打开方式（如何在GitHub上贡献开源项目）. http://www.soimort.org/posts/149/  
 \[4\] : Github help. Fork A Repo. https://help.github.com/articles/fork-a-repo/
+\[5\] : Git下冲突的解决. http://www.cnblogs.com/sinojelly/archive/2011/08/07/2130172.html
 
 [1]:https://windows.github.com/
 [2]:http://dengzuoheng.github.io/images/2014-10-3-19-54-51.png

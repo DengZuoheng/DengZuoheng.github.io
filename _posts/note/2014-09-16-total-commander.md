@@ -5,6 +5,7 @@ description: 简记一些TC的用法,方便复习
 category: note
 ---
 
+其实几乎所有命令都可以重映射, 因为我习惯左手键盘右手鼠标, 所以很多命令都映射到方便左手的键位了.比如回退映射到Esc, 全不选映射到Ctrl+~
 
 ###文件
 - 新建文件:shift+F4
@@ -15,7 +16,7 @@ category: note
 - 复制文件名加路径:Alt+M+p
 - 快速查看:Ctrl+Q
 - 关闭快速查看:Ctrl+Q
-- 快速筛选:输入字母(需设置)
+- 快速筛选:输入字母(需设置),F2退出筛选
 - 快速搜索:Ctrl+S(可用`*`做通配符,如`*.cpp`)
 - 展开所有文件夹:Ctrl+B
 - 收回展开:Ctrl+B
@@ -25,11 +26,19 @@ category: note
 - 删除:F8
 - 打开默认查看器:F3
 - 打开桌面:Alt+C+O
+- 复制文件名:Alt+M+Y(我的重定向:Alt+C)
+- 复制文件名以及完整路径:Alt+M+P(我的重定向:Alt+Shift+C)
 
+###选择
+- 全选:Ctrl+A
+- 全不选: Ctrl+小键盘-
 
 ###标签
 - 改变当前标签:Shift+F6
 - 移动当前标签到另一视图:Ctrl+U
+- 左右面板互换:Ctrl+Shift+U
+- 将光标所指目录在左面板打开:Ctrl+Shift+↑(我的重映射:Shift+A)
+- 将光标所指目录在右面板打开:Ctrl+Shift+→(我的重映射:Shift+S)
 - 复制当前标签:ctrl+T
 - 切换视图:Tab
 - 切换标签:Ctrl+Tab
@@ -43,6 +52,7 @@ category: note
 ###系统
 - 在当前路径打开cmd:Alt+C+D
 - 执行命令行:→
+- 展开命令行记录:Ctrl+↓或Alt+F8
 
 ###压缩
 - 压缩文件到另一标签的当前视图:Alt+F5
@@ -85,3 +95,6 @@ Ext4=MD
 通常情况下ChoiceEditor能识别出系统的默认查看程序,但是偶尔也会抽风,故还是自己设置比较顺心.
 
 [1]:http://www.totalcmd.net/plugring/ChoiceEditor_patched.html
+
+**Reference:**  
+\[1]: http://www.shortcutworld.com/en/win/total-commander_8.0.html

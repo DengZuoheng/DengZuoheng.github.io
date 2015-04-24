@@ -6,7 +6,7 @@ category: blog
 ---
 
 ##简介##
-cgminer是一个比特币挖矿的玩意, 在github上托管源码, 这次我们要折腾的呢, 就是通过这源码编译出一个cgminger来. 而且, 还要编译一个2.0.0版本的以彰显git大法好.
+cgminer是一个比特币挖矿的玩意, 在github上托管源码, 这次<del>平哥要我们折腾</del>我们要折腾的呢, 就是通过这源码编译出一个cgminger来. 而且, 还要编译一个2.0.0版本的以彰显git大法好.
 
 ##准备工作##
 材料:
@@ -118,15 +118,15 @@ cgminer是一个比特币挖矿的玩意, 在github上托管源码, 这次我们
 <pre>
 sudo su
 
-apt-get update
+apt-get -y update
 
-apt-get install git
+apt-get -y install git
 
 git clone https://github.com/ckolivas/cgminer.git
 
 cd cgminer
 
-git checkout -b dengzuoheng v2.0.0
+git checkout -b b-2-0-0 v2.0.0
 
 sudo apt-get install -y build-essential autoconf automake libtool pkg-config libcurl3-dev libudev-dev libncurses-dev 
 
@@ -134,13 +134,22 @@ sh autogen.sh
 
 ./configure
 
- make
+make
 
 make install
 
 cgminer -V
 
 </pre>
+
+更简单的方法, 使用我写好的shell脚本:
+<pre>
+sudo su
+git clone https://github.com/dengzuoheng/scripts.git
+cd scripts
+sh build-cgminer.sh
+</pre>
+才4行命令, 再学渣也打得出来吧.
 
 **Reference**  
 \[1]: 蔡清华. Ubuntu虚拟机中编译运行cgminer挖矿软件. http://my.oschina.net/blueprint/blog/222885  

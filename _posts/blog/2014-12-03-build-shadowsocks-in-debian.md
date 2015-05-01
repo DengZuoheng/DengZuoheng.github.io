@@ -27,7 +27,7 @@ category: blog
 ###2. 安装shadowsocks
 2.1 用git下载源码包:
 
-    git clone https://github.com/madeye/shadowsocks-libev.git
+    git clone https://github.com/shadowsocks/shadowsocks-libev.git
 
 2.2 编译源码包:
     

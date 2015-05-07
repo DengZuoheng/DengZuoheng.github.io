@@ -1,5 +1,6 @@
 ---
 layout: post
+title: makefile那些事
 description: mekefile入门以及一些基本特性
 category: note
 ---
@@ -92,7 +93,7 @@ make实际上并不关心command是什么,只管在需要的时候执行command.
 ## 一个稍微复杂的例子 ##
 ok, 现在我们有一个工程, 名叫maketest, 结构如下:
 
-```
+<pre>
 maketest\
     - main.c
     - abc.h
@@ -103,7 +104,7 @@ maketest\
         hello1.c
         hello2.c
     - makefile
-```
+<pre>
 
 我们的main.c是这样的:
 
@@ -175,10 +176,10 @@ abc2.o : abc2.c abc.h
 	cc -c abc2.c
 </pre>
 
-注意, makefile中的变量只做替换作用, 与其说是变量, 比如说是宏.
+注意, makefile中的变量只做替换作用, 与其说是变量, 不如说是宏.
 
 ## makefile 中的伪目标 ##
-伪目标是一种没有被第一个目标文件直接或间接关联的, 所以, 伪目标后面的命令不会自动被执行, 需要被显式调用, 比如我们常用的`make install`.
+伪目标是一种没有被第一个目标文件直接或间接关联的"目标文件", 所以, 伪目标后面的命令不会自动被执行, 需要被显式调用, 比如我们常用的`make install`.
 
 我们先来个简单的, 让make输出一个hello deng zuoheng:
 
@@ -228,10 +229,12 @@ install :
 怎么, 你想要多行注释? 多打几个`#`不就完了么.
 
 ## 后话 ##
-虽然上面讲得那么轻松愉快, 但是, 实际上, 大型工程要写出真.跨平台的makefile是很麻烦甚至不可能的. 于是, GNU提供了Autoconf及Automake这两套工具来解决这个问题. 这是后话, 以后再说.
+
+当然, makefile不能只有这么丁点功能, 更多功能详见官方文档: [GNU make](http://www.gnu.org/software/make/manual/make.html)
+
+另外, 虽然上面讲得那么轻松愉快, 但是, 实际上, 大型工程要写出真.跨平台的makefile是很麻烦甚至不可能的. 于是, GNU提供了Autoconf及Automake这两套工具来解决这个问题. 这是后话, 以后再说.
 
 **Reference**  
 \[1] : 陈皓. 跟我一起写 Makefile. 2004. http://blog.csdn.net/haoel/article/details/2886  
 \[2] : Linux@Linux社区. ./configure,make,make install的作用. http://www.linuxidc.com/Linux/2011-02/32211.htm  
 \[3] : 杨 小华. 例解 autoconf 和 automake 生成 Makefile 文件. http://www.ibm.com/developerworks/cn/linux/l-makefile/
-

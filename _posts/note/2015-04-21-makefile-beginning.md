@@ -104,7 +104,7 @@ maketest\
         hello1.c
         hello2.c
     - makefile
-<pre>
+</pre>
 
 我们的main.c是这样的:
 

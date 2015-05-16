@@ -191,9 +191,13 @@ say_hello :
     echo "hello deng zuoheng"
 </pre>
 
-其中, `.PHONY`表示say_hello是一个伪目标.
+其中, `.PHONY`表示say_hello是一个伪目标. 这样, 我们在该目录下执行:
 
-为目标可以干嘛呢, 其实, 每个makefile都应该写一个清除目标文件的规则, 使得目录不至于凌乱, 而且重新编译起来更方便顺手(这才是首要吧- - ), 风格大概是这样的:
+    $ make say_hello
+
+就会执行`echo "hello deng zuoheng"`指令, 也就是输出一个hello deng zuoheng.
+
+伪目标可以干嘛呢, 比如, 其实每个makefile都应该写一个清除目标文件的规则, 使得目录不至于凌乱, 而且重新编译起来更方便顺手(这才是首要吧- - ), 风格大概是这样的:
 
 <pre>
 .PHONY : clean

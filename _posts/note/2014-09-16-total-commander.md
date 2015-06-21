@@ -94,6 +94,16 @@ Ext4=MD
 
 通常情况下ChoiceEditor能识别出系统的默认查看程序,但是偶尔也会抽风,故还是自己设置比较顺心.
 
+###备份设置###
+设置一般存在`C:\Users\YOUR_USER_NAME\AppData\Roaming\GHISLER\WINCMD.INI`(我的win8.1), 
+一般情况下搜索`wincmd.ini`就是它了; 我在github上的备份: [wincmd.ini](https://github.com/dengzuoheng/scripts/wincmd.ini)
+
+###插件安装###
+参考:
+    - [高手之路: Total Commander之插件基础篇（上）](http://arch.pconline.com.cn//pcedu/tuijian/system/filemanage/0604/782779.html)
+    - [高手之路：TC插件安装和管理详解（下）](http://arch.pconline.com.cn//pcedu/tuijian/system/filemanage/0604/784023.html)
+    - [高手之路: TC插件详解—使用方法篇（中）](http://arch.pconline.com.cn//pcedu/tuijian/system/filemanage/0604/783177.html)
+
 [1]:http://www.totalcmd.net/plugring/ChoiceEditor_patched.html
 
 **Reference:**  

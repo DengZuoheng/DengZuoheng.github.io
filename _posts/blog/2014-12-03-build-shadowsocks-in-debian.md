@@ -48,7 +48,7 @@ shadowsocks客户端有很多,除了WP8,其他大部分平台都有相应的客�
 
 Windows下我喜欢用yingwa,很傻瓜很简单,尤其是你需要教会小白用的时候.
 
-Linux下我只在ubuntu下用过, 做法参考于[Ubuntu下怎么使用Shadowsocks？@Ran Dom的回答](http://www.zhihu.com/question/26418370/answer/40060476):
+Linux下我只在ubuntu下用过, 做法参考于[[知乎]Ubuntu下怎么使用Shadowsocks？@Ran Dom的回答](http://www.zhihu.com/question/26418370/answer/40060476):
 
 - 安装shadowsocks:
 	<pre> $ apt-get install python-pip & pip install shadowsocks </pre>
@@ -59,12 +59,12 @@ Linux下我只在ubuntu下用过, 做法参考于[Ubuntu下怎么使用Shadowsoc
 		"server_port":2333,
 		"local_port":1080,
 		"password":"yooooo",
-		"timeout":"600,
+		"timeout":600,
 		"method":"aes-256-cfb"
 	}
 	</pre>
 - 启动命令:
-	<pre> $ sslocal -c /path/to/your/ss.conf & </pre>
+	<pre> $ nohup sslocal -c /path/to/your/ss.conf >/dev/null & </pre>
 
 
 ##备注##

@@ -60,14 +60,7 @@
                 差不多没了就邮件通知我; 模拟登陆用的是pyCurl, 邮件用的是标准库的.  
     ;
     + **C++:**           
-        + **json解释器 - cppJSON**
-            - 单人/基本功能和接口完成/优化中;
-            - github地址: [https://github.com/DengZuoheng/cppJSON][13]
-            - 涉及技术: 纯C++, 逐步加入C++11的特性
-            - 功能:
-                  按ECMA-404标准解释json字符串, 并提供对值的增删查改等功能,
-                  目标是一个实现简洁, 接口易用, 面向初学者的C++11json库.  
-        ;          
+               
         + **硬盘阻止自动休眠程序 - wakeupdisk**
             - 单人/已完成/使用中;
             - github地址: [https://github.com/DengZuoheng/wakeupdisk][2]
@@ -105,7 +98,6 @@
 
 &emsp;&emsp;相比队友, 我有更多的团队合作经验, 和团队管理能力, 毕竟, 团队合作的项目, 都基本处于队长的角色. 
 
-&emsp;&emsp;目前正在努力每天都在github上提交代码.
 
 [1]: https://github.com/dengzuoheng
 [2]: https://github.com/DengZuoheng/wakeupdisk

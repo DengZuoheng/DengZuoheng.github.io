@@ -154,7 +154,7 @@ category: blog
       weak_ptr();//可以无参构造空的weak_ptr
 
       template<class Y> weak_ptr(shared_ptr<Y> const & r);//也可以用shared_ptr构造
-	  /*这说明, 只能用shared_ptr构造weak_ptr, 不能指望在构造函数的时候构造出weak_ptr来
+	  /*这说明, 只能用shared_ptr构造weak_ptr, 不能指望在构造函数的时候构造出weak_ptr来 */
       weak_ptr(weak_ptr const & r);
       template<class Y> weak_ptr(weak_ptr<Y> const & r);
 
@@ -273,7 +273,7 @@ category: blog
 
 ## aliasing constructor
 
-看类摘要的时候, 我们看待了一个:
+看类摘要的时候, 我们看到了一个:
 
 	template <class Y>
 	shared_ptr (const shared_ptr<Y>& r, T* p);

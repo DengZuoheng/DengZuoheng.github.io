@@ -55,7 +55,7 @@ $(document).ready(function(){
             var h2index = 0;
             var h3index = 0;
 
-            $('h2.entry, h3.entry, h4.entry').each(function(index,item){
+            $('.entry h2, .entry h3, .entry h4').each(function(index,item){
                 console.log($(item).html());
                 if(item.tagName.toLowerCase() == 'h2'){
                     var h2item = {};

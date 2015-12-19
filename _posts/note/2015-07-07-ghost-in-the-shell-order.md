@@ -8,15 +8,15 @@ category: note
 
 先给出攻壳系列动画作品年表：
 
-- 1995. Ghost in the Shell. 攻壳机动队. 押井守. 剧场版1. 傀儡师事件
-- 2002. Ghost in the Shell: Stand Alone Complex. 攻壳机动队 S.A.C. 神山健治. TV版1. 笑脸男事件
-- 2004. Ghost in the Shell: S.A.C. 2nd GIG. 攻壳机动队 S.A.C. 2nd GIG. 神山健治. TV版2. 个别的十一人事件
-- 2004. Ghost in the Shell 2: Innocence. 攻壳机动队2 无罪. 押井守. 剧场版2. 哈德莉暴走事件
-- 2005. Ghost in the Shell: Stand Alone Complex - The Laughing Man. 攻壳机动队 S.A.C.：笑面男. 神山健治. OVA1. TV1主线浓缩混剪版
-- 2005. S.A.C. 2nd GIG Individual Eleven. 攻壳机动队 S.A.C. 2nd GIG：个别的十一人. 神山健治. OVA2. TV2主线浓缩混剪版
-- 2006. Stand Alone Complex: Solid State Society. 攻壳机动队SSS. 神山健治. OVA3. 傀儡廻事件
-- 2008. Ghost in the Shell 2.0. 攻壳机动队2.0. 押井守. 剧场版1重制. 主要是画质提升
-- 2013. Ghost in the shell ARISE border:1 Ghost Pain. 攻壳机动队 ARISE. 黄瀬和哉. 新剧场版/OVA. 前传作品，九课的起源
+- 1995.Ghost in the Shell. 攻壳机动队. 押井守. 剧场版1. 傀儡师事件
+- 2002.Ghost in the Shell: Stand Alone Complex. 攻壳机动队 S.A.C. 神山健治. TV版1. 笑脸男事件
+- 2004.Ghost in the Shell: S.A.C. 2nd GIG. 攻壳机动队 S.A.C. 2nd GIG. 神山健治. TV版2. 个别的十一人事件
+- 2004.Ghost in the Shell 2: Innocence. 攻壳机动队2 无罪. 押井守. 剧场版2. 哈德莉暴走事件
+- 2005.Ghost in the Shell: Stand Alone Complex - The Laughing Man. 攻壳机动队 S.A.C.：笑面男. 神山健治. OVA1. TV1主线浓缩混剪版
+- 2005.S.A.C. 2nd GIG Individual Eleven. 攻壳机动队 S.A.C. 2nd GIG：个别的十一人. 神山健治. OVA2. TV2主线浓缩混剪版
+- 2006.Stand Alone Complex: Solid State Society. 攻壳机动队SSS. 神山健治. OVA3. 傀儡廻事件
+- 2008.Ghost in the Shell 2.0. 攻壳机动队2.0. 押井守. 剧场版1重制. 主要是画质提升
+- 2013.Ghost in the shell ARISE border:1 Ghost Pain. 攻壳机动队 ARISE. 黄瀬和哉. 新剧场版/OVA. 前传作品，九课的起源
 
 上面略去了SSS的3D版，以及一群塔奇克马卖萌的「塔奇克马的日常」。
 重点是两个剧场版+两个TV版+OVA3+Arise，这里是按知名度以及受欢迎程度降序排列。

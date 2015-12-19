@@ -55,7 +55,8 @@ $(document).ready(function(){
             var h2index = 0;
             var h3index = 0;
 
-            $.each($('.entry h2, .entry h3, .entry h4'),function(index,item){
+            $('h2.entry, h3.entry, h4.entry').each(function(index,item){
+                console.log($(item).html());
                 if(item.tagName.toLowerCase() == 'h2'){
                     var h2item = {};
                     h2item.name = $(item).text();
@@ -83,10 +84,9 @@ $(document).ready(function(){
                 }
                 item.id = 'menuIndex' + index;
             });
-
+            console.log({h2:h2,h3:h3,h4:h4});
             return {h2:h2,h3:h3,h4:h4}
         }
-
         function genTmpl(){
             var h1txt = $('h1').text();
             var tmpl = '<ul><li class="h1"><a href="#">' + h1txt + '</a></li>';

@@ -28,6 +28,5 @@ layout: home
                 </footer>
             </li>
         </ul>
-        
     </div>
 </div>

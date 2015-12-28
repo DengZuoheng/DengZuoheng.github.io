@@ -10,48 +10,38 @@ category: note
 ```
 #include <iostream>
 using namespace std;
-
 namespace etude{
     namespace _noninheritable{
-        class noninheritable_base
-        {
+        class noninheritable_base{
         protected:
             noninheritable_base(){}//不可以使用default, 不然不可继承性就失效了
             ~noninheritable_base(){}
         };
-        class noninheritable :public virtual noninheritable_base
-        {
+        class noninheritable :public virtual noninheritable_base{
         protected:
             noninheritable(){}
             ~noninheritable(){}
         };
     };
     typedef _noninheritable::noninheritable noninheritable;
-
-
 #define ETUDE_FINAL private etude::noninheritable
-
 };
 
-class Example: private etude::noninheritable
-{
+class Example: private etude::noninheritable{
 public:
     Example(){
         cout<<"Example construct"<<endl;
     }
-    Example(const Example& b)
-    {
+    Example(const Example& b){
         cout << "Example copy construct" << endl;
     }
 };
 
-class BJJ :public Example
-{
+class BJJ :public Example{
     int i;
 };
 
-int main()
-{
+int main(){
     Example b1;
     Example b2(b1);
     BJJ bj;
@@ -70,11 +60,9 @@ int main()
 ```
 #include <iostream>
 using namespace std;
-
 namespace etude{
     template<typename T>
-    class make_final
-    {
+    class make_final{
     private:
         ~make_final(){
             cout << "make_final disc" << endl;
@@ -83,27 +71,22 @@ namespace etude{
     };
 };
 
-class Example:virtual public etude::make_final<Example>
-{
+class Example:virtual public etude::make_final<Example>{
 public:
     Example(){
         cout<<"Example construct"<<endl;
     }
-    Example(const Example& b)
-    {
+    Example(const Example& b){
         cout << "Example copy construct" << endl;
     }
 };
 
-class BJJ :public Example
-{
+class BJJ :public Example{
     int i;
 };
 
 int main()
 {
-    //Example b1;
-    //Example b2(b1);
     BJJ bj;
     return 0;
 }
@@ -114,5 +97,5 @@ int main()
 
 注意, 这种方式在VS下不一定能引发编译错误. ~~CL的前端就是这么残~~
 
-**Reference**
-[1\]:  Amjad, Z. (2003). A non-inheritable class. [Blog] __CodeProject__. Available at: http://www.codeproject.com/Articles/4444/A-non-inheritable-class [Accessed 28 Dec. 2015].
+**Reference**  
+\[1]:  Amjad, Z. (2003). A non-inheritable class. [Blog] __CodeProject__. Available at: http://www.codeproject.com/Articles/4444/A-non-inheritable-class [Accessed 28 Dec. 2015].  

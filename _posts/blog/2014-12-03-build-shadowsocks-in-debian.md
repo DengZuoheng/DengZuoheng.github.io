@@ -86,4 +86,4 @@ Linux下我只在ubuntu下用过, 做法参考于[[知乎]Ubuntu下怎么使用S
 如果没有设置开机启动的话,每次开机都需要自行一次2.3的启动命令.
 
 **参考文献**  
-[1]CentOS、Debian下搭建shadowsocks-libev服务端:http://www.ilucong.net/lulu/centos-debian-shadowsocks-libev.html
+[1]约翰·提拖. CentOS、Debian下搭建shadowsocks-libev服务端: http://www.ilucong.net/lulu/centos-debian-shadowsocks-libev.html

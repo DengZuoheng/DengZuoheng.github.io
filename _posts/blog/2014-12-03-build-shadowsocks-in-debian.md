@@ -44,9 +44,23 @@ category: blog
     nohup /usr/local/bin/ss-server -s 156.132.67.213 -p 8981 -k admin888 -m aes-256-cfb &
 
 ##客户端##
+
 shadowsocks客户端有很多,除了WP8,其他大部分平台都有相应的客户端.
 
-Windows下我喜欢用yingwa,很傻瓜很简单,尤其是你需要教会小白用的时候.
+### Windows客户端 ###
+
+~~Windows下我喜欢用yingwa,很傻瓜很简单,尤其是你需要教会小白用的时候.~~
+
+Windows下也应该使用shadowsocks-gui[2], 使用Proxifier实现全局代理[3]的时候, yingwa无法正确设置,shadowsocks-gui就容易多了.
+
+### Windows下设置全局代理 ###
+
+(为什么使用全局代理软件? 因为某些软件要访问的地址经常被墙, 而软件本身不能设置代理, ~~对, 我说的就是你了,github-for-windows~~, 
+使用全局代理可以使得大部分网络请求都走代理, 就不用担心被墙了)
+
+全局代理软件用过的是proxifier, 可以针对特定的host, 或应用程序设置走代理还是直连. **cmd和powershell下不能代理**. 详细配置可参考文献[3]. 
+
+### Linux客户端 ###
 
 Linux下我只在ubuntu下用过, 做法参考于[[知乎]Ubuntu下怎么使用Shadowsocks？@Ran Dom的回答](http://www.zhihu.com/question/26418370/answer/40060476):
 
@@ -85,5 +99,7 @@ Linux下我只在ubuntu下用过, 做法参考于[[知乎]Ubuntu下怎么使用S
 
 如果没有设置开机启动的话,每次开机都需要自行一次2.3的启动命令.
 
-**参考文献**  
-[1]约翰·提拖. CentOS、Debian下搭建shadowsocks-libev服务端: http://www.ilucong.net/lulu/centos-debian-shadowsocks-libev.html
+**参考文献**    
+\[1]: 约翰·提拖. CentOS、Debian下搭建shadowsocks-libev服务端: http://www.ilucong.net/lulu/centos-debian-shadowsocks-libev.html
+\[2]: http://sourceforge.net/projects/shadowsocksgui/
+\[3]: 烙印. 用Shadowsocks和Proxifier自由访问互联网: http://awy.me/2014/06/yong-shadowsocks-he-proxifier-zi-you-fang-wen-hu-lian-wang/

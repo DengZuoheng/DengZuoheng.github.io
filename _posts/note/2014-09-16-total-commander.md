@@ -100,9 +100,9 @@ Ext4=MD
 
 ###插件安装###
 参考:
-    - [高手之路: Total Commander之插件基础篇（上）](http://arch.pconline.com.cn//pcedu/tuijian/system/filemanage/0604/782779.html)
-    - [高手之路：TC插件安装和管理详解（下）](http://arch.pconline.com.cn//pcedu/tuijian/system/filemanage/0604/784023.html)
-    - [高手之路: TC插件详解—使用方法篇（中）](http://arch.pconline.com.cn//pcedu/tuijian/system/filemanage/0604/783177.html)
+    - [高手之路: Total Commander之插件基础篇（上）](http://arch.pconline.com.cn//pcedu/tuijian/system/filemanage/0604/782779.html)  
+    - [高手之路：TC插件安装和管理详解（下）](http://arch.pconline.com.cn//pcedu/tuijian/system/filemanage/0604/784023.html)  
+    - [高手之路: TC插件详解—使用方法篇（中）](http://arch.pconline.com.cn//pcedu/tuijian/system/filemanage/0604/783177.html)  
 
 [1]:http://www.totalcmd.net/plugring/ChoiceEditor_patched.html
 

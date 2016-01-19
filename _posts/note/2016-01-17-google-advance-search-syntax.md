@@ -201,3 +201,7 @@ https://www.google.com/search?q=keyword&as_eq=xxx
 
 **reference**  
 \[1]: (美) Johnny Long等. Google Hacking技术手册. 2009. 机械工业出版社. CP1~CP2  
+
+* {:.ref} \[1]: (美) Johnny Long等. Google Hacking技术手册. 2009. 机械工业出版社. CP1~CP2  
+
+* {:.ref} [^1]: (美) Johnny Long等. Google Hacking技术手册. 2009. 机械工业出版社. CP1~CP2  

@@ -24,5 +24,6 @@ category: note
 这次我们动的是`C:\Users\<user>\AppData\Local\Microsoft\MSBuild\v4.0\Microsoft.Cpp.Win32.user.props`, 同样是加一个`<PropertyGroup>`, 格式同上面是一样的.
 
 **Reference:**  
-\[1]: hwangbae. 为Visual Studio添加默认INCLUDE包含路径一劳永逸的方法(更新). 2012.6.24. http://www.cnblogs.com/hwangbae/archive/2012/06/24/2560463.html  
-\[2]: http://stackoverflow.com/questions/3349378/edit-includepath-macro-in-visual-studio-2010
+
+* {:.ref} \[1]: hwangbae. 为Visual Studio添加默认INCLUDE包含路径一劳永逸的方法(更新). 2012.6.24. http://www.cnblogs.com/hwangbae/archive/2012/06/24/2560463.html  
+* {:.ref} \[2]: http://stackoverflow.com/questions/3349378/edit-includepath-macro-in-visual-studio-2010

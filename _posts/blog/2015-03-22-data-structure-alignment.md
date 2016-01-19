@@ -270,10 +270,11 @@ int main()
 
 </pre>
 **Reference:**  
-[1] : http://en.wikipedia.org/wiki/Data_structure_alignment  
-[2] : https://msdn.microsoft.com/en-us/library/2e70t5y1.aspx  
-[3] : http://stackoverflow.com/questions/3318410/pragma-pack-effect  
-[4] : http://redawn.sinaapp.com/archives/254  
-[5] : http://blog.sina.com.cn/s/blog_5c717fa001012ml7.html  
-[6] : http://kopptblog.sinaapp.com/2012/04/19/dataalignment/  
-[7] : https://gcc.gnu.org/onlinedocs/gcc/Offsetof.html  
+
+* {:.ref} \[1] : http://en.wikipedia.org/wiki/Data_structure_alignment  
+* {:.ref} \[2] : https://msdn.microsoft.com/en-us/library/2e70t5y1.aspx  
+* {:.ref} \[3] : http://stackoverflow.com/questions/3318410/pragma-pack-effect  
+* {:.ref} \[4] : http://redawn.sinaapp.com/archives/254  
+* {:.ref} \[5] : http://blog.sina.com.cn/s/blog_5c717fa001012ml7.html  
+* {:.ref} \[6] : http://kopptblog.sinaapp.com/2012/04/19/dataalignment/  
+* {:.ref} \[7] : https://gcc.gnu.org/onlinedocs/gcc/Offsetof.html  

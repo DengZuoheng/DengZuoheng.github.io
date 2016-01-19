@@ -152,8 +152,9 @@ sh build-cgminer.sh
 才4行命令, 再学渣也打得出来吧.
 
 **Reference**  
-\[1]: 蔡清华. Ubuntu虚拟机中编译运行cgminer挖矿软件. http://my.oschina.net/blueprint/blog/222885  
-\[2]: http://www.oschina.net/question/1030451_105857  
-\[3]: 张映. apt-get 命令详解(中文),以及实例. http://blog.51yip.com/linux/1176.html
+
+* {:.ref} \[1]: 蔡清华. Ubuntu虚拟机中编译运行cgminer挖矿软件. http://my.oschina.net/blueprint/blog/222885  
+* {:.ref} \[2]: http://www.oschina.net/question/1030451_105857  
+* {:.ref} \[3]: 张映. apt-get 命令详解(中文),以及实例. http://blog.51yip.com/linux/1176.html
 
 

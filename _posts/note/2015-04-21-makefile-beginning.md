@@ -239,6 +239,7 @@ install :
 另外, 虽然上面讲得那么轻松愉快, 但是, 实际上, 大型工程要写出真.跨平台的makefile是很麻烦甚至不可能的. 于是, GNU提供了Autoconf及Automake这两套工具来解决这个问题. 这是后话, 以后再说.
 
 **Reference**  
-\[1] : 陈皓. 跟我一起写 Makefile. 2004. http://blog.csdn.net/haoel/article/details/2886  
-\[2] : Linux@Linux社区. ./configure,make,make install的作用. http://www.linuxidc.com/Linux/2011-02/32211.htm  
-\[3] : 杨 小华. 例解 autoconf 和 automake 生成 Makefile 文件. http://www.ibm.com/developerworks/cn/linux/l-makefile/
+
+* {:.ref} \[1] : 陈皓. 跟我一起写 Makefile. 2004. http://blog.csdn.net/haoel/article/details/2886  
+* {:.ref} \[2] : Linux@Linux社区. ./configure,make,make install的作用. http://www.linuxidc.com/Linux/2011-02/32211.htm  
+* {:.ref} \[3] : 杨 小华. 例解 autoconf 和 automake 生成 Makefile 文件. http://www.ibm.com/developerworks/cn/linux/l-makefile/

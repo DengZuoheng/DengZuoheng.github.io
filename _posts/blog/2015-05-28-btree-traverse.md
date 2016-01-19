@@ -189,4 +189,5 @@ struct Node* find_postorder_next(struct Node* node)
 </pre>
 
 **Reference:**  
-\[1]: http://bbs.sjtu.edu.cn/bbscon,board,Algorithm,file,M.1041171619.A.html
+
+* {:.ref} \[1]: http://bbs.sjtu.edu.cn/bbscon,board,Algorithm,file,M.1041171619.A.html

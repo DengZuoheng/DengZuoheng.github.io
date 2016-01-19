@@ -103,5 +103,6 @@ Bootstrap过程会提示生成SSH key, 整个过程几分钟吧.
 discourse的后台是主页url后面加`/admin`, 可以设置为中文,等等
 
 **参考文献**  
-[1]qi. (2014, 06, 26). Discourse安装使用-简洁强大Ruby on Rails免费开源论坛Discuz!替代品 [Online]. Available: http://www.freehao123.com/discourse/  
-[2]discourse. INSTALL-digital-ocean [Online]. Available: https://github.com/discourse/discourse/blob/master/docs/INSTALL-digital-ocean.md
+
+* {:.ref} \[1]qi. (2014, 06, 26). Discourse安装使用-简洁强大Ruby on Rails免费开源论坛Discuz!替代品 [Online]. Available: http://www.freehao123.com/discourse/  
+* {:.ref} \[2]discourse. INSTALL-digital-ocean [Online]. Available: https://github.com/discourse/discourse/blob/master/docs/INSTALL-digital-ocean.md

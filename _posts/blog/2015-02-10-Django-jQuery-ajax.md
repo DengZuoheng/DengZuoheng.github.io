@@ -55,9 +55,10 @@ def some(request):
 需要注意的几点, 第一, 需要带上csrftoken的cookie; 第二, url要写全; 第三, 给服务器发数据的话, 把对象序列化成字符串.
 
 **Reference:**  
-[1] : http://stackoverflow.com/questions/13035412/django-ajax-post-403-forbidden  
-[2] : http://stackoverflow.com/questions/7646781/django-jquery-ajax-403-error  
-[3] : http://stackoverflow.com/questions/19333098/403-forbidden-error-when-making-an-ajax-post-request-in-django-framework  
+
+* {:.ref} \[1] : http://stackoverflow.com/questions/13035412/django-ajax-post-403-forbidden  
+* {:.ref} \[2] : http://stackoverflow.com/questions/7646781/django-jquery-ajax-403-error  
+* {:.ref} \[3] : http://stackoverflow.com/questions/19333098/403-forbidden-error-when-making-an-ajax-post-request-in-django-framework  
 
 
 

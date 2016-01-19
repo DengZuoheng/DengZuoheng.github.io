@@ -107,4 +107,5 @@ Ext4=MD
 [1]:http://www.totalcmd.net/plugring/ChoiceEditor_patched.html
 
 **Reference:**  
-\[1]: http://www.shortcutworld.com/en/win/total-commander_8.0.html
+
+* {:.ref} \[1]: http://www.shortcutworld.com/en/win/total-commander_8.0.html

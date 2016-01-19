@@ -498,14 +498,15 @@ d可以是函数, 函数对象 lambda表达式, 但必须可拷贝. 此外, boos
 然而`C++ concepts: Allocator`[11]有点复杂, 这里暂不举例.
 
 **Reference:**  
-\[1]: http://www.boost.org/doc/libs/1_59_0/libs/smart_ptr/make_shared.html  
-\[2]: http://www.boost.org/doc/libs/1_57_0/libs/smart_ptr/shared_ptr.htm  
-\[3]: http://www.boost.org/doc/libs/1_57_0/libs/smart_ptr/weak_ptr.htm  
-\[4]: Boris Kolpackov. shared_ptr aliasing constructor. web: http://www.codesynthesis.com/~boris/blog/2012/04/25/shared-ptr-aliasing-constructor/  
-\[5]: http://stackoverflow.com/questions/1403465/what-is-boosts-shared-ptrshared-ptry-const-r-t-p-used-for  
-\[6]: http://stackoverflow.com/questions/3150942/c-delete-this  
-\[7]: 陈硕. 为什么多线程读写 shared_ptr 要加锁？. web: http://blog.csdn.net/solstice/article/details/8547547  
-\[8]: http://stackoverflow.com/questions/6404765/c-shared-ptr-as-unordered-sets-key/12122314#12122314  
-\[9]: http://stackoverflow.com/questions/6322245/should-i-switch-from-using-boostshared-ptr-to-stdshared-ptr  
-\[10]: 罗剑锋. Boost程序库完全开发指南: 深入C++"准"标准库. 第2版. 北京:电子工业出版社. p72-p83  
-\[11]: cppreference. C++ concepts: Allocator. web: http://en.cppreference.com/w/cpp/concept/Allocator
+
+* {:.ref} \[1]: http://www.boost.org/doc/libs/1_59_0/libs/smart_ptr/make_shared.html  
+* {:.ref} \[2]: http://www.boost.org/doc/libs/1_57_0/libs/smart_ptr/shared_ptr.htm  
+* {:.ref} \[3]: http://www.boost.org/doc/libs/1_57_0/libs/smart_ptr/weak_ptr.htm  
+* {:.ref} \[4]: Boris Kolpackov. shared_ptr aliasing constructor. web: http://www.codesynthesis.com/~boris/blog/2012/04/25/shared-ptr-aliasing-constructor/  
+* {:.ref} \[5]: http://stackoverflow.com/questions/1403465/what-is-boosts-shared-ptrshared-ptry-const-r-t-p-used-for  
+* {:.ref} \[6]: http://stackoverflow.com/questions/3150942/c-delete-this  
+* {:.ref} \[7]: 陈硕. 为什么多线程读写 shared_ptr 要加锁？. web: http://blog.csdn.net/solstice/article/details/8547547  
+* {:.ref} \[8]: http://stackoverflow.com/questions/6404765/c-shared-ptr-as-unordered-sets-key/12122314#12122314  
+* {:.ref} \[9]: http://stackoverflow.com/questions/6322245/should-i-switch-from-using-boostshared-ptr-to-stdshared-ptr  
+* {:.ref} \[10]: 罗剑锋. Boost程序库完全开发指南: 深入C++"准"标准库. 第2版. 北京:电子工业出版社. p72-p83  
+* {:.ref} \[11]: cppreference. C++ concepts: Allocator. web: http://en.cppreference.com/w/cpp/concept/Allocator

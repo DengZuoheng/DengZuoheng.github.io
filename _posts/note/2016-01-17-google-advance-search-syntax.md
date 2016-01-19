@@ -199,6 +199,6 @@ category: note
     %2B 加号
 
 
-**reference**  
+**Reference:**  
 
 * {:.ref} \[1]: (美) Johnny Long等. Google Hacking技术手册. 2009. 机械工业出版社. CP1~CP2  

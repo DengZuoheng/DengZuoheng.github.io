@@ -246,8 +246,9 @@ except:
 https://github.com/DengZuoheng/pyspider4twxsh
 
 **参考文献**  
-\[1\] : [\[Python\]\[网络爬虫(12):爬虫框架Scrapy的第一个爬虫示例入门教程\]][4].请叫我旺海.CSDN.  
-\[2\] : [scrapy中的提取正文的方法][6].网页采集.51CTO博客
+
+* {:.ref} \[1\] : [\[Python\]\[网络爬虫(12):爬虫框架Scrapy的第一个爬虫示例入门教程\]][4].请叫我旺海.CSDN.  
+* {:.ref} \[2\] : [scrapy中的提取正文的方法][6].网页采集.51CTO博客
 
 [1]:http://blog.csdn.net/column/details/why-bug.html
 [2]:https://pypi.python.org/pypi/lxml/3.3.1

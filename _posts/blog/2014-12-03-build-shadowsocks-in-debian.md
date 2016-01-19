@@ -5,13 +5,16 @@ description: shadowsocks是轻量级的代理软件,比svn跟难被发现,而且
 category: blog
 ---
 
-##准备##
+## 准备 ##
+
 - vps:1个,我的是linode 1G,debian操作系统
 - M$用户需要putty(远程登录):1个
 - shadowsocks客户端(比如最简单的yingwa):1个
 
-##开始##
-###1. 必要环境
+## 开始 ##
+
+### 1. 必要环境
+
 更新apt-get:
 
     apt-get update
@@ -24,7 +27,8 @@ category: blog
     
     apt-get install git -y
 
-###2. 安装shadowsocks
+### 2. 安装shadowsocks
+
 2.1 用git下载源码包:
 
     git clone https://github.com/shadowsocks/shadowsocks-libev.git
@@ -43,13 +47,13 @@ category: blog
 
     nohup /usr/local/bin/ss-server -s 156.132.67.213 -p 8981 -k admin888 -m aes-256-cfb &
 
-##客户端##
+## 客户端 ##
 
 shadowsocks客户端有很多,除了WP8,其他大部分平台都有相应的客户端.
 
 ### Windows客户端 ###
 
-~~Windows下我喜欢用yingwa,很傻瓜很简单,尤其是你需要教会小白用的时候.~~
+<del>Windows下我喜欢用yingwa,很傻瓜很简单,尤其是你需要教会小白用的时候.</del>
 
 Windows下也应该使用shadowsocks-gui[2], 使用Proxifier实现全局代理[3]的时候, yingwa无法正确设置,shadowsocks-gui就容易多了.
 
@@ -81,14 +85,18 @@ Linux下我只在ubuntu下用过, 做法参考于[[知乎]Ubuntu下怎么使用S
 	<pre> $ nohup sslocal -c /path/to/your/ss.conf >/dev/null & </pre>
 
 
-##备注##
-###1. 加密###
+## 备注 ##
+
+### 1. 加密 ###
+
 启动命令可以不写`-m aes-256-cfb`,那样的话默认加密方式为table,这种加密速度最快.但是aes-256-cfb更安全,实际上如果vps不太破的话,对速度几乎没有影响的.个人认为还是加密好,不然查水表了就不好了.
 
-###2.更改端口密码等###
+### 2.更改端口密码等 ###
+
 端口,密码,加密方式都是启动命令中配置的,所以关掉重新启动一遍就行了.
 
-###3.开机启动
+### 3.开机启动
+
 参考文献中指出可以加入开机启动,但是我从来没试过:
 
     echo "nohup /usr/local/bin/ss-server -s IP地址 -p 端口 -k 密码 -m 加密方式 &" >> /etc/rc.local
@@ -102,5 +110,5 @@ Linux下我只在ubuntu下用过, 做法参考于[[知乎]Ubuntu下怎么使用S
 **参考文献**  
   
 * {:.ref} \[1]: 约翰·提拖. [CentOS、Debian下搭建shadowsocks-libev服务端](http://www.ilucong.net/lulu/centos-debian-shadowsocks-libev.html)  
-* {:.ref} \[2]: [shadowsocks-gui download | SourceForge.net](http://sourceforge.net/projects/shadowsocksgui/)  
+* {:.ref} \[2]: [shadowsocks-gui download \| SourceForge.net](http://sourceforge.net/projects/shadowsocksgui/)  
 * {:.ref} \[3]: 烙印. [用Shadowsocks和Proxifier自由访问互联网](http://awy.me/2014/06/yong-shadowsocks-he-proxifier-zi-you-fang-wen-hu-lian-wang/)  

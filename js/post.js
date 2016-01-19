@@ -230,4 +230,6 @@ $(document).ready(function(){
         $("head").append("<link rel='stylesheet' type='text/css' href='/css/css3-ani.css'/>");
         $.getScript('/js/css3-ani.js',function(){});
     }
+    $('.ref').parent().addClass('ref_ul');
 });
+

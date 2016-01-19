@@ -205,6 +205,6 @@ li.ref{
 }
 
 ul.ref_ul{
-    list-style:none;
+    list-style:none !important;
     margin:0px;
 }

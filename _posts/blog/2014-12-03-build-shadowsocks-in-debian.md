@@ -101,6 +101,6 @@ Linux下我只在ubuntu下用过, 做法参考于[[知乎]Ubuntu下怎么使用S
 
 **参考文献**  
   
-* {:.ref} \[1]: 约翰·提拖. CentOS、Debian下搭建shadowsocks-libev服务端: http://www.ilucong.net/lulu/centos-debian-shadowsocks-libev.html  
-* {:.ref} \[2]: http://sourceforge.net/projects/shadowsocksgui/  
-* {:.ref} \[3]: 烙印. 用Shadowsocks和Proxifier自由访问互联网: http://awy.me/2014/06/yong-shadowsocks-he-proxifier-zi-you-fang-wen-hu-lian-wang/  
+* {:.ref} \[1]: 约翰·提拖. [CentOS、Debian下搭建shadowsocks-libev服务端](http://www.ilucong.net/lulu/centos-debian-shadowsocks-libev.html)  
+* {:.ref} \[2]: [shadowsocks-gui download | SourceForge.net](http://sourceforge.net/projects/shadowsocksgui/)  
+* {:.ref} \[3]: 烙印. [用Shadowsocks和Proxifier自由访问互联网](http://awy.me/2014/06/yong-shadowsocks-he-proxifier-zi-you-fang-wen-hu-lian-wang/)  

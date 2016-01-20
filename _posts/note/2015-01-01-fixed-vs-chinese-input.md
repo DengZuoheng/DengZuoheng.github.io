@@ -11,4 +11,4 @@ category: note
 
 **参考**  
 
-* {:.ref} \[1] ade1986. VS2012不能输入中文. 2013.7.12. http://bbs.csdn.net/topics/390516597
+* {:.ref} \[1] ade1986. [VS2012不能输入中文](http://bbs.csdn.net/topics/390516597). 2013.7.12. 

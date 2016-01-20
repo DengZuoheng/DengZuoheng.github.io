@@ -56,9 +56,9 @@ def some(request):
 
 **Reference:**  
 
-* {:.ref} \[1] : http://stackoverflow.com/questions/13035412/django-ajax-post-403-forbidden  
-* {:.ref} \[2] : http://stackoverflow.com/questions/7646781/django-jquery-ajax-403-error  
-* {:.ref} \[3] : http://stackoverflow.com/questions/19333098/403-forbidden-error-when-making-an-ajax-post-request-in-django-framework  
+* {:.ref} \[1] : [javascript - django ajax post 403 forbidden - Stack Overflow](http://stackoverflow.com/questions/13035412/django-ajax-post-403-forbidden)  
+* {:.ref} \[2] : [Django jquery ajax 403 error - Stack Overflow](http://stackoverflow.com/questions/7646781/django-jquery-ajax-403-error)  
+* {:.ref} \[3] : [jquery - 403 Forbidden error when making an ajax Post request in Django framework - Stack Overflow](http://stackoverflow.com/questions/19333098/403-forbidden-error-when-making-an-ajax-post-request-in-django-framework)  
 
 
 

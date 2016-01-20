@@ -6,6 +6,7 @@ category: note
 ---
 
 ###1.准备工作
+
 首先你得知道爬虫是怎么工作的,CSDN有篇[Python爬虫入门教程][1]写得还不错,我就是参考这篇编写的,因为院学生会的旧站用的是古(keng)典(die)的table布局,用正则表达式提取估计非常痛苦,所以看完基础教程后果断选择Scrapy框架.
 
 为了使用Scrapy,首先你得安装Scrapy,博主参考上文中CSDN教程中的安装方法还算成功: 
@@ -36,7 +37,8 @@ http://sourceforge.net/projects/pywin32/files/pywin32/Build%20219/
 
 **上面的过程与Scrapy[官方文档][3]的安装指南有不同,官方安装指南安装的是pip,但是我安装pip后安装Scrapy总是出错,原因至今没找到,于是用了CSDN那篇教程的安装方法**
 
-###2.抓取网页
+### 2.抓取网页
+
 Scrapy应该默认就是多线程的,所以抓取过程很快,Scrapy项目的建立和运行可参考官方文档,这里不赘述.
 抓取过程中可能出现编码问题,网上找的\[1\]解决方案是在python\lib\site-packages下新建sitecustomize.py:
 <pre>
@@ -166,8 +168,10 @@ class TwxshSpider4NewsText(Spider):
 其中读取url是读取刚刚抓取到的url,我把他们写到同一个文件了.
 <del>看到这里的xpath多折磨人了吧,旧站的开发者你出来,我保证不打死你- -</del>
 
-###3.注意事项
-####xpath
+### 3.注意事项
+
+#### xpath
+
 - `text()`只是用于标签中的纯文本提取,如果标签中还有其他标签,用`text()`提取出来的就是空白符之类的没用的东西,或者啥也没给你提取出来,如果要提取html文本,就用`div/*`或`div/node()`这样的方法,把这个div内的所有内容提取出来\[2\],如:
 
 <pre><code>
@@ -183,7 +187,8 @@ class TwxshSpider4NewsText(Spider):
 
 - Scrapy的xpath的节点序号是从1开始计数的,比如要提取第一个td元素,应该是`td[1]`
 
-####css选择器
+#### css选择器
+
 除了xpath外,Scrapy还提供CSS风格的选择器,于是可以像CSS和jQuery那样选择元素,对于结构明确的html文本用起来还是很爽的,[官方教程][7]和下面的例子可以感受一下:
 
 	from scrapy import Selector
@@ -205,7 +210,8 @@ class TwxshSpider4NewsText(Spider):
 	print(sel.css('a::text').extract())
 
 
-####中文字符串
+#### 中文字符串
+
 - python源码中使用非ASCII字符的话需要在代码最前面加:
 <pre>
 # -*- coding: utf-8 -*- 
@@ -219,7 +225,8 @@ date=sel.xpath('body/td[1]/text()').extract()[0].decode('utf-8').replace(s,"")
 #把"来源：添加时间："删掉
 </pre>
 
-####下载图片
+#### 下载图片
+
 直接用urllib2模块的urlopen方法打开图片的URL,然后读出来,写到指定的文件中去就行了:
 <pre>
 import urllib2
@@ -241,7 +248,8 @@ except:
     pass
 </pre>
 
-###小结
+### 小结
+
 到这里基本上是成功了,需要的就是建立好文件结构,把抓回来的数据存起来就好了,学生工作,活动之类的都可以用相同的方法写出来,最后的代码和抓取的数据都在我的github上,有兴趣的可以翻一翻:
 https://github.com/DengZuoheng/pyspider4twxsh
 

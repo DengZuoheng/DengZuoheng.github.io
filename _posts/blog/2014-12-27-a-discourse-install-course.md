@@ -5,34 +5,35 @@ description: VPS即将到期, 本来以为不会再安装的discourse可能就�
 category: blog
 ---
 
-##准备##
+## 准备 ##
+
 > 首先你得有个VPS
 
 本人的VPS是linode 1G, 而Discourse要求至少1G内存(包括swap), 于是我就把swap设到最大了, 估计能达到要求.
 
 然后是安装系统, 因为参考文献[1]用的是ubuntu, 我这里也用ubuntu了.
 
-##开始安装
+## 开始安装
 
 下面是根据参考文献[1]的安装过程.
 
-###安装git:
+### 安装git:
 
     apt-get update
     apt-get install git
 
-###安装docker:
+### 安装docker:
 
     wget -qO- https://get.docker.io/ | sh
 
-###安装discourse
+### 安装discourse
 
     mkdir /var/docker
     git clone https://github.com/discourse/discourse_docker.git /var/docker
     cd /var/docker
     cp samples/standalone.yml containers/app.yml
 
-###编辑discourse配置文件
+### 编辑discourse配置文件
     nano containers/app.yml
 
 需要改动的是：
@@ -79,17 +80,17 @@ env:
 
 需要注意的是, SMTP服务不工作的话, discourse就无法注册了, 就得重新安装了. 所以, 要选择靠谱的邮件服务, gmail之类的私人邮箱也是不好的, 最好上Mandrill或Mailgun, 我这里用的是Mandrill, 没怎么测试过, 不过发QQ邮箱通常都不成功.
 
-###执行Bootstrap:
+### 执行Bootstrap:
 
     ./launcher bootstrap app
 
 Bootstrap过程会提示生成SSH key, 整个过程几分钟吧.
 
-###启动discourse:
+### 启动discourse:
 
     ./launcher start app
 
-###到网页端注册管理员账号
+### 到网页端注册管理员账号
 
 就用刚刚配置文件中的管理员邮箱来注册, 然后discourse会发送激活邮件, 如果收不到, 就得检查配置文件中SMTP中的设置是否正确. 正确的话, 没辙了, 用其他程序试一下你的Mandrill的key到底工不工作吧. 
 
@@ -99,10 +100,10 @@ Bootstrap过程会提示生成SSH key, 整个过程几分钟吧.
 
     ./launcher start app。
 
-###设置discourse
+### 设置discourse
 discourse的后台是主页url后面加`/admin`, 可以设置为中文,等等
 
 **参考文献**  
 
-* {:.ref} \[1]qi. (2014, 06, 26). Discourse安装使用-简洁强大Ruby on Rails免费开源论坛Discuz!替代品 [Online]. Available: http://www.freehao123.com/discourse/  
-* {:.ref} \[2]discourse. INSTALL-digital-ocean [Online]. Available: https://github.com/discourse/discourse/blob/master/docs/INSTALL-digital-ocean.md
+* {:.ref} \[1]qi. (2014, 06, 26). Discourse安装使用-简洁强大Ruby on Rails免费开源论坛Discuz!替代品 [Online]. <Available: http://www.freehao123.com/discourse/>    
+* {:.ref} \[2]discourse. INSTALL-digital-ocean [Online]. Available: <https://github.com/discourse/discourse/blob/master/docs/INSTALL-digital-ocean.md>  

@@ -7,7 +7,7 @@ category: note
 
 只要继承boost::noninheritable就好, 当然, boost的命名空间是我随便弄的. 
 
-```
+~~~
 #include <iostream>
 using namespace std;
 namespace etude{
@@ -47,7 +47,7 @@ int main(){
     BJJ bj;
     return 0;
 }
-```
+~~~
 
 基本原理是私有继承改变了基类成员的保护级别, 所以对BJJ而言noninheritable_base和noninheritable的构造析构都是私有的, 但是没关系, 
 因为一层一层地调用的话, 这种保护级别影响不了BJJ, 所以, noninheritable需要虚拟继承noninheritable_base, 将noninheritable_base的构造责任推给BJJ, 
@@ -57,7 +57,7 @@ int main(){
 
 参考文献[1]给出了另一种实现方式.
 
-```
+~~~
 #include <iostream>
 using namespace std;
 namespace etude{
@@ -90,12 +90,12 @@ int main()
     BJJ bj;
     return 0;
 }
-```
+~~~
 
 基本原理是有缘关系的不可继承性, Example是make_final的友元, 而BJJ不是, 但是, 因为Example虚拟继承make_final, BJJ需要访问make_final的构造和析构函数, 
 于是编译错误. 而make_final利用模板将Example变成了自己的友元.
 
-注意, 这种方式在VS下不一定能引发编译错误. ~~CL的前端就是这么残~~
+注意, 这种方式在VS下不一定能引发编译错误. <del>CL的前端就是这么残</del>
 
 **Reference**  
 \[1]:  Amjad, Z. (2003). A non-inheritable class. [Blog] __CodeProject__. Available at: http://www.codeproject.com/Articles/4444/A-non-inheritable-class [Accessed 28 Dec. 2015].  

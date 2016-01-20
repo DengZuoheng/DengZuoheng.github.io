@@ -6,6 +6,7 @@ category: note
 ---
 
 ## 缘起
+
 难得在某宝买个硬盘底座,但是却"过于智能",两分钟不读写就休眠,最过分的是,刷固件还要失败...
 
 在想办法弄好固件前,得有个办法让硬盘底座不休眠.
@@ -13,6 +14,7 @@ category: note
 一拍脑袋,就说些个程序不停地写入吧...
 
 ## 项目
+
 直接上github连接吧:
 
 https://github.com/DengZuoheng/wakeupdisk
@@ -24,6 +26,7 @@ https://github.com/DengZuoheng/wakeupdisk
 [1]: https://github.com/DengZuoheng/wakeupdisk/raw/master/image.png
 
 ## UI实现
+
 因为是基与对话框的MFC程序,所以,用VS2013拖足够的checkbox就好了,这样每个控件会有一个ID,重复代码比较容易优化.
 需要遍历所有控件的情节,就用vector容器存控件ID进行遍历,如果是C++11,写起来还是很方便的:
 
@@ -51,6 +54,7 @@ pButton->SetCheck(STATUS_CHECKED);//STATUS_CHECKED是自己定义的宏
 </pre>
 
 ## 数据结构
+
 要储存的,只有每个盘符有没被勾选,轮询间隔,是否开机启动.
 
 开始时,我是为这些数据设了一个成员变量的,但是,用json存放配置的话,读取json时我会用boost::property_tree,所以,设成员变量的话就多了一个数据交换的步骤.所以干脆只存一个ptree好了.
@@ -111,6 +115,7 @@ write_json("init.json", pt);
 **注意ptree对json文件的格式要求是严格的**,比如平时写js的时候,true是不带双引号的,列表最后一项加个逗号也没问题,在这里全部不行,你需要写最严格的json语法.而且write_json写出来的json无论是key还是value都是带双引号的,所以建议最开始手写的时候就带双引号.
 
 ## 隐藏到系统托盘
+
 因为程序需要长时间运行,所以隐藏到托盘的功能是必须要的.
 
 这段代码当然是上网抄的:
@@ -148,6 +153,7 @@ afx_msg LRESULT CwakeupdiskDlg::OnShowtask(WPARAM wParam, LPARAM lParam)
 </pre>
 
 ## 获取当前登录账户名
+
 这段代码网上到处都是,亲测可用,虽然到最后没有用:
 <pre>
 #include "stdafx.h"
@@ -179,6 +185,7 @@ BOOL GetLogUser(CString& str_name)
 写这个代码是最头疼的问题,就是连接问题,Wtsapi32.lib有了,Wtsapi32.dll也有了,编译没问题,就是连接错.找了两天(其实什么也没找见),最终偶然发现,原来是`#pragma comment(lib,"Wtsapi32.lib")`应该写在`#include "Wtsapi32.h"`后面...
 
 ## 设置开机启动
+
 本来,想写用户的注册表来设置开机启动,所以才会有上面获取当前登录用户名的代码,但是找到了另一个看起来更可能工作的代码,就没用用户名,而是设置注册表"HKEY_LOCAL_MACHINE\Software\\Microsoft\\Windows\\CurrentVersion\\Run",代码如下,加了一个参数用于删除开机启动的设置:
 <pre>
 
@@ -241,9 +248,11 @@ void CwakeupdiskDlg::SetRunOnStartUp(bool bFlag)
 到这里开机启动时基本实现了,但是还遇到了一个问题,下面会讲到.
 
 ## 开机启动的问题
+
 当系统启动时,主程序启动了,但是却没法正常读取json文件,如果单独在资源管理器启动程序,却可以正常读取json文件.这个问题原因都还没找到,不过计划是让程序第一次读取失败的话,休眠个半分钟再尝试读一遍,不过,下次有空再写吧
 
 ## 修复开机启动问题
+
 据说,开机启动时,相对路径是不安全的,所以程序没有成功读取配置文件,要顺利读取配置文件的话,就需要配置文件的绝对路径,但是,通常配置文件都放在程序的同一目录下,所以,获取了程序的绝对路径,就可以构造出配置文件的绝对路径了.
 
 `::GetModuleFileNameA(NULL, FilePath, MAX_PATH);`就是这么个函数,第一个参数填NULL的话,获取的就是当前程序的路径(其他参数谷歌去吧),但是获取的路径是放到一个字符数组里面的,并没有结束符,所以我们得手动加上,用strrchr函数找到最后一个`\\`的位置,然后在其下一个位置加上结束符`\0`.
@@ -261,7 +270,8 @@ std::string GetModuleProfileName(std::string basic_file_name)
 }
 </pre>
 
-##启动自动隐藏
+## 启动自动隐藏
+
 成功设置开机启动后, 又碰到一个问题, 就是每次开机启动都有生成窗口, 还得手动关掉, 很是不爽, 于是就想让它启动时自动隐藏到托盘, 搜索了一圈, 什么`showWindow(SW_HIDE)`亲测无效, 最后找到了一个`SetWindowPlacement`的方法, 效果还可以, 就用了, 代码如下:
 
 <pre>

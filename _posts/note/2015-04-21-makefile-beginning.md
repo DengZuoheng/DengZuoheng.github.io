@@ -6,6 +6,7 @@ category: note
 ---
 
 ## 概述 ##
+
 makefile就像专门用于管理编译的脚本, 决定一个目录中, 哪些源文件需要先编译, 哪些后编译, 哪些目标文件依赖哪些源文件, 怎么连接等等; 也就是写一次makefile, 你的工程就可以自动化编译了, 当然, 新增了源文件的话, 也要跟着修改makefile.
 
 直接在工程目录下执行:
@@ -91,6 +92,7 @@ make实际上并不关心command是什么,只管在需要的时候执行command.
 这意味着, 如果我们只改了工程中的一个文件, 被重新编译的只有依赖这个文件的那些文件, 与这个文件没关系的其他一切都不会重新编译.
 
 ## 一个稍微复杂的例子 ##
+
 ok, 现在我们有一个工程, 名叫maketest, 结构如下:
 
 <pre>
@@ -240,6 +242,6 @@ install :
 
 **Reference**  
 
-* {:.ref} \[1] : 陈皓. 跟我一起写 Makefile. 2004. http://blog.csdn.net/haoel/article/details/2886  
-* {:.ref} \[2] : Linux@Linux社区. ./configure,make,make install的作用. http://www.linuxidc.com/Linux/2011-02/32211.htm  
-* {:.ref} \[3] : 杨 小华. 例解 autoconf 和 automake 生成 Makefile 文件. http://www.ibm.com/developerworks/cn/linux/l-makefile/
+* {:.ref} \[1] : 陈皓. [跟我一起写 Makefile](http://blog.csdn.net/haoel/article/details/2886). 2004.  
+* {:.ref} \[2] : [Linux@Linux社区. ./configure,make,make install的作用](http://www.linuxidc.com/Linux/2011-02/32211.htm)    
+* {:.ref} \[3] : 杨 小华. [例解 autoconf 和 automake 生成 Makefile 文件](http://www.ibm.com/developerworks/cn/linux/l-makefile/)  

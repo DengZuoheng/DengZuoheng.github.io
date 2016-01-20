@@ -8,6 +8,7 @@ category: blog
 我就假设你已经知道shared_ptr是干什么用的了
 
 ## 构造shared_ptr
+
 首先, 你得`#include<boost/smart_ptr.hpp>`
 
 然后, 但我们需要new一个对象的时候, 我们可以这样:
@@ -142,6 +143,7 @@ category: blog
 	};
 
 ## boost::weak_ptr
+
 上面已经提到了`weak_ptr`, 可以看到, `weak_ptr`是为了配合`shared_ptr`而引入的一种智能指针, 它更像`shared_ptr`的一个助手而不是智能指针.
 
 ### weak_ptr类摘要
@@ -405,6 +407,7 @@ category: blog
 	//等我写完boost并发编程再来举线程安全的例子.
 
 ## shared_ptr与标准库容器
+
 对于`std::vector`, `std::list`, `std::deque`, 我们都可以认为能愉快地使用`shared_ptr`. 但是, 对`std::set`, `std::map`, `std::unordered_map`我们就得考虑一下了.
 
 我们讨论类摘要的时候, 提到, `shared_ptr`提供了严格偏序的`operator<`, 所以`shared_ptr`放在`std::set`和`std::map`中也是可以的, 而且, 实验可知, `shared_ptr`是按照指针的地址来排序的. 比如:
@@ -499,14 +502,14 @@ d可以是函数, 函数对象 lambda表达式, 但必须可拷贝. 此外, boos
 
 **Reference:**  
 
-* {:.ref} \[1]: http://www.boost.org/doc/libs/1_59_0/libs/smart_ptr/make_shared.html  
-* {:.ref} \[2]: http://www.boost.org/doc/libs/1_57_0/libs/smart_ptr/shared_ptr.htm  
-* {:.ref} \[3]: http://www.boost.org/doc/libs/1_57_0/libs/smart_ptr/weak_ptr.htm  
-* {:.ref} \[4]: Boris Kolpackov. shared_ptr aliasing constructor. web: http://www.codesynthesis.com/~boris/blog/2012/04/25/shared-ptr-aliasing-constructor/  
-* {:.ref} \[5]: http://stackoverflow.com/questions/1403465/what-is-boosts-shared-ptrshared-ptry-const-r-t-p-used-for  
-* {:.ref} \[6]: http://stackoverflow.com/questions/3150942/c-delete-this  
-* {:.ref} \[7]: 陈硕. 为什么多线程读写 shared_ptr 要加锁？. web: http://blog.csdn.net/solstice/article/details/8547547  
-* {:.ref} \[8]: http://stackoverflow.com/questions/6404765/c-shared-ptr-as-unordered-sets-key/12122314#12122314  
-* {:.ref} \[9]: http://stackoverflow.com/questions/6322245/should-i-switch-from-using-boostshared-ptr-to-stdshared-ptr  
+* {:.ref} \[1]: [make_shared and allocate_shared - 1.59.0](http://www.boost.org/doc/libs/1_59_0/libs/smart_ptr/make_shared.html)    
+* {:.ref} \[2]: [shared_ptr - 1.57.0](http://www.boost.org/doc/libs/1_57_0/libs/smart_ptr/shared_ptr.htm)    
+* {:.ref} \[3]: [weak_ptr - 1.57.0](http://www.boost.org/doc/libs/1_57_0/libs/smart_ptr/weak_ptr.htm)    
+* {:.ref} \[4]: Boris Kolpackov. [shared_ptr aliasing constructor](http://www.codesynthesis.com/~boris/blog/2012/04/25/shared-ptr-aliasing-constructor/)    
+* {:.ref} \[5]: [c++ - What is boost's shared_ptr(shared_ptr<Y> const & r, T * p) used for? - Stack Overflow](http://stackoverflow.com/questions/1403465/what-is-boosts-shared-ptrshared-ptry-const-r-t-p-used-for)  
+* {:.ref} \[6]: [memory management - C++: Delete this? - Stack Overflow](http://stackoverflow.com/questions/3150942/c-delete-this)  
+* {:.ref} \[7]: 陈硕. [为什么多线程读写 shared_ptr 要加锁？](http://blog.csdn.net/solstice/article/details/8547547)  
+* {:.ref} \[8]: Shuo Chen. [boost - C++: shared_ptr as unordered_set's key - Stack Overflow](http://stackoverflow.com/questions/6404765/c-shared-ptr-as-unordered-sets-key/12122314#12122314)  
+* {:.ref} \[9]: [c++ - Should I switch from using boost::shared_ptr to std::shared_ptr? - Stack Overflow](http://stackoverflow.com/questions/6322245/should-i-switch-from-using-boostshared-ptr-to-stdshared-ptr)  
 * {:.ref} \[10]: 罗剑锋. Boost程序库完全开发指南: 深入C++"准"标准库. 第2版. 北京:电子工业出版社. p72-p83  
-* {:.ref} \[11]: cppreference. C++ concepts: Allocator. web: http://en.cppreference.com/w/cpp/concept/Allocator
+* {:.ref} \[11]: [C++ concepts: Allocator - cppreference.com](http://en.cppreference.com/w/cpp/concept/Allocator)  

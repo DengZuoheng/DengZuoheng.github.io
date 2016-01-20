@@ -6,15 +6,19 @@ category: blog
 ---
 
 ### 为什么会有前序, 中序, 后序三种遍历方式?
+
 我也想知道, 这个以后再说
 
 ### 三种递归遍历
+
 这个很常见, 先不写
 
 ### 三种非递归遍历
+
 这个也挺常见, 也先不写
 
 ### 给节点, 找后继
+
 这个最近面试才碰到, 以前没玩过, 先写了.
 
 做事情先得有个思路, 然后才能优化, 找后继这事就是, 对给出的节点的情况分别讨论, 然后逐步合并不同的case, 最后应该能达到最简洁的写法, 我猜...
@@ -190,4 +194,4 @@ struct Node* find_postorder_next(struct Node* node)
 
 **Reference:**  
 
-* {:.ref} \[1]: http://bbs.sjtu.edu.cn/bbscon,board,Algorithm,file,M.1041171619.A.html
+* {:.ref} \[1]: flyinsail. [二叉树遍历的前驱和后继 - 饮水思源](http://bbs.sjtu.edu.cn/bbscon,board,Algorithm,file,M.1041171619.A.html)

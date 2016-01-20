@@ -25,5 +25,5 @@ category: note
 
 **Reference:**  
 
-* {:.ref} \[1]: hwangbae. 为Visual Studio添加默认INCLUDE包含路径一劳永逸的方法(更新). 2012.6.24. http://www.cnblogs.com/hwangbae/archive/2012/06/24/2560463.html  
-* {:.ref} \[2]: http://stackoverflow.com/questions/3349378/edit-includepath-macro-in-visual-studio-2010
+* {:.ref} \[1]: hwangbae. [为Visual Studio添加默认INCLUDE包含路径一劳永逸的方法(更新)](http://www.cnblogs.com/hwangbae/archive/2012/06/24/2560463.html). 2012.6.24.  
+* {:.ref} \[2]: [winapi - Edit $(IncludePath) "macro" in Visual Studio 2010 - Stack Overflow](http://stackoverflow.com/questions/3349378/edit-includepath-macro-in-visual-studio-2010)  

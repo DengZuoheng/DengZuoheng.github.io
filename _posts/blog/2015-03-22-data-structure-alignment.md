@@ -25,6 +25,7 @@ struct MyStruct
 事实上, sizeof(MyStruct)==40, 不信可以直接跳到总结
 
 ## sizeof各种基本类型
+
 说字节对齐前, 我们得先清楚各种数据结构都是怎么算sizeof的, 为了偷懒, 我们先引一大段wiki的说法:
 
 > The following typical alignments are valid for compilers from Microsoft (Visual C++), Borland/CodeGear (C++Builder), Digital Mars (DMC) and GNU (GCC) when compiling for 32-bit x86:  
@@ -86,7 +87,8 @@ int main()
 
 后面的内容我们就先只考虑32位的环境了, 毕竟我的VS要编译个64位的程序也怪折腾的.
 
-##字节对齐
+## 字节对齐
+
 内存是一个byte一个byte地存的这个我们知道, 但是, CPU不是一个byte一个byte地读的, 因为, 我们老早就用上32位的CPU了, 应该说我们老早就用上64位的CPU了, 那么, CPU每个读周期就能(应该也只能)读32bit(64位的CPU应该读64bit); 如果, 这么巧, 一个int跨越了两次读周期, 完了还得高低位拼接, 那不就浪费时间了么; 于是, 人们想了些办法不让这种情况发生, 比如直接报错, 比如编译器默认给你对齐, 比如, 你自己设置对齐.
 
 我们设的话是怎么设的呢? 我见过的就`#pragma pack(n)`, 通常n都是2的某次幂, 具体参数可以上参考[2]查一下. `#pragma pack()`的位置时有影响的, `#pragma pack()`之后的, 才受这个设置影响, 否则按默认算. 比如:
@@ -150,7 +152,8 @@ std::cout&lt;&lt;sizeof(s6)&lt;&lt;std::endl;//3
 std::cout&lt;&lt;sizeof(s7)&lt;&lt;std::endl;//24, 整个结构体的大小是sizeof(double)的倍数
 </pre>
 
-##字节对齐与结构体
+## 字节对齐与结构体
+
 好, 关键问题来了, 为什么我们要考虑字节对齐, 即使编译器给了默认设置, 因为, 要考试, 考试, 试...
 
 大部分情况下, 考的都是算个sizeof(结构体)什么的, 所以, 我们先来个简单的:
@@ -205,6 +208,7 @@ int main()
 s1的三个成员的偏移是0, 1, 5,s2的是0, 2, 6, s3和s4的是0, 4, 8; s5的4个成员偏移为0, 4, 8, 12; s6的4个成员偏移为0, 4, 8, 16; 看看你算对了没. 
 
 ## offsetof()
+
 VS下是直接支持offsetof(type,member)的, gcc要用的话, 可以:
 
     #define offsetof(type, member)  __builtin_offsetof (type, member)
@@ -271,10 +275,10 @@ int main()
 </pre>
 **Reference:**  
 
-* {:.ref} \[1] : http://en.wikipedia.org/wiki/Data_structure_alignment  
-* {:.ref} \[2] : https://msdn.microsoft.com/en-us/library/2e70t5y1.aspx  
-* {:.ref} \[3] : http://stackoverflow.com/questions/3318410/pragma-pack-effect  
-* {:.ref} \[4] : http://redawn.sinaapp.com/archives/254  
-* {:.ref} \[5] : http://blog.sina.com.cn/s/blog_5c717fa001012ml7.html  
-* {:.ref} \[6] : http://kopptblog.sinaapp.com/2012/04/19/dataalignment/  
-* {:.ref} \[7] : https://gcc.gnu.org/onlinedocs/gcc/Offsetof.html  
+* {:.ref} \[1] : [Data structure alignment - Wikipedia, the free encyclopedia](http://en.wikipedia.org/wiki/Data_structure_alignment)  
+* {:.ref} \[2] : [pack - Pragma Directives and the __Pragma Keyword - C/C++ Preprocessor Reference - msdn.microsoft](https://msdn.microsoft.com/en-us/library/2e70t5y1.aspx)  
+* {:.ref} \[3] : [c++ - #pragma pack effect - Stack Overflow](http://stackoverflow.com/questions/3318410/pragma-pack-effect)  
+* {:.ref} \[4] : 红色黎明.[字节对齐和sizeof函数的计算方法](http://redawn.sinaapp.com/archives/254).红色黎明的博客    
+* {:.ref} \[5] : 这边独好.[sizeof函数总结](http://blog.sina.com.cn/s/blog_5c717fa001012ml7.html).这边独好_新浪博客    
+* {:.ref} \[6] : KoPpt.[关于字节对齐](http://kopptblog.sinaapp.com/2012/04/19/dataalignment/).KoPpt's World  
+* {:.ref} \[7] : [Offsetof - Using the GNU Compiler Collection (GCC)](https://gcc.gnu.org/onlinedocs/gcc/Offsetof.html)  

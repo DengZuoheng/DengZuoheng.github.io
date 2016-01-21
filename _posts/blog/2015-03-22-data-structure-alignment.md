@@ -6,10 +6,10 @@ category: blog
 ---
 
 事情是这样的, 前两天做疼讯的在线笔试, 碰到一题大概这样的:
+
 <pre>
 #pragma pack(8)
-struct MyStruct
-{
+struct MyStruct{
     char a;
     int b;
     char c;
@@ -20,6 +20,7 @@ struct MyStruct
     char* h;
 };//求sizeof(MyStruct)
 </pre>
+
 我说, 一个`char` 1 byte, `int` 4 byte, `float` 4 byte, `double` 8 byte, `int*`目测4 byte(64位下目测8 byte), 结果, 怎么都算不对啊...因为, 我完全没想起字节对齐那事...
 
 事实上, sizeof(MyStruct)==40, 不信可以直接跳到总结
@@ -52,11 +53,11 @@ struct MyStruct
 不够直观的话, 我们跑个32位程序试试:
 
 基本数据类型的:
+
 <pre>
 #include<iostream>
 using namespace std;
-int main()
-{
+int main(){
     cout &lt;&lt; "char:" &lt;&lt; sizeof(char) &lt;&lt; endl//1
         &lt;&lt; "short:" &lt;&lt; sizeof(short) &lt;&lt; endl//1
         &lt;&lt; "int:" &lt;&lt; sizeof(int) &lt;&lt; endl//4
@@ -70,12 +71,13 @@ int main()
     return 0;
 }
 </pre>
+
 数组的:
+
 <pre>
 #include<iostream>
 using namespace std;
-int main()
-{
+int main(){
     char str[] = "hello";
     int arr[8];
     cout &lt;&lt; "str:" &lt;&lt; sizeof(str) &lt;&lt; endl//6, 因为后面还有个'\0'
@@ -83,6 +85,7 @@ int main()
     return 0;
 }
 </pre>
+
 因为, 指针, long double等会因为平台影响而不同, 所以, 考试出现的话, 基本就可以吐槽出题人不靠谱了; 至于其他, 都是不变的, 所以, 为了笔试, 要记下来...
 
 后面的内容我们就先只考虑32位的环境了, 毕竟我的VS要编译个64位的程序也怪折腾的.
@@ -94,22 +97,20 @@ int main()
 我们设的话是怎么设的呢? 我见过的就`#pragma pack(n)`, 通常n都是2的某次幂, 具体参数可以上参考[2]查一下. `#pragma pack()`的位置时有影响的, `#pragma pack()`之后的, 才受这个设置影响, 否则按默认算. 比如:
 
 <pre>
+
 //ubuntu14.04 x64 gcc
 #include&lt;iostream&gt;
-struct s1
-{
+struct s1{
     char a;
     int b;
 };
 #pragma pack(2)
-struct s2
-{
+struct s2{
     char a;
     int b;
 };
 
-int main()
-{
+int main(){
     std::cout&lt;&lt;sizeof(s1)&lt;&lt;std::endl;//8
     std::cout&lt;&lt;sizeof(s2)&lt;&lt;std::endl;//6
     return 0;
@@ -125,6 +126,7 @@ int main()
 虽然这么说, 但事实上, 大部分编译器都会给你设置个默认的, 比如VS上, 默认都设为pack(8), 都够64位用了.
 
 **补充** 参考[4]中指出, 数据成员完成各自对齐后, 结构本身也要对齐, 结果结构本身的大小是min(n,max(sizeof(member type) : for member in struct))的倍数. 这个现象构建起来有点麻烦, 可以先看后面的内容, 再回来看这个例子:
+
 <pre>
 #pragma pack(4)
 struct s3{
@@ -157,19 +159,22 @@ std::cout&lt;&lt;sizeof(s7)&lt;&lt;std::endl;//24, 整个结构体的大小是si
 好, 关键问题来了, 为什么我们要考虑字节对齐, 即使编译器给了默认设置, 因为, 要考试, 考试, 试...
 
 大部分情况下, 考的都是算个sizeof(结构体)什么的, 所以, 我们先来个简单的:
+
 <pre>
 #pragma pack(2)
-struct s1
-{
+struct s1{
     char a;
     int b;
 }
 </pre>
+
 这种情况, 按我们刚刚的分析, 应该是这样的:
+
 <pre>
 bytes:  | 1     2   |  3  4  |  5  6  |  7  8  |
 member: | a |padding|       b         |没了
 </pre>
+
 所以, sizeof(s1)应该是6, 但在VS上测试, 结果是8, 用`offsetof()`查看, b的偏移确实是4了, 跟我们的预测不一致啊, 为什么呢? 呃, 先换个平台试下...
 
 同样的代码, 在VS2013中是8, GCC中是6, 对与这种事, 我只能表示...听GCC的!
@@ -193,8 +198,7 @@ struct s5{char a;int b;char c;double d};
 #pragma pack(8)
 struct s4{char a;int b;char c;};
 struct s6{char a;int b;char c;double d};
-int main()
-{
+int main(){
     std::cout&lt;&lt;sizeof(s1)&lt;&lt;std::endl;//6=1+4+1
     std::cout&lt;&lt;sizeof(s2)&lt;&lt;std::endl;//8=2+4+2
     std::cout&lt;&lt;sizeof(s3)&lt;&lt;std::endl;//12=4+4+4
@@ -224,10 +228,10 @@ VS下是直接支持offsetof(type,member)的, gcc要用的话, 可以:
 - 空结构体和空占1byte
 
 现在, 回到我们最开始的问题:
+
 <pre>
 #pragma pack(8)
-struct MyStruct
-{
+struct MyStruct{
     char a;//offset=0, 占1 byte, padding 3 byte
     int b;//offset=4=min(8,sizeof(int), 占 4 byte, 没padding
     char c;//offset=8, 占1 byte, padding 3 byte
@@ -239,10 +243,11 @@ struct MyStruct
 };//整个size得是8的倍数, 所以是40
 //其实, 我觉得, 最后一个换成char会更有代表性
 </pre>
+
 测试代码(VS2013,32位):
+
 <pre>
 #include&lt;iostream&gt;
-
 #pragma pack(8)
 using namespace std;
 struct s1
@@ -257,8 +262,7 @@ struct s1
     char* h;
 };
 
-int main()
-{
+int main(){
     cout &lt;&lt; sizeof(s1) &lt;&lt; endl;
     cout &lt;&lt; offsetof(s1, a) &lt;&lt; " " 
         &lt;&lt; offsetof(s1, b) &lt;&lt; " " 

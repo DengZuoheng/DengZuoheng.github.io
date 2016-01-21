@@ -38,7 +38,6 @@ https://github.com/DengZuoheng/wakeupdisk
         IDC_CHECKO,IDC_CHECKP,IDC_CHECKQ,IDC_CHECKR,
         IDC_CHECKS,IDC_CHECKT,IDC_CHECKU,IDC_CHECKV,
         IDC_CHECKW,IDC_CHECKX,IDC_CHECKY,IDC_CHECKZ };
-
 </pre>
 
 没有C++11,用boost::assign库也能实现类似列表初始化的效果.
@@ -62,8 +61,7 @@ pButton->SetCheck(STATUS_CHECKED);//STATUS_CHECKED是自己定义的宏
 于是与UI交换数据的时候,就变成这样:
 
 <pre>
-    for (int i = 0; i < vec_size; ++i)
-    {
+    for (int i = 0; i < vec_size; ++i){
         CButton* pButton = (CButton*)GetDlgItem(ctrl_macro_vec[i]);
         string drive = "C";
         drive[0] += i;
@@ -119,10 +117,9 @@ write_json("init.json", pt);
 因为程序需要长时间运行,所以隐藏到托盘的功能是必须要的.
 
 这段代码当然是上网抄的:
-<pre>
 
-void CwakeupdiskDlg::ToTray()
-{
+<pre>
+void CwakeupdiskDlg::ToTray(){
    
     NOTIFYICONDATA nid;
     nid.cbSize = (DWORD)sizeof(NOTIFYICONDATA);
@@ -137,13 +134,12 @@ void CwakeupdiskDlg::ToTray()
     ShowWindow(SW_HIDE);//隐藏主窗口
    
 }
-
 </pre>
 
 运行时调用Totray,托盘就多了个图标,然后隐藏窗口.nid结构要求一个自定义消息名称,托盘的图标接受到消息,就用这个自定义消息为名发到程序的消息队列中.这个消息的lParam是图标接收到的消息,比如我要相应托盘图标的左键点击消息显示窗口:
+
 <pre>
-afx_msg LRESULT CwakeupdiskDlg::OnShowtask(WPARAM wParam, LPARAM lParam)
-{
+afx_msg LRESULT CwakeupdiskDlg::OnShowtask(WPARAM wParam, LPARAM lParam){
     if (lParam == WM_LBUTTONDOWN)
     {
         ShowWindow(SW_SHOW);//隐藏主窗口
@@ -155,24 +151,25 @@ afx_msg LRESULT CwakeupdiskDlg::OnShowtask(WPARAM wParam, LPARAM lParam)
 ## 获取当前登录账户名
 
 这段代码网上到处都是,亲测可用,虽然到最后没有用:
+
 <pre>
 #include "stdafx.h"
 #include "Wtsapi32.h"
 #pragma comment(lib,"Wtsapi32.lib")
 
-BOOL GetLogUser(CString& str_name)
-{
+BOOL GetLogUser(CString& str_name){
     BOOL bRet = FALSE;
     str_name = _T("");
     //for xp or above 
     TCHAR *szLogName = NULL;
     DWORD dwSize = 0;
-    if (WTSQuerySessionInformation(((HANDLE)NULL),
-        ((DWORD)-1),
-        WTSUserName,
-        &szLogName,
-        &dwSize))
-    {
+    if (WTSQuerySessionInformation(
+            ((HANDLE)NULL),
+            ((DWORD)-1),
+            WTSUserName,
+            &szLogName,
+            &dwSize)
+        ){
         str_name = szLogName;
         WTSFreeMemory(szLogName);
         bRet = TRUE;
@@ -187,10 +184,9 @@ BOOL GetLogUser(CString& str_name)
 ## 设置开机启动
 
 本来,想写用户的注册表来设置开机启动,所以才会有上面获取当前登录用户名的代码,但是找到了另一个看起来更可能工作的代码,就没用用户名,而是设置注册表"HKEY_LOCAL_MACHINE\Software\\Microsoft\\Windows\\CurrentVersion\\Run",代码如下,加了一个参数用于删除开机启动的设置:
-<pre>
 
-void CwakeupdiskDlg::SetRunOnStartUp(bool bFlag)
-{
+<pre>
+void CwakeupdiskDlg::SetRunOnStartUp(bool bFlag){
     
     HKEY RegKey=NULL;
     CString sPath;
@@ -209,32 +205,26 @@ void CwakeupdiskDlg::SetRunOnStartUp(bool bFlag)
     bSuccess = fFind.FindFile(lpszFile);
     fFind.Close();
 
-    if (bSuccess)
-    {
+    if (bSuccess){
         CString fullName(lpszFile);
 
         RegOpenKey(HKEY_LOCAL_MACHINE, 
             TEXT("Software\\Microsoft\\Windows\\CurrentVersion\\Run"), 
             &RegKey);
 
-        if (bFlag)
-        {
+        if (bFlag){
             RegSetValueEx(RegKey, 
                 TEXT("wakeupdisk"), 
                 0, 
                 REG_SZ, 
                 (BYTE*)(LPCTSTR)fullName, 
                 fullName.GetLength() * 2);//这里加上你需要在注册表中注册的内容   
-        }
-        else
-        {
+        }else{
             RegDeleteValue(RegKey, TEXT("wakeupdisk"));
         }
         
         this->UpdateData(FALSE);
-    }
-    else
-    {
+    }else{
         //theApp.SetMainSkin();   
         MessageBox(TEXT("没找到执行程序，自动运行失败"));
         exit(0);
@@ -260,8 +250,7 @@ void CwakeupdiskDlg::SetRunOnStartUp(bool bFlag)
 完整的示例如下,传入一个配置文件名,函数获取当前路径然后拼接好绝对路径名返回:
 
 <pre>
-std::string GetModuleProfileName(std::string basic_file_name)
-{
+std::string GetModuleProfileName(std::string basic_file_name){
     char FilePath[MAX_PATH];
     ::GetModuleFileNameA(NULL, FilePath, MAX_PATH);
     (strrchr(FilePath, '\\'))[1] = 0;

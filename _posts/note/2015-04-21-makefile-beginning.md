@@ -33,19 +33,17 @@ makefile就像专门用于管理编译的脚本, 决定一个目录中, 哪些�
 我们想编译个hello world试下, 首先建一个`helloworld`目录,在`helloworld`目录下建一个`helloworld.c`, 一个`makefile`, makefile 的名义一般认为只有`Makefile`或`makefile`, 这样才能被make自动找出来执行.
 
 helloworld.c的代码:
+
 <pre>
-
 #include <stdio.h>
-
-int main()
-{
+int main(){
     printf("hello world\n");
     return 0;
 }
-
 </pre>
 
 makefile的内容:
+
 <pre>
 helloworld : helloworld.o
     gcc -o helloworld helloworld.o
@@ -114,9 +112,7 @@ maketest\
 #include  &lt;stdio.h&gt;
 #include "hello/hello.h"
 #include "abc.h"
-
-int main()
-{
+int main(){
 	hello1();
 	hello2();
 	abc1();

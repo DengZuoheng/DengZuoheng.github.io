@@ -97,5 +97,6 @@ int main()
 
 注意, 这种方式在VS下不一定能引发编译错误. <del>CL的前端就是这么残</del>
 
-**Reference**  
-\[1]:  Amjad, Z. (2003). A non-inheritable class. [Blog] __CodeProject__. Available at: http://www.codeproject.com/Articles/4444/A-non-inheritable-class [Accessed 28 Dec. 2015].  
+**Reference:**  
+
+* {:.ref} \[1]:  Amjad, Z. (2003). A non-inheritable class. [Blog] __CodeProject__. Available at: http://www.codeproject.com/Articles/4444/A-non-inheritable-class [Accessed 28 Dec. 2015].  

@@ -150,6 +150,7 @@ Makefile.env是针对整个工程的, 而整个工程说不定后好多层好多
 
 
 
-**Refrence**  
-\[1] : 阮一峰．[Make 命令教程](http://www.ruanyifeng.com/blog/2015/02/make.html). 阮一峰的网络日志.  
-\[2] : [gnu make - Makefile variable assignment - Stack Overflow](http://stackoverflow.com/a/448939)  
+**Reference:**  
+
+* {:.ref}\[1] : 阮一峰．[Make 命令教程](http://www.ruanyifeng.com/blog/2015/02/make.html). 阮一峰的网络日志.  
+* {:.ref}\[2] : [gnu make - Makefile variable assignment - Stack Overflow](http://stackoverflow.com/a/448939)  

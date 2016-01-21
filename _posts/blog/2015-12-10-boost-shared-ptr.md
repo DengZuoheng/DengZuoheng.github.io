@@ -352,7 +352,7 @@ category: blog
 
 表现也与C++的`static_cast`, `const_cast`, `reinterpret_cast`一致.
 
-##share from this, 获得this的shared_ptr
+## share from this, 获得this的shared_ptr
 
 也许某些时候, 我们需要把指向自己的`shared_ptr`给别人, 但是我们却不能直接返回一个`shared_ptr<T>(this)`, 因为这样计数不一定正确, 虽然对于堆内存的对象, delete this是允许的[6].
 

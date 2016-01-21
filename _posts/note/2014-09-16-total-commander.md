@@ -7,7 +7,7 @@ category: note
 
 其实几乎所有命令都可以重映射, 因为我习惯左手键盘右手鼠标, 所以很多命令都映射到方便左手的键位了.比如回退映射到Esc, 全不选映射到Ctrl+~
 
-### 文件
+## 文件
 
 - 新建文件:shift+F4
 - 新建文件夹:F7
@@ -30,12 +30,12 @@ category: note
 - 复制文件名:Alt+M+Y(我的重定向:Alt+C)
 - 复制文件名以及完整路径:Alt+M+P(我的重定向:Alt+Shift+C)
 
-### 选择
+## 选择
 
 - 全选:Ctrl+A
 - 全不选: Ctrl+小键盘-
 
-### 标签
+## 标签
 
 - 改变当前标签:Shift+F6
 - 移动当前标签到另一视图:Ctrl+U
@@ -52,19 +52,19 @@ category: note
 - 刷新:F2
 - 改变当前路径: 光标指向返回上级目录项,Shift+F6
 
-### 系统
+## 系统
 
 - 在当前路径打开cmd:Alt+C+D
 - 执行命令行:→
 - 展开命令行记录:Ctrl+↓或Alt+F8
 
-### 压缩
+## 压缩
 
 - 压缩文件到另一标签的当前视图:Alt+F5
 - 解压文件到另一标签的当前视图:Alt+F9
 - 解压\压缩到当前文件夹:修改路径剩下`\`
 
-### 设置打开方式
+## 设置打开方式
 
 1. 下载安装[ChoiceEditor][1]
 2. 把ChoiceEditor设置成默认编辑器
@@ -101,12 +101,12 @@ Ext4=MD
 
 通常情况下ChoiceEditor能识别出系统的默认查看程序,但是偶尔也会抽风,故还是自己设置比较顺心.
 
-### 备份设置 ###
+## 备份设置 ##
 
 设置一般存在`C:\Users\YOUR_USER_NAME\AppData\Roaming\GHISLER\WINCMD.INI`(我的win8.1), 
 一般情况下搜索`wincmd.ini`就是它了; 我在github上的备份: [wincmd.ini](https://github.com/dengzuoheng/scripts/wincmd.ini)
 
-### 插件安装 ###
+## 插件安装 ##
 
 参考:
     - [高手之路: Total Commander之插件基础篇（上）](http://arch.pconline.com.cn//pcedu/tuijian/system/filemanage/0604/782779.html)  

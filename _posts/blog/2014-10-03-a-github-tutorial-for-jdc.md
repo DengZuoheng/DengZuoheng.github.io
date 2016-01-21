@@ -424,11 +424,12 @@ base branch是你希望pull request被merge到上游项目的哪个branch里, he
 //TO DO
 
 **Reference:**  
-\[1\] : [版本控制 - Wikipedia](http://zh.wikipedia.org/wiki/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6)    
-\[2\] : 涂根华. [Git使用教程](http://www.cnblogs.com/tugenhua0707/p/4050072.html). 涂根华的博客.     
-\[3\] : Mort. [Pull Request的正确打开方式（如何在GitHub上贡献开源项目）](http://www.soimort.org/posts/149/)  
-\[4\] : Github help. [Fork A Repo](https://help.github.com/articles/fork-a-repo/)  
-\[5\] : sinojelly. [Git下冲突的解决](http://www.cnblogs.com/sinojelly/archive/2011/08/07/2130172.html). 果冻的软件技术博客  
+
+* {:.ref} \[1\] : [版本控制 - Wikipedia](http://zh.wikipedia.org/wiki/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6)    
+* {:.ref} \[2\] : 涂根华. [Git使用教程](http://www.cnblogs.com/tugenhua0707/p/4050072.html). 涂根华的博客.     
+* {:.ref} \[3\] : Mort. [Pull Request的正确打开方式（如何在GitHub上贡献开源项目）](http://www.soimort.org/posts/149/)  
+* {:.ref} \[4\] : Github help. [Fork A Repo](https://help.github.com/articles/fork-a-repo/)  
+* {:.ref} \[5\] : sinojelly. [Git下冲突的解决](http://www.cnblogs.com/sinojelly/archive/2011/08/07/2130172.html). 果冻的软件技术博客  
 
 
 [1]:https://windows.github.com/

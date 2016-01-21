@@ -5,7 +5,7 @@ description: 向老师索取数据库密码的过程总是比较漫长,不如写
 category: note
 ---
 
-###1.准备工作
+### 1.准备工作
 
 首先你得知道爬虫是怎么工作的,CSDN有篇[Python爬虫入门教程][1]写得还不错,我就是参考这篇编写的,因为院学生会的旧站用的是古(keng)典(die)的table布局,用正则表达式提取估计非常痛苦,所以看完基础教程后果断选择Scrapy框架.
 
@@ -79,6 +79,7 @@ Scrapy自动对返回体调用你实现的`parse`方法来处理,要提取有用
 xpath的用法可以找w3school的XML教程看看就好,知道它有与jQuery选择器相同甚至之上的表达能力就行了.
 
 抓取到目标的url后,就可以根据这些url提取正文了.过程跟上面的差不多,就直接贴代码了,需要注意的地方后面会特别指出:
+
 <pre>
 # -*- coding: utf-8 -*- 
 from scrapy.spider import Spider
@@ -86,8 +87,8 @@ from scrapy.selector import Selector
 import re
 import thread
 import urllib2
-
 import os
+
 #读取要爬的URL
 def read_urls(filename):
     lst=[]
@@ -165,6 +166,7 @@ class TwxshSpider4NewsText(Spider):
         ff.close()
        
 </pre>
+
 其中读取url是读取刚刚抓取到的url,我把他们写到同一个文件了.
 <del>看到这里的xpath多折磨人了吧,旧站的开发者你出来,我保证不打死你- -</del>
 

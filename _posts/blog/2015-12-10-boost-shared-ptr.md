@@ -81,14 +81,12 @@ category: blog
 	void f(shared_ptr<int>, int);
 	int g();
 	
-	void ok()
-	{
+	void ok(){
 	    shared_ptr<int> p( new int(2) );
 	    f( p, g() );
 	}
 	
-	void bad()
-	{
+	void bad(){
 	    f( shared_ptr<int>( new int(2) ), g() );
 	}
 	
@@ -298,8 +296,7 @@ category: blog
 
 其中一种场合是, 我有一个类, 而且也经常用`shared_ptr`来管理这个类的实例, 但是这个类有一个指针成员(没有被智能指针管理), 而我又想跟别人shared一下这个成员, 于是, 就可以这样[5]:
 
-	truct A
-	{
+	truct A{
 	  int *B; // managed inside A
 	};
 	
@@ -363,8 +360,7 @@ category: blog
 	namespace boost
 	{
 	
-	template<class T> class enable_shared_from_this
-	{
+	template<class T> class enable_shared_from_this{
 	public:
 	
 	    shared_ptr<T> shared_from_this();
@@ -416,8 +412,7 @@ category: blog
 	#include <set>
 	#include <iostream>
 	
-	int main()
-	{
+	int main(){
 		boost::shared_ptr<int> p0(new int(0));
 		boost::shared_ptr<int> p3(new int(3));
 		boost::shared_ptr<int> p5(new int(5));
@@ -429,16 +424,9 @@ category: blog
 		boost::shared_ptr<int> p6(new int(6));
 		boost::shared_ptr<int> p7(new int(7));
 		std::set<boost::shared_ptr<int>> s;
-		s.insert(p1);
-		s.insert(p9);
-		s.insert(p2);
-		s.insert(p8);
-		s.insert(p3);
-		s.insert(p7);
-		s.insert(p4);
-		s.insert(p6);
-		s.insert(p5);
-		s.insert(p0);
+		s.insert(p1);s.insert(p9);s.insert(p2);s.insert(p8);
+		s.insert(p3);s.insert(p7);s.insert(p4);s.insert(p6);
+		s.insert(p5);s.insert(p0);
 		for (std::set<boost::shared_ptr<int>>::iterator it = s.begin(); 
 			it != s.end(); ++it){
 			std::cout << **it << std::endl;
@@ -480,8 +468,7 @@ d可以是函数, 函数对象 lambda表达式, 但必须可拷贝. 此外, boos
 
 基于shared_ptr<void>和定制删除器, 我们可以写出类似`退出作用域时回调`的代码来, 比如[10]:
 
-	int main()
-	{
+	int main(){
 		boost::shared_ptr<void> p((void*)0,[](void* p)->void{
 			std::cout<<"this will call when scope end"<<std::endl;
 		});

@@ -34,31 +34,31 @@ makefile就像专门用于管理编译的脚本, 决定一个目录中, 哪些�
 
 helloworld.c的代码:
 
-<pre>
+~~~
 #include <stdio.h>
 int main(){
     printf("hello world\n");
     return 0;
 }
-</pre>
+~~~
 
 makefile的内容:
 
-<pre>
+~~~
 helloworld : helloworld.o
     gcc -o helloworld helloworld.o
 
 helloworld.o : helloworld.c
     gcc -c helloworld.c
-</pre>
+~~~
 
 然后打开你的终端, cd到helloworld, 执行make, 然后执行helloworld试试, 就像
 
-<pre>
+~~~
 cd helloworld
 make
 ./helloworld
-</pre>
+~~~
 
 一切正常的话, 就输入hello world了, 不正常的话, 会提示错误, 有三种可能, 一是makefile的语法错误, 一是编译命令的错误, 一是代码语法错误.
 
@@ -66,12 +66,12 @@ make
 
 从第一份可以看到makefile大致的格式, 首先写一个目标, 空格, 冒号, 空格, 目标依赖的文件, 下一行, 缩进, 完成目标的命令, 就像这样:
 
-<pre>
+~~~
 target ... : prerequisites ... 
     command 
     ... 
     ... 
-</pre>
+~~~
 
 target是一个目标文件, 可以是objectfile, 也可以是可执行文件, 还可以是一个标签, 比如clean, install, 这些东西叫"伪目标", 这个, 后面再说.
 
@@ -93,7 +93,7 @@ make实际上并不关心command是什么,只管在需要的时候执行command.
 
 ok, 现在我们有一个工程, 名叫maketest, 结构如下:
 
-<pre>
+~~~
 maketest\
     - main.c
     - abc.h
@@ -104,11 +104,11 @@ maketest\
         hello1.c
         hello2.c
     - makefile
-</pre>
+~~~
 
 我们的main.c是这样的:
 
-<pre>
+~~~
 #include  &lt;stdio.h&gt;
 #include "hello/hello.h"
 #include "abc.h"
@@ -119,11 +119,11 @@ int main(){
 	abc2();
 	return 0;
 }
-</pre>
+~~~
 
 所以, 我们的makefile是这样的:
 
-<pre>
+~~~
 main : main.o hello1.o hello2.o abc1.o abc2.o
 	cc -o main main.o hello1.o hello2.o abc1.o abc2.o
 
@@ -141,7 +141,7 @@ abc1.o : abc1.c abc.h
 
 abc2.o : abc2.c abc.h
 	cc -c abc2.c
-</pre>
+~~~
 
 这样一结合上面的执行规则, 就很好理解了.
 
@@ -153,7 +153,7 @@ abc2.o : abc2.c abc.h
 
 可以用$(objects)来引用变量. 于是我们上面的例子可以变成
 
-<pre>
+~~~
 objects = main.o hello1.o hello2.o abc1.o abc2.o
 main : $(objects)
 	cc -o main $(objects)
@@ -172,7 +172,7 @@ abc1.o : abc1.c abc.h
 
 abc2.o : abc2.c abc.h
 	cc -c abc2.c
-</pre>
+~~~
 
 注意, makefile中的变量只做替换作用, 与其说是变量, 不如说是宏.
 
@@ -183,11 +183,11 @@ abc2.o : abc2.c abc.h
 
 还是我们刚刚那个makefile, 我们在最后加上:
 
-<pre>
+~~~
 .PHONY : say_hello
 say_hello :
     echo "hello deng zuoheng"
-</pre>
+~~~
 
 其中, `.PHONY`表示say_hello是一个伪目标. 这样, 我们在该目录下执行:
 
@@ -197,11 +197,11 @@ say_hello :
 
 伪目标可以干嘛呢, 比如, 其实每个makefile都应该写一个清除目标文件的规则, 使得目录不至于凌乱, 而且重新编译起来更方便顺手(这才是首要吧- - ), 风格大概是这样的:
 
-<pre>
+~~~
 .PHONY : clean
 clean :
 	rm main $(objects)
-</pre>
+~~~
 
 用起来是这样的:
 
@@ -216,11 +216,11 @@ clean :
 
 上面这些都是典型的使用GNU的AUTOCONF和AUTOMAKE产生的程序的makefile说具有的. 不过我们也可以手写一个, 下面以`make install`为例:
 
-<pre>
+~~~
 .PHONY : install
 install :
 	cp main /usr/local/bin
-</pre>
+~~~
 
 ## makefile中的注释 ##
 

@@ -30,7 +30,7 @@ https://github.com/DengZuoheng/wakeupdisk
 因为是基与对话框的MFC程序,所以,用VS2013拖足够的checkbox就好了,这样每个控件会有一个ID,重复代码比较容易优化.
 需要遍历所有控件的情节,就用vector容器存控件ID进行遍历,如果是C++11,写起来还是很方便的:
 
-<pre>
+~~~
  static vector<decltype(IDC_CHECKC)> ctrl_macro_vec = {
         IDC_CHECKC,IDC_CHECKD,IDC_CHECKE,IDC_CHECKF,
         IDC_CHECKG,IDC_CHECKH,IDC_CHECKI,IDC_CHECKJ,
@@ -38,19 +38,19 @@ https://github.com/DengZuoheng/wakeupdisk
         IDC_CHECKO,IDC_CHECKP,IDC_CHECKQ,IDC_CHECKR,
         IDC_CHECKS,IDC_CHECKT,IDC_CHECKU,IDC_CHECKV,
         IDC_CHECKW,IDC_CHECKX,IDC_CHECKY,IDC_CHECKZ };
-</pre>
+~~~
 
 没有C++11,用boost::assign库也能实现类似列表初始化的效果.
 
 而获取控件状态方面,这里用的是:
 
-<pre>
+~~~
 CButton* pButton = (CButton*)GetDlgItem(ctrl_macro_vec[i]);
 //获取状态
 pButton->GetCheck();
 //设置状态
 pButton->SetCheck(STATUS_CHECKED);//STATUS_CHECKED是自己定义的宏
-</pre>
+~~~
 
 ## 数据结构
 
@@ -60,7 +60,7 @@ pButton->SetCheck(STATUS_CHECKED);//STATUS_CHECKED是自己定义的宏
 
 于是与UI交换数据的时候,就变成这样:
 
-<pre>
+~~~
     for (int i = 0; i < vec_size; ++i){
         CButton* pButton = (CButton*)GetDlgItem(ctrl_macro_vec[i]);
         string drive = "C";
@@ -80,11 +80,11 @@ pButton->SetCheck(STATUS_CHECKED);//STATUS_CHECKED是自己定义的宏
 
     SetRunOnStartUp(pt.get<bool>("runonstartup"));
 
-</pre>
+~~~
 
 这里需要声明json文件的结构:
 
-<pre>
+~~~
 {
     "runonstartup": "false",
     "frequency": "60000",
@@ -98,17 +98,16 @@ pButton->SetCheck(STATUS_CHECKED);//STATUS_CHECKED是自己定义的宏
         "W": "true",    "X": "true",    "Y": "false",   "Z": "true"
     }
 }
-
-</pre>
+~~~
 
 ptree读写json也是很方便:
 
-<pre>
+~~~
 //读取json文件构建ptree
 read_json("init.json", pt);
 //将ptree内容写入json
 write_json("init.json", pt);
-</pre>
+~~~
 
 **注意ptree对json文件的格式要求是严格的**,比如平时写js的时候,true是不带双引号的,列表最后一项加个逗号也没问题,在这里全部不行,你需要写最严格的json语法.而且write_json写出来的json无论是key还是value都是带双引号的,所以建议最开始手写的时候就带双引号.
 
@@ -118,7 +117,7 @@ write_json("init.json", pt);
 
 这段代码当然是上网抄的:
 
-<pre>
+~~~
 void CwakeupdiskDlg::ToTray(){
    
     NOTIFYICONDATA nid;
@@ -134,25 +133,24 @@ void CwakeupdiskDlg::ToTray(){
     ShowWindow(SW_HIDE);//隐藏主窗口
    
 }
-</pre>
+~~~
 
 运行时调用Totray,托盘就多了个图标,然后隐藏窗口.nid结构要求一个自定义消息名称,托盘的图标接受到消息,就用这个自定义消息为名发到程序的消息队列中.这个消息的lParam是图标接收到的消息,比如我要相应托盘图标的左键点击消息显示窗口:
 
-<pre>
+~~~
 afx_msg LRESULT CwakeupdiskDlg::OnShowtask(WPARAM wParam, LPARAM lParam){
-    if (lParam == WM_LBUTTONDOWN)
-    {
+    if (lParam == WM_LBUTTONDOWN){
         ShowWindow(SW_SHOW);//隐藏主窗口
     }
     return 0;
 }
-</pre>
+~~~
 
 ## 获取当前登录账户名
 
 这段代码网上到处都是,亲测可用,虽然到最后没有用:
 
-<pre>
+~~~
 #include "stdafx.h"
 #include "Wtsapi32.h"
 #pragma comment(lib,"Wtsapi32.lib")
@@ -177,7 +175,7 @@ BOOL GetLogUser(CString& str_name){
 
     return bRet;
 }
-</pre>
+~~~
 
 写这个代码是最头疼的问题,就是连接问题,Wtsapi32.lib有了,Wtsapi32.dll也有了,编译没问题,就是连接错.找了两天(其实什么也没找见),最终偶然发现,原来是`#pragma comment(lib,"Wtsapi32.lib")`应该写在`#include "Wtsapi32.h"`后面...
 
@@ -185,9 +183,8 @@ BOOL GetLogUser(CString& str_name){
 
 本来,想写用户的注册表来设置开机启动,所以才会有上面获取当前登录用户名的代码,但是找到了另一个看起来更可能工作的代码,就没用用户名,而是设置注册表"HKEY_LOCAL_MACHINE\Software\\Microsoft\\Windows\\CurrentVersion\\Run",代码如下,加了一个参数用于删除开机启动的设置:
 
-<pre>
+~~~
 void CwakeupdiskDlg::SetRunOnStartUp(bool bFlag){
-    
     HKEY RegKey=NULL;
     CString sPath;
 
@@ -229,9 +226,8 @@ void CwakeupdiskDlg::SetRunOnStartUp(bool bFlag){
         MessageBox(TEXT("没找到执行程序，自动运行失败"));
         exit(0);
     }
-
 }
-</pre>
+~~~
 
 这里是先找我要设置的程序有没有,有才开始动注册表,需要注意的是RegSetValueEx的第5个参数--数据长度,我的VS是定义了Unicode宏的,这里的编码就有点奇怪了,fullName.GetLength()得到的只跟我预想的一致,但是实际上只有半个字符串存进注册表了,所以这里乘了2,使得全部存进注册表.
 
@@ -249,7 +245,7 @@ void CwakeupdiskDlg::SetRunOnStartUp(bool bFlag){
 
 完整的示例如下,传入一个配置文件名,函数获取当前路径然后拼接好绝对路径名返回:
 
-<pre>
+~~~
 std::string GetModuleProfileName(std::string basic_file_name){
     char FilePath[MAX_PATH];
     ::GetModuleFileNameA(NULL, FilePath, MAX_PATH);
@@ -257,13 +253,13 @@ std::string GetModuleProfileName(std::string basic_file_name){
     std::string retpath(FilePath);
     return retpath + basic_file_name;
 }
-</pre>
+~~~
 
 ## 启动自动隐藏
 
 成功设置开机启动后, 又碰到一个问题, 就是每次开机启动都有生成窗口, 还得手动关掉, 很是不爽, 于是就想让它启动时自动隐藏到托盘, 搜索了一圈, 什么`showWindow(SW_HIDE)`亲测无效, 最后找到了一个`SetWindowPlacement`的方法, 效果还可以, 就用了, 代码如下:
 
-<pre>
+~~~
 //首先你得有个成员来保存正常的WindowPlacement以便回复
 //然后在OnInitDialog添加
 GetWindowPlacement(&m_wp); //恢复时用
@@ -273,6 +269,6 @@ wp.length = sizeof(WINDOWPLACEMENT);
 wp.flags = WPF_RESTORETOMAXIMIZED;
 wp.showCmd = SW_HIDE;
 SetWindowPlacement(&wp);
-</pre>
+~~~
 
 然后该恢复的时候恢复就好了, 不过恢复的时候默认会跑到左上角, 这个问题还没解决, 不过影响不大, 因为我基本上不会再点开它.

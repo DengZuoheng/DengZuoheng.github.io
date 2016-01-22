@@ -7,7 +7,7 @@ category: blog
 
 事情是这样的, 前两天做疼讯的在线笔试, 碰到一题大概这样的:
 
-<pre>
+~~~
 #pragma pack(8)
 struct MyStruct{
     char a;
@@ -19,7 +19,7 @@ struct MyStruct{
     int* g;
     char* h;
 };//求sizeof(MyStruct)
-</pre>
+~~~
 
 我说, 一个`char` 1 byte, `int` 4 byte, `float` 4 byte, `double` 8 byte, `int*`目测4 byte(64位下目测8 byte), 结果, 怎么都算不对啊...因为, 我完全没想起字节对齐那事...
 
@@ -54,7 +54,7 @@ struct MyStruct{
 
 基本数据类型的:
 
-<pre>
+~~~
 #include<iostream>
 using namespace std;
 int main(){
@@ -70,11 +70,11 @@ int main(){
         &lt;&lt; "int*:" &lt;&lt; sizeof(int*) &lt;&lt; endl;//4
     return 0;
 }
-</pre>
+~~~
 
 数组的:
 
-<pre>
+~~~
 #include<iostream>
 using namespace std;
 int main(){
@@ -84,7 +84,7 @@ int main(){
         &lt;&lt; "arr:" &lt;&lt; sizeof(arr) &lt;&lt; endl;//32
     return 0;
 }
-</pre>
+~~~
 
 因为, 指针, long double等会因为平台影响而不同, 所以, 考试出现的话, 基本就可以吐槽出题人不靠谱了; 至于其他, 都是不变的, 所以, 为了笔试, 要记下来...
 
@@ -96,7 +96,7 @@ int main(){
 
 我们设的话是怎么设的呢? 我见过的就`#pragma pack(n)`, 通常n都是2的某次幂, 具体参数可以上参考[2]查一下. `#pragma pack()`的位置时有影响的, `#pragma pack()`之后的, 才受这个设置影响, 否则按默认算. 比如:
 
-<pre>
+~~~
 
 //ubuntu14.04 x64 gcc
 #include&lt;iostream&gt;
@@ -115,7 +115,7 @@ int main(){
     std::cout&lt;&lt;sizeof(s2)&lt;&lt;std::endl;//6
     return 0;
 }
-</pre>
+~~~
 
 就现象而言, 设置pack(n)后, **一个类型为type的成员数据的起始偏移就会是min(n,sizeof(type))的倍数**. 
 
@@ -127,7 +127,7 @@ int main(){
 
 **补充** 参考[4]中指出, 数据成员完成各自对齐后, 结构本身也要对齐, 结果结构本身的大小是min(n,max(sizeof(member type) : for member in struct))的倍数. 这个现象构建起来有点麻烦, 可以先看后面的内容, 再回来看这个例子:
 
-<pre>
+~~~
 #pragma pack(4)
 struct s3{
     char a;double d;char e;
@@ -152,7 +152,7 @@ std::cout&lt;&lt;sizeof(s4)&lt;&lt;std::endl;//24, 整个结构体的大小是si
 std::cout&lt;&lt;sizeof(s5)&lt;&lt;std::endl;//3
 std::cout&lt;&lt;sizeof(s6)&lt;&lt;std::endl;//3
 std::cout&lt;&lt;sizeof(s7)&lt;&lt;std::endl;//24, 整个结构体的大小是sizeof(double)的倍数
-</pre>
+~~~
 
 ## 字节对齐与结构体
 
@@ -160,20 +160,20 @@ std::cout&lt;&lt;sizeof(s7)&lt;&lt;std::endl;//24, 整个结构体的大小是si
 
 大部分情况下, 考的都是算个sizeof(结构体)什么的, 所以, 我们先来个简单的:
 
-<pre>
+~~~
 #pragma pack(2)
 struct s1{
     char a;
     int b;
 }
-</pre>
+~~~
 
 这种情况, 按我们刚刚的分析, 应该是这样的:
 
-<pre>
+~~~
 bytes:  | 1     2   |  3  4  |  5  6  |  7  8  |
 member: | a |padding|       b         |没了
-</pre>
+~~~
 
 所以, sizeof(s1)应该是6, 但在VS上测试, 结果是8, 用`offsetof()`查看, b的偏移确实是4了, 跟我们的预测不一致啊, 为什么呢? 呃, 先换个平台试下...
 
@@ -183,7 +183,7 @@ member: | a |padding|       b         |没了
 
 OK, 我们来看稍微复杂点的情况:
 
-<pre>
+~~~
 #include&lt;iostream&gt;
 #pragma pack(1)
 struct s1{char a;int b;char c;};
@@ -207,7 +207,7 @@ int main(){
     std::cout&lt;&lt;sizeof(s6)&lt;&lt;std::endl;//24=4+4+8+8, d的偏移得是8的倍数
     return 0;
 }
-</pre>
+~~~
 
 s1的三个成员的偏移是0, 1, 5,s2的是0, 2, 6, s3和s4的是0, 4, 8; s5的4个成员偏移为0, 4, 8, 12; s6的4个成员偏移为0, 4, 8, 16; 看看你算对了没. 
 
@@ -229,7 +229,7 @@ VS下是直接支持offsetof(type,member)的, gcc要用的话, 可以:
 
 现在, 回到我们最开始的问题:
 
-<pre>
+~~~
 #pragma pack(8)
 struct MyStruct{
     char a;//offset=0, 占1 byte, padding 3 byte
@@ -242,11 +242,11 @@ struct MyStruct{
     char* h;//offset=36, 占 4 byte, 没padding
 };//整个size得是8的倍数, 所以是40
 //其实, 我觉得, 最后一个换成char会更有代表性
-</pre>
+~~~
 
 测试代码(VS2013,32位):
 
-<pre>
+~~~
 #include&lt;iostream&gt;
 #pragma pack(8)
 using namespace std;
@@ -276,7 +276,7 @@ int main(){
     return 0;
 }
 
-</pre>
+~~~
 **Reference:**  
 
 * {:.ref} \[1] : [Data structure alignment - Wikipedia, the free encyclopedia](http://en.wikipedia.org/wiki/Data_structure_alignment)  

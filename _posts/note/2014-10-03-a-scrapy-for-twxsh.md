@@ -5,7 +5,7 @@ description: 向老师索取数据库密码的过程总是比较漫长,不如写
 category: note
 ---
 
-### 1.准备工作
+## 1.准备工作
 
 首先你得知道爬虫是怎么工作的,CSDN有篇[Python爬虫入门教程][1]写得还不错,我就是参考这篇编写的,因为院学生会的旧站用的是古(keng)典(die)的table布局,用正则表达式提取估计非常痛苦,所以看完基础教程后果断选择Scrapy框架.
 
@@ -37,18 +37,20 @@ http://sourceforge.net/projects/pywin32/files/pywin32/Build%20219/
 
 **上面的过程与Scrapy[官方文档][3]的安装指南有不同,官方安装指南安装的是pip,但是我安装pip后安装Scrapy总是出错,原因至今没找到,于是用了CSDN那篇教程的安装方法**
 
-### 2.抓取网页
+## 2.抓取网页
 
 Scrapy应该默认就是多线程的,所以抓取过程很快,Scrapy项目的建立和运行可参考官方文档,这里不赘述.
 抓取过程中可能出现编码问题,网上找的\[1\]解决方案是在python\lib\site-packages下新建sitecustomize.py:
-<pre>
+
+~~~
 import sys
 sys.setdefaultencoding('utf-8')
 #不行就设为gb3132试试呗
-</pre>
+~~~
 
 接下来要正经地抓网页了,比如,要把旧站[新闻中心][5]的所有新闻链接抓下来,首先你得写一个爬虫:
-<pre>
+
+~~~
 from scrapy.spider import Spider
 from scrapy.selector import Selector 
 
@@ -71,7 +73,8 @@ class TwxshSpider4NewsURL(Spider):
             f.write('http://eic.jnu.edu.cn'+url.extract()+'\r\n')
         f.close
 
-</pre>
+~~~
+
 这里的`start_urls`是我自己打开网页复制下来的,因为只有几页,再写一个爬虫抓的话效率就低了.
 
 Scrapy自动对返回体调用你实现的`parse`方法来处理,要提取有用的信息就要在这里实现了.比如这里就用xpath选择器选择了body下的第3个table的第2个tr.....因为这网页就全是table,我也没办法,只能自己下载一个网页,整理好格式,一个一个table地数,然后找到对应的a标签提取其href属性.
@@ -80,7 +83,7 @@ xpath的用法可以找w3school的XML教程看看就好,知道它有与jQuery选
 
 抓取到目标的url后,就可以根据这些url提取正文了.过程跟上面的差不多,就直接贴代码了,需要注意的地方后面会特别指出:
 
-<pre>
+~~~
 # -*- coding: utf-8 -*- 
 from scrapy.spider import Spider
 from scrapy.selector import Selector
@@ -165,18 +168,18 @@ class TwxshSpider4NewsText(Spider):
         ff.write('\r\n')
         ff.close()
        
-</pre>
+~~~
 
 其中读取url是读取刚刚抓取到的url,我把他们写到同一个文件了.
 <del>看到这里的xpath多折磨人了吧,旧站的开发者你出来,我保证不打死你- -</del>
 
-### 3.注意事项
+## 3.注意事项
 
-#### xpath
+### xpath
 
 - `text()`只是用于标签中的纯文本提取,如果标签中还有其他标签,用`text()`提取出来的就是空白符之类的没用的东西,或者啥也没给你提取出来,如果要提取html文本,就用`div/*`或`div/node()`这样的方法,把这个div内的所有内容提取出来\[2\],如:
 
-<pre><code>
+~~~
 	response.xpath('//div[@id="main_content"]').extract()
 	#提取结果:"&lt;div id="main_content"&gt;&lt;p&gt;测试文本&lt;/p&gt;&lt;/div&gt;"
 	
@@ -185,52 +188,57 @@ class TwxshSpider4NewsText(Spider):
 	
 	response.xpath('//div[@id="main_content"]/node()').extract()
 	#同上,但更保险
-</code></pre>
+~~~
 
 - Scrapy的xpath的节点序号是从1开始计数的,比如要提取第一个td元素,应该是`td[1]`
 
-#### css选择器
+### css选择器
 
 除了xpath外,Scrapy还提供CSS风格的选择器,于是可以像CSS和jQuery那样选择元素,对于结构明确的html文本用起来还是很爽的,[官方教程][7]和下面的例子可以感受一下:
 
-	from scrapy import Selector
-	doc = """
-	    <div>
-	       <ul>
-	             <li id="theid" class="item-0"><a href="link1.html">first item</a></li>
-	             <li class="item-1"><a href="link2.html">second item</a></li>
-	             <li class="item-inactive"><a href="link3.html">third item</a></li>
-	             <li class="item-1"><a href="link4.html">fourth item</a></li>
-	             <li class="item-0"><a href="link5.html">fifth item</a></li>
-	        </ul>
-	     </div>
-	    """
-	sel = Selector(text=doc, type="html")
-	print(sel.css('#theid').extract())
-	print(sel.css('#theid::attr(class)').extract())
-	print(sel.css('a[href]').extract())
-	print(sel.css('a::text').extract())
+~~~
+from scrapy import Selector
+doc = """
+    <div>
+       <ul>
+             <li id="theid" class="item-0"><a href="link1.html">first item</a></li>
+             <li class="item-1"><a href="link2.html">second item</a></li>
+             <li class="item-inactive"><a href="link3.html">third item</a></li>
+             <li class="item-1"><a href="link4.html">fourth item</a></li>
+             <li class="item-0"><a href="link5.html">fifth item</a></li>
+        </ul>
+     </div>
+    """
+sel = Selector(text=doc, type="html")
+print(sel.css('#theid').extract())
+print(sel.css('#theid::attr(class)').extract())
+print(sel.css('a[href]').extract())
+print(sel.css('a::text').extract())
+~~~
 
-
-#### 中文字符串
+### 中文字符串
 
 - python源码中使用非ASCII字符的话需要在代码最前面加:
-<pre>
+
+~~~
 # -*- coding: utf-8 -*- 
-</pre>
+~~~
+
 否则无论注释还是字符串都不给用中文.
 
 - 替换中文字符串的时候,最好将参与操作的字符串都转成utf-8,比如:
-<pre>
+
+~~~
 s="来源：添加时间：".decode('utf-8')
 date=sel.xpath('body/td[1]/text()').extract()[0].decode('utf-8').replace(s,"")
 #把"来源：添加时间："删掉
-</pre>
+~~~
 
-#### 下载图片
+### 下载图片
 
 直接用urllib2模块的urlopen方法打开图片的URL,然后读出来,写到指定的文件中去就行了:
-<pre>
+
+~~~
 import urllib2
 #下载图片
 def downloadimg(url,out_put_path):
@@ -239,18 +247,19 @@ def downloadimg(url,out_put_path):
     with open(out_put_path,'wb') as jpg:
         jpg.write(data)
     socket.close()
-</pre>
+~~~
+
 配合多线程效果更佳:
 
-<pre>
+~~~
 import thread
 try:
     thread.start_new_thread(downloadimg,(imgurl,out_put_path))
 except:
     pass
-</pre>
+~~~
 
-### 小结
+## 小结
 
 到这里基本上是成功了,需要的就是建立好文件结构,把抓回来的数据存起来就好了,学生工作,活动之类的都可以用相同的方法写出来,最后的代码和抓取的数据都在我的github上,有兴趣的可以翻一翻:
 https://github.com/DengZuoheng/pyspider4twxsh

@@ -58,16 +58,16 @@ struct MyStruct{
 #include<iostream>
 using namespace std;
 int main(){
-    cout &lt;&lt; "char:" &lt;&lt; sizeof(char) &lt;&lt; endl//1
-        &lt;&lt; "short:" &lt;&lt; sizeof(short) &lt;&lt; endl//1
-        &lt;&lt; "int:" &lt;&lt; sizeof(int) &lt;&lt; endl//4
-        &lt;&lt; "long:" &lt;&lt; sizeof(long) &lt;&lt; endl//4
-        &lt;&lt; "float:" &lt;&lt; sizeof(float) &lt;&lt; endl//4
-        &lt;&lt; "double:" &lt;&lt; sizeof(double) &lt;&lt; endl//8
-        &lt;&lt; "long long:" &lt;&lt; sizeof(long long) &lt;&lt; endl//8
-        &lt;&lt; "long double:" &lt;&lt; sizeof(long double) &lt;&lt; endl//8
-        &lt;&lt; "char*:" &lt;&lt; sizeof(char*) &lt;&lt; endl//4
-        &lt;&lt; "int*:" &lt;&lt; sizeof(int*) &lt;&lt; endl;//4
+    cout << "char:" << sizeof(char) << endl//1
+        << "short:" << sizeof(short) << endl//1
+        << "int:" << sizeof(int) << endl//4
+        << "long:" << sizeof(long) << endl//4
+        << "float:" << sizeof(float) << endl//4
+        << "double:" << sizeof(double) << endl//8
+        << "long long:" << sizeof(long long) << endl//8
+        << "long double:" << sizeof(long double) << endl//8
+        << "char*:" << sizeof(char*) << endl//4
+        << "int*:" << sizeof(int*) << endl;//4
     return 0;
 }
 ~~~
@@ -80,8 +80,8 @@ using namespace std;
 int main(){
     char str[] = "hello";
     int arr[8];
-    cout &lt;&lt; "str:" &lt;&lt; sizeof(str) &lt;&lt; endl//6, 因为后面还有个'\0'
-        &lt;&lt; "arr:" &lt;&lt; sizeof(arr) &lt;&lt; endl;//32
+    cout << "str:" << sizeof(str) << endl//6, 因为后面还有个'\0'
+        << "arr:" << sizeof(arr) << endl;//32
     return 0;
 }
 ~~~
@@ -99,7 +99,7 @@ int main(){
 ~~~
 
 //ubuntu14.04 x64 gcc
-#include&lt;iostream&gt;
+#include<iostream>
 struct s1{
     char a;
     int b;
@@ -111,8 +111,8 @@ struct s2{
 };
 
 int main(){
-    std::cout&lt;&lt;sizeof(s1)&lt;&lt;std::endl;//8
-    std::cout&lt;&lt;sizeof(s2)&lt;&lt;std::endl;//6
+    std::cout<<sizeof(s1)<<std::endl;//8
+    std::cout<<sizeof(s2)<<std::endl;//6
     return 0;
 }
 ~~~
@@ -147,11 +147,11 @@ struct s7{
     char a;double d;char e;
 };
 //main()
-std::cout&lt;&lt;sizeof(s3)&lt;&lt;std::endl;//16, 整个结构体的大小是n的倍数
-std::cout&lt;&lt;sizeof(s4)&lt;&lt;std::endl;//24, 整个结构体的大小是sizeof(double)的倍数
-std::cout&lt;&lt;sizeof(s5)&lt;&lt;std::endl;//3
-std::cout&lt;&lt;sizeof(s6)&lt;&lt;std::endl;//3
-std::cout&lt;&lt;sizeof(s7)&lt;&lt;std::endl;//24, 整个结构体的大小是sizeof(double)的倍数
+std::cout<<sizeof(s3)<<std::endl;//16, 整个结构体的大小是n的倍数
+std::cout<<sizeof(s4)<<std::endl;//24, 整个结构体的大小是sizeof(double)的倍数
+std::cout<<sizeof(s5)<<std::endl;//3
+std::cout<<sizeof(s6)<<std::endl;//3
+std::cout<<sizeof(s7)<<std::endl;//24, 整个结构体的大小是sizeof(double)的倍数
 ~~~
 
 ## 字节对齐与结构体
@@ -184,7 +184,7 @@ member: | a |padding|       b         |没了
 OK, 我们来看稍微复杂点的情况:
 
 ~~~
-#include&lt;iostream&gt;
+#include<iostream>
 #pragma pack(1)
 struct s1{char a;int b;char c;};
 
@@ -199,12 +199,12 @@ struct s5{char a;int b;char c;double d};
 struct s4{char a;int b;char c;};
 struct s6{char a;int b;char c;double d};
 int main(){
-    std::cout&lt;&lt;sizeof(s1)&lt;&lt;std::endl;//6=1+4+1
-    std::cout&lt;&lt;sizeof(s2)&lt;&lt;std::endl;//8=2+4+2
-    std::cout&lt;&lt;sizeof(s3)&lt;&lt;std::endl;//12=4+4+4
-    std::cout&lt;&lt;sizeof(s4)&lt;&lt;std::endl;//12=4+4+4
-    std::cout&lt;&lt;sizeof(s5)&lt;&lt;std::endl;//20=4+4+4+8
-    std::cout&lt;&lt;sizeof(s6)&lt;&lt;std::endl;//24=4+4+8+8, d的偏移得是8的倍数
+    std::cout<<sizeof(s1)<<std::endl;//6=1+4+1
+    std::cout<<sizeof(s2)<<std::endl;//8=2+4+2
+    std::cout<<sizeof(s3)<<std::endl;//12=4+4+4
+    std::cout<<sizeof(s4)<<std::endl;//12=4+4+4
+    std::cout<<sizeof(s5)<<std::endl;//20=4+4+4+8
+    std::cout<<sizeof(s6)<<std::endl;//24=4+4+8+8, d的偏移得是8的倍数
     return 0;
 }
 ~~~
@@ -247,7 +247,7 @@ struct MyStruct{
 测试代码(VS2013,32位):
 
 ~~~
-#include&lt;iostream&gt;
+#include<iostream>
 #pragma pack(8)
 using namespace std;
 struct s1
@@ -263,15 +263,15 @@ struct s1
 };
 
 int main(){
-    cout &lt;&lt; sizeof(s1) &lt;&lt; endl;
-    cout &lt;&lt; offsetof(s1, a) &lt;&lt; " " 
-        &lt;&lt; offsetof(s1, b) &lt;&lt; " " 
-        &lt;&lt; offsetof(s1, c) &lt;&lt; " " 
-        &lt;&lt; offsetof(s1, d) &lt;&lt; " "
-        &lt;&lt; offsetof(s1, e) &lt;&lt; " " 
-        &lt;&lt; offsetof(s1, f) &lt;&lt; " " 
-        &lt;&lt; offsetof(s1, g) &lt;&lt; " " 
-        &lt;&lt; offsetof(s1, h) &lt;&lt; endl;
+    cout << sizeof(s1) << endl;
+    cout << offsetof(s1, a) << " " 
+        << offsetof(s1, b) << " " 
+        << offsetof(s1, c) << " " 
+        << offsetof(s1, d) << " "
+        << offsetof(s1, e) << " " 
+        << offsetof(s1, f) << " " 
+        << offsetof(s1, g) << " " 
+        << offsetof(s1, h) << endl;
     system("pause");
     return 0;
 }

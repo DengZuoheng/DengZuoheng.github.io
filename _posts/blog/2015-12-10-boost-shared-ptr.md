@@ -60,6 +60,8 @@ category: blog
 
 `shared_ptr`内部用的是`delete`和`delete[]`, 所以还是应该与`new`成对使用.
 
+## make_shared系工厂函数
+
 如果真的不想见到new, boost有`make_shared`和`allocate_shared`, 前者用new, 后者可用户定义allocator.
 
 事实上, 使用`make_shared`能提高`shared_ptr`的性能, 因为这样能一次分配智能指针管理块与所管理的对象的内存.
@@ -73,6 +75,8 @@ category: blog
 对于`allocate_shared`, 除第一个参数得是allocator外, 其他与`make_shared`是一样的.
 
 如果分配不到内存, 会抛出`bad_alloc`(or some thing like this)而不是返回空智能指针.
+
+如果传给make_shared的参数没有匹配的构造函数而且是单参数, make_shared貌似会尝试调用复制构造函数, 然后报错说`无法将参数 1 从“xxx”转换为“const Xxxx &”, 这个错误看起来够莫名的, 需要注意.
 
 ## 防止可能的泄露
 
@@ -183,6 +187,8 @@ category: blog
 
 在讨论其他问题前, 我们是时候看看`shared_ptr`的类摘要以便了解`shared_ptr`本身有哪些接口(实际上, `shared_ptr`的摘要很长!):
 
+### 构造函数
+
 	class bad_weak_ptr: public std::exception;
 		template<class T> class weak_ptr;
 		template<class T> class shared_ptr {
@@ -214,6 +220,8 @@ category: blog
 			//从std::unique_ptr移动构造
 			template<class Y, class D> shared_ptr(std::unique_ptr<Y, D> && r);
 
+### 操作符
+
 			shared_ptr & operator=(shared_ptr const & r); // never throws
 			template<class Y> shared_ptr & operator=(shared_ptr<Y> const & r); // never throws
 
@@ -226,6 +234,13 @@ category: blog
 			template<class Y, class D> shared_ptr & operator=(std::unique_ptr<Y, D> && r);
 
 			shared_ptr & operator=(std::nullptr_t); // never throws
+
+			T & operator*() const; // never throws; only valid when T is not an array type
+			T * operator->() const; // never throws; only valid when T is not an array type
+			element_type & operator[](std::ptrdiff_t i) const; // never throws; only valid when T is an array type
+
+### 其他操作
+
 			//重置
 			void reset(); // 停止shared_ptr的使用
 			template<class Y> void reset(Y * p);//等价于交换
@@ -234,10 +249,9 @@ category: blog
 
 			template<class Y> void reset(shared_ptr<Y> const & r, element_type * p); // never throws
 
-			T & operator*() const; // never throws; only valid when T is not an array type
-			T * operator->() const; // never throws; only valid when T is not an array type
 
-			element_type & operator[](std::ptrdiff_t i) const; // never throws; only valid when T is an array type
+
+			
 
 			element_type * get() const; // never throws
 
@@ -252,6 +266,8 @@ category: blog
 			template<class Y> bool owner_before(weak_ptr<Y> const & rhs) const; // never throws
 	};
 	
+### 比较运算符
+
 	  template<class T, class U> bool operator==(shared_ptr<T> const & a, shared_ptr<U> const & b); // never throws
 	  template<class T, class U> bool operator!=(shared_ptr<T> const & a, shared_ptr<U> const & b); // never throws
 	  //反正是保证了C++标准的严格偏序	  

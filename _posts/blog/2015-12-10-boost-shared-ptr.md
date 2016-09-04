@@ -509,7 +509,7 @@ d可以是函数, 函数对象 lambda表达式, 但必须可拷贝. 此外, boos
 * {:.ref} \[2]: [shared_ptr - 1.57.0](http://www.boost.org/doc/libs/1_57_0/libs/smart_ptr/shared_ptr.htm)    
 * {:.ref} \[3]: [weak_ptr - 1.57.0](http://www.boost.org/doc/libs/1_57_0/libs/smart_ptr/weak_ptr.htm)    
 * {:.ref} \[4]: Boris Kolpackov. [shared_ptr aliasing constructor](http://www.codesynthesis.com/~boris/blog/2012/04/25/shared-ptr-aliasing-constructor/)    
-* {:.ref} \[5]: [c++ - What is boost's shared_ptr(shared_ptr<Y> const & r, T * p) used for? - Stack Overflow](http://stackoverflow.com/questions/1403465/what-is-boosts-shared-ptrshared-ptry-const-r-t-p-used-for)  
+* {:.ref} \[5]: [c++ - What is boost's `shared_ptr(shared_ptr<Y> const & r, T * p)` used for? - Stack Overflow](http://stackoverflow.com/questions/1403465/what-is-boosts-shared-ptrshared-ptry-const-r-t-p-used-for)  
 * {:.ref} \[6]: [memory management - C++: Delete this? - Stack Overflow](http://stackoverflow.com/questions/3150942/c-delete-this)  
 * {:.ref} \[7]: 陈硕. [为什么多线程读写 shared_ptr 要加锁？](http://blog.csdn.net/solstice/article/details/8547547)  
 * {:.ref} \[8]: Shuo Chen. [boost - C++: shared_ptr as unordered_set's key - Stack Overflow](http://stackoverflow.com/questions/6404765/c-shared-ptr-as-unordered-sets-key/12122314#12122314)  

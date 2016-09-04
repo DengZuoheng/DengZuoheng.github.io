@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Total Commamder常用命令
+title: Total Commamder常用命令与使用方法
 description: 简记一些TC的用法,方便复习
 category: note
 ---
@@ -31,6 +31,7 @@ category: note
 - 打开桌面:Alt+C+O
 - 复制文件名:Alt+M+Y(我的重定向:Alt+C)
 - 复制文件名以及完整路径:Alt+M+P(我的重定向:Alt+Shift+C)
+- 右键菜单: Appl, 或者选中文件长按右键, 或者"配置"->"选项"->"操作"->"鼠标选择模式"设置
 
 ## 选择
 
@@ -53,6 +54,8 @@ category: note
 - 打开标签收藏夹:Ctrl+D
 - 刷新:F2
 - 改变当前路径: 光标指向返回上级目录项,Shift+F6
+- 获取当前路径: 同上, 此时路径会被选中, Ctrl+C可复制
+- 获取当前路径: Ctrl+P会把当前路径打印到下面的命令行栏, 然后`→`可选中之
 
 ## 系统
 

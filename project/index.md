@@ -16,7 +16,7 @@ layout: home
         {% for post in site.categories.project %}
             <li>
                 <h2><a href="http://dengzuoheng.github.io{{ post.url }}">{{ post.title }}</a></h2>
-                <div class="title-desc">{{ post.description }}</div>
+                <div class="title-desc">{{ post.date|date:"%Y-%m-%d" }}&emsp;{{ post.description }}</div>
             </li>
         {% endfor %}
             <li>

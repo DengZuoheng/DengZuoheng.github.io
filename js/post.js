@@ -84,7 +84,7 @@ $(document).ready(function(){
                 }
                 item.id = 'menuIndex' + index;
             });
-            console.log({h2:h2,h3:h3,h4:h4});
+
             return {h2:h2,h3:h3,h4:h4}
         }
         function genTmpl(){
@@ -92,7 +92,7 @@ $(document).ready(function(){
             var tmpl = '<ul><li class="h1"><a href="#">' + h1txt + '</a></li>';
 
             var heading = initHeading();
-            console.log(heading);
+
             var h2 = heading.h2;
             var h3 = heading.h3;
             var h4 = heading.h4;

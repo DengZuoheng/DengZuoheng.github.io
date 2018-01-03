@@ -2,7 +2,7 @@
 layout: post
 title: C++不可继承类
 description: 在不使用final的情况下实现不可继承类, 虽然不是很可移植, 但很多情况下都能用
-category: note
+category: blog
 ---
 
 只要继承boost::noninheritable就好, 当然, boost的命名空间是我随便弄的. 

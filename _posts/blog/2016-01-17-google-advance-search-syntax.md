@@ -2,7 +2,7 @@
 layout: post
 title: 谷歌高级搜索--关键词与URL语法
 description: 简述一些谷歌的搜索语法以及如何通过设定URL参数达成高级搜索的功能.
-category: note
+category: blog
 ---
 
 ## 目标

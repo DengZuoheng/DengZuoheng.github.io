@@ -2,7 +2,7 @@
 layout: post
 title: Scrapy实现简单爬虫抓取旧站数据
 description: 向老师索取数据库密码的过程总是比较漫长,不如写两天代码,使用python Scrapy框架实现一个爬虫自己把数据抓下来好了,操作记录和注意事项如下,需者自取
-category: note
+category: project
 ---
 
 ## 1.准备工作

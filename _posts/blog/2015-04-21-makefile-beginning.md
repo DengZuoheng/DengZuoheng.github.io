@@ -2,7 +2,7 @@
 layout: post
 title: makefile那些事
 description: mekefile入门以及一些基本特性
-category: note
+category: blog
 ---
 
 ## 概述 ##

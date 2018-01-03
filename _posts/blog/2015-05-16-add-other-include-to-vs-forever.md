@@ -2,7 +2,7 @@
 layout: post
 title: Visual Studio为所有项目永久添加额外包含路径
 description: VS中使用第三方库, 比如Boost的时候总是要手动添加包含路径等等, 实在太不智能了, 于是上网找了个方法, 挺好用的, 便记下来  
-category: note
+category: blog
 ---
 
 ## 方案1 ##

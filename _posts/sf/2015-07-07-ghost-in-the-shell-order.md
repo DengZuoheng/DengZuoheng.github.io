@@ -2,7 +2,7 @@
 layout: post
 title: 攻壳机动队的观看顺序
 description: 攻壳机动队动画及剧场版观看顺序
-category: note
+category: sf
 ---
 
 

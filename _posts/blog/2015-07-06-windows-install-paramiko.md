@@ -2,7 +2,7 @@
 layout: post
 title: windows下安装paramiko
 description: 首先得下载一个pycrypto的windows安装包, 然后pip安装paramiko
-category: note
+category: blog
 ---
 
 paramiko是python的一个ssh库, 用以ssh远程执行命令, 使用简单方便, 但安装依赖pycrypto,

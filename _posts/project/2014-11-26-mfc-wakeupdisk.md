@@ -2,7 +2,7 @@
 layout: post
 title: 唤醒我的硬盘盒-一个MFC对话框小程序
 description: 这是一个基于对话框的MFC程序,目标在于对于每个硬盘定时写入少量数据阻止硬盘盒进入自动休眠.涉及到一些隐藏到系统托盘,开机启动,获取当前登陆用户,读写json文件等代码,以前没写在博客,故这次记录之.
-category: note
+category: project
 ---
 
 ## 缘起

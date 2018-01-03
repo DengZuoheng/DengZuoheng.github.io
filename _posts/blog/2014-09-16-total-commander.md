@@ -2,7 +2,7 @@
 layout: post
 title: Total Commamder常用命令与使用方法
 description: 简记一些TC的用法,方便复习
-category: note
+category: blog
 ---
 
 其实几乎所有命令都可以重映射, 因为我习惯左手键盘右手鼠标, 所以很

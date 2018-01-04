@@ -119,7 +119,6 @@ $(document).ready(function(){
 
   
   function playGame(xMax, yMax, r, n){
-    console.log("play");
     ctx.clearRect(0, 0, width, height);
     var gridCopy = [];
     for (var y = 0; y < yMax; y++){
@@ -156,6 +155,21 @@ $(document).ready(function(){
       initSize();
       ctx = $("#canvas")[0].getContext('2d');
     });
+    var canvas = document.getElementById("canvas");
+    canvas.onmousemove = function(e) {
+      // Get the current mouse position
+      var r = canvas.getBoundingClientRect(),
+          x = e.clientX - r.left, y = e.clientY - r.top;
+      var xc = parseInt(x/15);
+      var yc = parseInt(y/15);
+      try {
+            grid[xc+(yc-1)*xMax] = 1;
+            grid[xc+1 +(yc-1)*xMax] = 1;
+            grid[xc-1 +(yc+1)*xMax] = 1;
+            grid[xc +(yc+1)*xMax] = 1;
+      } catch (e) {}
+    }
+
     // These values are the most aesthetically pleasing
     var xMax = 50;
     var yMax = 100;

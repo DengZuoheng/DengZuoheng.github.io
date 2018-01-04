@@ -3,6 +3,7 @@ layout: home
 ---
 
 <div class="index-content blog">
+    <div id="game"> <canvas id="canvas" ></canvas></div>
     <div class="section">
         <ul class="artical-cate">
             <li class="on"><a href="/blog"><span>Blog</span></a></li>

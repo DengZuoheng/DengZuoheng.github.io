@@ -25,12 +25,9 @@ category: project
                 checkedOption.push(allOption[i].id);
             }
         }
-        
         let randomIdx = Math.floor(Math.random() * checkedOption.length);
         let selectedId = checkedOption[randomIdx];
         let result = document.getElementById(selectedId).value;
         document.getElementById("result").innerHTML = result;  
     }
-    
-
 </script>

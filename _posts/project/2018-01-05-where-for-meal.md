@@ -20,11 +20,11 @@ category: project
     document.querySelector("#submit").onclick=function() {
         var allOption = document.querySelectorAll(".option");
         var checkedOption = [];
-        for (let i = 0; i < allOption.length; ++i) {
-            if (allOption[i].checked) {
-                checkedOption.push(allOption[i].id);
+        allOption.forEach(function(obj, idx) {
+            if (obj.checked) {
+                checkedOption.push(obj.id);
             }
-        }
+        });
         let randomIdx = Math.floor(Math.random() * checkedOption.length);
         let selectedId = checkedOption[randomIdx];
         let result = document.getElementById(selectedId).value;

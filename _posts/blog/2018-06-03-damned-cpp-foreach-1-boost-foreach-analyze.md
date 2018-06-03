@@ -924,9 +924,9 @@ distructor
 
 如果我们翻看`BOOST_FOREACH`, 会发现作者说:
 
-> // Detect at compile-time whether an expression yields an rvalue or
-> // an lvalue. This is rather non-standard, but some popular  compilers
-> // accept it.
+> // Detect at compile-time whether an expression yields an rvalue or  
+> // an lvalue. This is rather non-standard, but some popular  compilers  
+> // accept it.  
 
 好吧, 真正的黑魔法; 虽然不知道怎么回事, 但我们可以认为这么一个黑魔法是可以编译器探测右值的, 关键是怎么利用它. 因为我们的目标是编译时探测右值, 所以不能依靠返回值的具体量. 我们只能用编译时能用的信息, 比如常量? 类型? 也许我们可以用一下参数类型, 返回类型啥的.
 
@@ -1248,6 +1248,7 @@ begin(const auto_any_base& container, type2type<T, IS_CONST>*, boost::mpl::false
 
 其他函数写法差不多, 但是`next`需要注意一下, `auto_any_cast`的时候, 不需要使用`IS_CONST`, 因为得`++`, 下面是完整的第三个版本的`FOREACH`:
 
+~~~
 #include <boost/mpl/bool.hpp>
 #include <boost/range/end.hpp>
 #include <boost/range/begin.hpp>

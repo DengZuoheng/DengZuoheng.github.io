@@ -855,6 +855,8 @@ TEST(for_each_test, right_value_boost_for_each_test) {
   }
 }
 
+~~~
+
 `contain`函数中, `variant`的构造, 返回都会复制一次右值, 这听起来很不靠谱, 而上面的测试代码应该也可以看到`BOOST_FOEACH`没有这两次复制. 这是怎么做到的呢? 
 
 ## 再探右值探测
@@ -996,9 +998,11 @@ inline auto_any<T *> contain(T &t, boost::mpl::false_ *) // lvalue
 #define FOREACH_CONTAIN(COL) \
     contain(FOREACH_EVALUATE(COL) , FOREACH_IS_RVALUE(COL))
 ~~~
+
 这里的`FOREACH_EVALUATE`直接求值就好, 我们甚至可以不写这个宏, 但是在`BOOST_FOREACH`中, 有不同的右值探测方式, `FOREACH_EVALUATE`宏就有不同版本, 所以即使在简单, 也得写个宏.
 
 简单测试一下:
+
 ~~~
 int main() {
        if (const auto_any_base& _foreach_col = FOREACH_CONTAIN(create_vec())) {}  else {

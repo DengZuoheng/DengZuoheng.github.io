@@ -4,6 +4,7 @@ markdown: kramdown
 highlighter: rouge
 paginate: 8
 permalink: /:title
+future: true
 
 title: 邓作恒的博客
 url: http://dengzuoheng.github.io

@@ -443,91 +443,115 @@ struct rvalue_probe {
     (true ? rvalue_probe((col), is_rvalue) :  (col)
 ~~~
 
-`EVAL`返回什么呢? 当col是个右值表达式, `rvalue_probe`构造时会对其求值, 得到临时变量t, 并把t的指针保存到`p_temp`. 随即发生了转换, 因为此时还在"一个表达式"里面, 所以`p_temp`依然是有效的. 参考一下测试代码:
+`EVAL`返回什么呢? 当col是个右值表达式, `rvalue_probe`构造时会对其求值, 得到临时变量t, 并把t的指针保存到`p_temp`. 随即发生了转换, 因为此时还在"一个表达式"里面, 所以`p_temp`依然是有效的. 参考一下测试代码(注意这里的vector, 这个奇怪的vector在之后的测试代码中经常出现):
 
 ~~~
+#include <iostream>
+#include <vector>
+
+class vector : public std::vector<int> {
+public:
+    vector() : std::vector<int>() {
+        std::cout << "constructor" << std::endl;
+        int arr[] = { 1, 2, 3, 4, 5 };
+        std::vector<int>::assign(arr, arr + 5);
+    }
+    vector(const vector& rhs) : std::vector<int>(rhs) {
+        std::cout << "copy constructor" << std::endl;
+    }
+    vector& operator=(const vector& rhs) {
+        std::cout << "assign operator" << std::endl;
+        std::vector<int>::operator=(rhs);
+        return *this;
+    }
+    ~vector() {
+        std::cout << "distructor" << std::endl;
+    }
+};
+
+vector create_vec() {
+    std::cout << "create_vec" << std::endl;
+    return vector();
+}
 struct rvalue_probe {
-       template<class T>
-       rvalue_probe(const T& t, bool& b) : p_temp(const_cast<T*>(&t)),  is_rvalue(b) {
-              // pass
-       }
-       template<class R> operator R() {
-              std::cout << "begin operator R" << std::endl;
-              is_rvalue = true;
-              return *static_cast<R*>(p_temp);
-       }
-       template<class L> operator L&() const {
-              std::cout << "begin operator L&" << std::endl;
-              is_rvalue = false;
-              return &static_cast<L*>(p_temp);
-       }
-       void* p_temp;
-       bool& is_rvalue;
+    template<class T>
+    rvalue_probe(const T& t, bool& b) : p_temp(const_cast<T*>(&t)),  is_rvalue(b) {
+        // pass
+    }
+    template<class R> operator R() {
+        std::cout << "begin operator R" << std::endl;
+        is_rvalue = true;
+        return *static_cast<R*>(p_temp);
+    }
+    template<class L> operator L&() const {
+        std::cout << "begin operator L&" << std::endl;
+        is_rvalue = false;
+        return &static_cast<L*>(p_temp);
+    }
+    void* p_temp;
+    bool& is_rvalue;
 };
 #define EVAL(col, is_rvalue) \
     (true ? rvalue_probe((col), is_rvalue) :  (col))
-struct example {
-       explicit example(int _id) : id(_id) {
-              std::cout << "explicit constructor: " << id << std::endl;
-       }
-       example(const example& rhs) {
-              id = rhs.id + 1;
-              std::cout << "copy constructor: rhs:" << rhs.id << " this: " << id  << std::endl;
-       }
-       ~example() {
-              std::cout << "~example: " << id << std::endl;
-       }
-       int id;
-};
+
 template<typename T>
 void contain(const T& col, const bool& is_rvalue) {
-       std::cout << "begin contain" << std::endl;
-       example ret(col);
-       std::cout << "contain : " << ret.id << std::endl;
-       std::cout << "end contain" << std::endl;
+    std::cout << "begin contain" << std::endl;
+    std::cout << "end contain" << std::endl;
 }
-example getCol() {
-       std::cout << "begin getCol" << std::endl;
-       example ret(0);
-       std::cout << "end getCol" << std::endl;
-       return ret;
-}
+
 int main() {
-       bool is_rvalue = false;
-       contain(EVAL(getCol(), is_rvalue), is_rvalue);
-       std::cout << "end main" << std::endl;
+    bool is_rvalue = false;
+    contain(EVAL(create_vec(), is_rvalue), is_rvalue);
+    std::cout << "end main" << std::endl;
 }
 ~~~
 
-其输出(VS2015)为:
+其输出(VS2015，mingw5.3)为:
 
 ~~~
-begin getCol
-explicit constructor: 0
-end getCol
-copy constructor: rhs:0 this: 1
-~example: 0
+create_vec
+constructor
 begin operator R
-copy constructor: rhs:1 this: 2
+copy constructor
 begin contain
-copy constructor: rhs:2 this: 3
-contain : 3
 end contain
-~example: 3
-~example: 2
-~example: 1
+distructor
+distructor
 end main
 ~~~
 
-`getCol`的返回值应该是1, 所以, 这个右值反而是最后析构的, 惊不惊喜? 不好的是, 复制构造函数调用了3次, 我们测试右值的这一段代码多复制了一次. 如果我们把main函数改成这样的话, 复制构造函数只会调用两次:
+`rvalue_probe`转换函数的返回会复制一次, 这次似乎没有必要, 但又无法避免. (`BOOST_FOREACH`中, 用的不是指针, 而是引用, 但这次复制仍然没有避免), BOOST_FOREACH里面是这样的, 可以参考一下:
 
 ~~~
-int main() {
-       bool is_rvalue = false;
-       example tmp = getCol();
-       contain(tmp, is_rvalue);
-       std::cout << "end main" << std::endl;
-}
+template<typename T>
+struct rvalue_probe
+{
+    rvalue_probe(T &t, bool &b): value(t), is_rvalue(b){ }
+
+    operator T() {
+        this->is_rvalue = true;
+        return this->value;
+    }
+
+    operator T &() const {
+        return this->value;
+    }
+
+private:
+    T & value;
+    bool &is_rvalue;
+};
+
+template<typename T>
+rvalue_probe<T> make_probe(T &t, bool &b) { return rvalue_probe<T>(t, b); }
+
+template<typename T>
+rvalue_probe<T const> make_probe(T const &t, bool &b) { return rvalue_probe<T const>(t, b); }
+
+#define EVAL(COL, is_rvalue) \
+    (true ? make_probe((COL), is_rvalue) : (COL))
+
 ~~~
 
 ### 保存右值
@@ -857,15 +881,17 @@ TEST(for_each_test, right_value_boost_for_each_test) {
 
 ~~~
 
-`contain`函数中, `variant`的构造, 返回都会复制一次右值, 这听起来很不靠谱, 而上面的测试代码应该也可以看到`BOOST_FOEACH`没有这两次复制. 这是怎么做到的呢? 
+`contain`函数中, `create_vec()`返回, `rvalue_probe`的转换, `variant`的构造返回都会复制一次右值, 所以复制了3遍, 这听起来很不靠谱, 而上面的测试代码应该也可以看到`BOOST_FOEACH`没有这么多次复制. 这是怎么做到的呢? 
 
 ## 再探右值探测
 
 事实上, BOOST_FOREACH中, 根据编译器的版本, 分成了三种情况, 编译时右值探测, 运行时右值探测以及...没有右值探测. 
 
-没有右值探测的编译器版本应该是比较老的了, 比如gcc3.x以前(那都是十几年前了), 我们就愉快地忽略这种情况了; 而我们上面提到的右值探测, 在这里就是运行时右值探测.  gcc3.4和msvc13.1后, BOOST_FOREACH用的都是编译时右值探测了, 所以, 本章节讨论的自然就是这种情况了. 
+没有右值探测的编译器版本应该是比较老的了, 比如gcc3.x以前(那都是十几年前了), 我们就愉快地忽略这种情况了; 
 
-BOOST_FOREACH里面用的方法笔者是想不出来了, 有兴趣的读者可以自己想想看, 下面我们就直接公布答案了.
+而我们上面讨论了很久的右值探测, 在这里就是运行时右值探测. 我们可以把`BOOST_FOREACH`的代码拷贝出来, 手动去设置文件开头那些宏, 然后让`BOOST_FOREACH`用运行时右值探测, 你会发现也是复制了3遍.
+
+gcc3.4和msvc13.1后, BOOST_FOREACH用的都是编译时右值探测了, 所以, 本章节讨论的自然就是这种情况了. 但BOOST_FOREACH里面用的方法笔者是想不出来了, 有兴趣的读者可以自己想想看, 下面我们就直接公布答案了.
 
 翻看BOOST_FOREACH的源码, 可以看到两个函数:
 

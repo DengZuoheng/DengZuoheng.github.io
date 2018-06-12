@@ -138,7 +138,7 @@ FOREACH(int val, vec) {
         for (val = *it; !_continue;_continue=true)\
 ~~~
 
-但是这样看起来怪怪的, 我们还是更显式地让if判断为false吧:
+在if中赋值通常会引发编译器warning, 所以需要一个函数:
 
 ~~~
 bool set_false(bool& _continue) {

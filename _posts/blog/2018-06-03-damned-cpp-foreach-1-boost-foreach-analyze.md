@@ -134,7 +134,7 @@ FOREACH(int val, vec) {
 ~~~
 #define FOREACH(val, col) \
     // some magic
-    if (_continue=false) { } \
+    if (_continue=false) { } else \
         for (val = *it; !_continue;_continue=true)\
 ~~~
 

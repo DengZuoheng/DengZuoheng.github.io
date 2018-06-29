@@ -255,7 +255,7 @@ foreach_iter_t<typename ContainerType::const_iterator> begin(const ContainerType
 
 还真能, 参考文献[1]中提到, 将派生类的临时实例绑定到基类声明的常量引用, 这个临时实例的生命会延长到与该引用一致. 什么意思? 
 
-就是`const base_type b = begin(col)`时, 直到我们用完`b`, 那个`begin`返回值, 那个应该是临时变量的返回值,  才析构.   (不是基类引用也行[2], 因为这里我们不知道类型, 所以就得搞一个基类, 类似类型擦除). 
+就是`const base_type& b = begin(col)`时, 直到我们用完`b`, 那个`begin`返回值, 那个应该是临时变量的返回值,  才析构.   (不是基类引用也行[2], 因为这里我们不知道类型, 所以就得搞一个基类, 类似类型擦除). 
 
 所以 根据参考文献[1][2], 我们可以写成这样:
 

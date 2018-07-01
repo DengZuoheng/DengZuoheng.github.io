@@ -187,11 +187,11 @@ it和_continue都可以在for结构里声明, 但是, 我们上面的进展还�
 那么我们可不可以弄一个包装容器:
 
 1. 推导待遍历容器的元素类型;
-2. 包装这个待遍历容器, 然后得到一个可以遍历此包装容器器的迭代器:
-3. 避免多次引用col, 也许是说第一次使用的时候, 就需要在第一次使用的时候, 将这个容器的引用或者右值保存下来.
+2. 包装这个待遍历容器或者它的迭代器, 然后得到一个迭代器类似物, 希望用这个迭代器类似物来遍历容器和数组的代码是差不多的:
+3. 避免多次引用col,  就需要第一次使用的时候, 将这个容器的引用或者右值保存下来.
 
 
-鉴于我们要在这样一个结构里保留一个类型不定的变量比较困难(if 里面的变量都得有`operator bool`, for的话可能降低性能), 我们先指望我们能得到begin和end, 这样我们的结构会如下:
+鉴于我们要在这样一个结构体里保留一个类型不定的变量比较困难(if 里面的变量都得有`operator bool`, for的话可能降低性能), 我们先指望我们能得到begin和end, 这样我们的结构会如下:
 
 ~~~
 #define FOREACH(val, col) \
@@ -203,7 +203,7 @@ it和_continue都可以在for结构里声明, 但是, 我们上面的进展还�
                 for (auto val = *iter_begin; !_continue; _continue = true)\
 ~~~
 
-if里面无法一次得到两个变量, 所以begin和end得分别声明, 但这样可能会需要两次使用col, 到此重复求值; 所以这里的FOREACH_WRAPPER_XXX我们都先假设为宏, 希望后面能找到什么办法, 可以利用begin啥的来得到end. 
+if里面无法一次得到两个变量, 所以begin和end得分别声明, 但这样可能会需要两次使用col, 导致重复求值; 所以这里的FOREACH_WRAPPER_XXX我们都先假设为宏, 希望后面能找到什么办法, 避免重复求值. 
 
 现在我们再来看一下这个三重循环是不是能简化一下.
 
@@ -227,7 +227,7 @@ for (bool _continue = true; _continue && iter_begin != iter_end; _continue? ++it
 
 ## 持有和操作迭代器
 
-现在我们先在试着写一个foreach_iter_t :
+现在我们先在试着写一个foreach_iter_t, 它有一个`bool`型的转换, 以及一个泛型的构造函数, 我们指望它能够包装迭代器或容器 :
 
 ~~~
 template<typename T>
@@ -280,7 +280,7 @@ foreach_iter_impl<typename Container::const_iterator> begin(const ContainerType&
 
 ~~~
 
-但是, 这样的话我们就丢失了类型信息, 自然没法随随便便就写出一个`operator++`来, 所以, 我们得像`begin`函数一样, 写个`next`函数好了:
+但是, 这样的话我们就丢失了类型信息, 自然没法随随便便就写出一个`operator++`来, 所以, 我们得像`begin`函数一样, 写个`next`函数:
 
 ~~~
 template<typename ContainerType>
@@ -329,9 +329,9 @@ void next(const foreach_iter_t& iter,  const ContaineType& ) {
 
 我们希望能从`SOME_MAGIC`得到col的类型信息. 这依赖于三目运算符的类型推导规则, 三目运算符始终是一个有结果的表达式, 结果是什么类型, 自然是从后两个操作数中得来的. 具体怎么来的, 我们可以参考文献[1]:
 
-> 对于表达式 (b ? x : y), 如果x的类型是X, y的类型是Y, 而且X和Y不同, 而且其中一个是类类型, 编译器就会看X能不能转成Y以及Y能不能转成X. 如果只有X转Y或者只有Y转X(就是不能互相转), 这种转换就是一种无歧义的类型推导. 比如Y能转换成X, 而X不能转换成Y, 表达式的类型就会是Y.
+> 对于表达式 (b ? x : y), 如果x的类型是X, y的类型是Y, 而且X和Y不同, 而且其中一个是类类型, 编译器就会看X能不能转成Y以及Y能不能转成X. 如果只有X转Y或者只有Y转X(就是不能互相转), 这种转换就是一种无歧义的类型推导. 比如Y能转换成X, 而X不能转换成Y, 三目表达式的类型就会是Y.
 
-按这个意思,  我们应该写成: `SOME_MAGIC`可以转换成col, 而col不能转换成`SOME_MAGIC`, 这样表达式的类型就是col的类型.
+按这个意思,  也许我们可以写成: `SOME_MAGIC`可以转换成col, 而col不能转换成`SOME_MAGIC`, 这样表达式的类型就是col的类型.
 
 但我们知道`SOME_MAGIC`是不可能转换成col, 因为col的构造函数肯定不知道`SOME_MAGIC`是什么鬼. 所以我们不能直接就把col放着, 我们得包一下:
 
@@ -339,7 +339,7 @@ void next(const foreach_iter_t& iter,  const ContaineType& ) {
 #define ENCODED_TYPEOF(col) true ? any_type() : encode_type(container))
 ~~~
 
-`any_type`是一个类, 而`encode_type`返回某个类型的实例, 而`any_type`可以转换成这个类型, 我们可以这样写:
+`any_type`是一个类, 而`encode_type`是个函数, 会返回某个类型的实例, 而`any_type`可以转换成这个类型. 我们可以这样写:
 
 ~~~
 template <typename T> 
@@ -413,7 +413,7 @@ struct rvalue_probe {
 
 也许在你的编译器上, 上面这个代码是不work的, 这算编译器厂商的锅, `BOOST_FOREACH`的作者也在代码中吐槽这事:
 
-> //Detect at run-time whether an expression yields an rvalue  
+> // Detect at run-time whether an expression yields an rvalue  
 > // or an lvalue. This is 100% standard C++, but not all compilers  
 > // accept it. Also, it causes FOREACH to break when used with non-  
 > // copyable collection types.  
@@ -556,7 +556,7 @@ rvalue_probe<T const> make_probe(T const &t, bool &b) { return rvalue_probe<T co
 
 ## 保存右值
 
-OK, 我们继续向前, 因为我们有begin, end函数来获取两个迭代器, 所以, 对于右值来说, 我们还需要把它保存起来(没错, 又复制一次), 当然左值就不复制了, 那么我们需要一个`union`类似物, 右值的时候存的是右值的副本, 左值的时候存的是左值的指针. `boost::variant`可以, 不过`BOOST_FOREACH`里面用的是一个跟简单的版本(simple_variant). 这里我们不妨用`boost::variant`.
+OK, 我们继续向前, 因为我们有begin, end函数来获取两个迭代器, 所以, 对于右值来说, 我们还需要把它保存起来(没错, 又复制一次), 当然左值就不复制了, 那么我们需要一个`union`类似物, 右值的时候存的是右值的副本, 左值的时候存的是左值的指针. `boost::variant`可以, 不过`BOOST_FOREACH`里面用的是一个更简单的版本(simple_variant). 这里我们不妨用`boost::variant`.
 
 至于结果存到哪, 我们翻到最前面的`foreach_iter_t`, 这玩意其实是个模板对不对, 往里面塞个容器也是可以的对不对, 就用它了, 不过, 这时候还叫`foreach_iter_t`好像不太合适, 给个general一点的名字, `auto_any`(这里的`auto_any`的名字就来自`BOOST_FOREACH`, `auto`是自动内存分配的`auto`, 即栈区内存, 意味着`auto_any`的实例都不应该用`new`的)啥的:
 
@@ -566,7 +566,7 @@ struct auto_any_base {
 };
 
 template<typename T> 
-struct auto_any : auto_any_base{
+struct auto_any : auto_any_base {
     auto_any_base(const T& t) : item(t) {}
     mutable T item;
 };
@@ -577,7 +577,7 @@ T& auto_any_cast(const auto_any_base& iter) {
 }
 ~~~
 
-因为`auto_any`不是迭代器了, 我们就不给它写`operator++`了, 所以`FOREACH`的写法更新一下:
+于是`FOREACH`的写法更新一下:
 
 ~~~
 #define FOREACH(VAL, COL) \
@@ -618,7 +618,7 @@ contain(const ContainerType& t, const bool& is_rvalue) {
     contain(EVAL(COL, _foreach_is_rvalue), _foreach_is_rvalue) \
 ~~~
 
-这里我们就知道`contain`的`is_rvalue`参数为什么是引用了, 如果传值的话, 因为C++03没有规定参数的求值顺序, 我们就说不好传进来的是什么呢, 但是传引用的话, 不管求值顺序如何, 函数内使用的时候, 总归是求过值的. 
+这里我们就知道`contain`的`is_rvalue`参数为什么是引用了, 如果传值的话, 因为C++03没有规定参数的求值顺序, 我们就说不好传进来的是什么了, 但是传引用的话, 不管求值顺序如何, 函数内使用的时候, 总归是求过值的. 
 
 `begin`函数我们需要综合`is_rvalue`和`ENCODE_TYPEOF`的结果:
 
@@ -678,7 +678,7 @@ bool done(const auto_any_base& cur, const auto_any_base& end, type2type<Containe
     done(_foreach_begin, _foreach_end, ENCODED_TYPEOF(COL)
 ~~~
 
-`deref`需要稍微注意一下, 怎么从`iter_t`到该iter指向的值的引用类型, `BOOST_FOREACH`中用的是`boost::iterator_reference`, 我们就先简单用`iter_t::reference`好了:
+`deref`需要稍微注意一下, 怎么从`iter_t`到该iter指向的值的引用类型, `BOOST_FOREACH`中用`boost::iterator_reference`获取, 我们就先简单用`iter_t::reference`好了:
 
 ~~~
 template<typename ContainerType>
@@ -891,7 +891,7 @@ TEST(for_each_test, right_value_boost_for_each_test) {
 
 而我们上面讨论了很久的右值探测, 在这里就是运行时右值探测. 我们可以把`BOOST_FOREACH`的代码拷贝出来, 手动去设置文件开头那些宏, 然后让`BOOST_FOREACH`用运行时右值探测, 你会发现也是复制了3遍.
 
-gcc3.4和msvc13.1后, BOOST_FOREACH用的都是编译时右值探测了, 所以, 本章节讨论的自然就是这种情况了. 但BOOST_FOREACH里面用的方法笔者是想不出来了, 有兴趣的读者可以自己想想看, 下面我们就直接公布答案了.
+gcc3.4和msvc13.1后, BOOST_FOREACH用的都是编译时右值探测了, 所以, 本章节讨论的自然就是这种情况了. 同样的, BOOST_FOREACH里面用的编译时右值探测方法, 笔者是想不出来的, 有兴趣的读者可以自己想想看, 下面我们就直接公布答案了.
 
 翻看BOOST_FOREACH的源码, 可以看到两个函数:
 
@@ -954,7 +954,7 @@ distructor
 > // an lvalue. This is rather non-standard, but some popular  compilers  
 > // accept it.  
 
-好吧, 真正的黑魔法; 虽然不知道怎么回事, 但我们可以认为这么一个黑魔法是可以编译器探测右值的, 关键是怎么利用它. 因为我们的目标是编译时探测右值, 所以不能依靠返回值的具体量. 我们只能用编译时能用的信息, 比如常量? 类型? 也许我们可以用一下参数类型, 返回类型啥的.
+好吧, 黑魔法, 真正的黑魔法; 虽然不知道怎么回事, 但我们可以认为这么一个黑魔法是可以做到编译时探测右值的, 关键是怎么利用它. 因为我们的目标是编译时探测右值, 所以不能依靠返回值的具体量. 我们只能用编译时能用的信息, 比如常量? 类型? 也许我们可以用一下参数类型, 返回类型啥的.
 
 我们回去看BOOST_FOREACH的`is_rvalue`的声明, 会发现它们返回了一个奇怪的东西, `boost::mpl::false_*`, 什么鬼? 去看定义, 是这样的:
 
@@ -968,7 +968,7 @@ typedef bool_<true> true_;
 typedef bool_<false> false_;
 ~~~
 
-嗯, 模板元编程的东西, `true_`和`false_`是`bool_`的不同特化, 总之是不同类型, 所以BOOST_FOREACH利用的是返回值的类型, 至于怎么利用, 我们在`ENCODED_TYPEOF`的讨论中已经讨论过了, 利用三目运算符操作数的类型转换规则, 第二操作数可以转换为第三操作数是, 类型为第三操作数的类型, 那么, 我们把is_rvalue放到第三操作数位, 我们就得到一个`boost::mpl::true_*`或`boost::mpl::false_*`的三目运算符, 于是我们就相当于编译时知道了col是右值还是左值.
+嗯, 模板元编程的东西, `true_`和`false_`是`bool_`的不同特化, 总之是不同类型, 所以BOOST_FOREACH利用的是返回值的类型, 至于怎么利用, 我们在`ENCODED_TYPEOF`的讨论中已经讨论过了, 利用三目运算符操作数的类型转换规则, 第二操作数可以转换为第三操作数, 类型为第三操作数的类型, 那么, 我们把is_rvalue放到第三操作数位, 我们就得到一个`boost::mpl::true_*`或`boost::mpl::false_*`的三目运算符, 于是我们就相当于编译时知道了col是右值还是左值.
 
 但是, 要怎么走不同分支呢? 答案相信大家已经想到了, 类型不是不一样么, 重载呀, 于是我们可以写出一个根据col是右值还是左值重载的`contain`函数:
 
@@ -1000,7 +1000,7 @@ contain可以通过第二参数的重载, 编译时选择不同分支, 而第一
 
 右值复制一遍, 左值只需引用, 我们最初的目标是这样的, 所以, 右值的时候返回`auto_any<T>`, 左值的时候返回`auto_any<T*>`, 用指针的话, 之后的`auto_any_cast`可以根据第二参数来重载.  所以, 右值版本返回t本身, 让其转换为`auto_any<T>`实例, 而左值版本应该返回t的指针. 
 
-获取t的指针有个小问题, 根据参考文献[3], 可以使用`boost::addressof`确保得到模板类型的指针类型., 于是`contain`应该是这样的:
+获取t的指针有个小问题, 根据参考文献[3], 可以使用`boost::addressof`确保得到模板类型的指针类型[6]. 于是`contain`应该是这样的:
 
 ~~~
  template<typename T>
@@ -1161,7 +1161,7 @@ deref(const auto_any_base& cur, type2type<T>) {
 
 ## 常量检测
 
-虽然我们写的`FOREACH`可以应对左值和右值的区别呢了, 但是, 由于我们上面的代码, 推导迭代器类型时, 用的都是`T::const_iterator`, 所以我们的FOREACH是做不到以下行为(改变元素)的:
+虽然我们写的`FOREACH`可以应对左值和右值的区别了, 但是, 由于我们上面的代码, 推导迭代器类型时, 用的都是`T::const_iterator`, 所以我们的FOREACH是做不到以下行为(改变元素)的:
 
 ~~~
 vector vec;
@@ -1172,7 +1172,7 @@ FOREACH(int& item, vec) {
 
 但是, 我们又不能改成`T::iterator`, 这样vec确实是常量时, 就编译不过了, 我们需要判断col是不是个常量, 然后根据判断的结果`typedef`迭代器的类型.
 
-随便搜索一下不难找到判断时候常量类型的`type_traits`, 比如`boost::is_const`:
+随便搜索一下不难找到判断常量类型的`type_traits`, 比如`boost::is_const`:
 
 ~~~
 template <class T> struct is_const : public boost::false_type {};
@@ -1182,7 +1182,7 @@ const vector;
 static_assert(is_const<const vector>::value);
 ~~~
 
-`boost::mpl`也提供了编译时条件判断的工具:`boost::mpl::if_`, 比如 `typedef boost::if<c,f1,f2>::type type`如果`c`为`true`, 这`type`为`f1`, 否则为`f2`, 至于原理, 当然还是模板特化.
+`boost::mpl`也提供了编译时条件判断处理类型的工具:`boost::mpl::if_`, 比如 `typedef boost::if<c,f1,f2>::type type`如果`c`为`true`, 这`type`为`f1`, 否则为`f2`, 至于原理, 当然还是模板特化.
 
 但是, 他们要怎么联系在一起呢?, 虽然我们是可以写出
 
@@ -1223,7 +1223,7 @@ begin(const auto_any_base& container, type2type<T, IS_CONST>, boost::mpl::false_
 
 这里使用`boost::begin`获取迭代器, 是为了将const等处理交给boost处理, `boost::begin`是`boost::range`的一部分, 可以获得range的迭代器, 这个range甚至包含数组, 是个挺方便的工具, 我们这里也跟着用了.
 
-于是, 我们需要一个带`IS_CONST`的`type2type`和`auto_any_cast`, 先来看`type2type`, 之前的`type2type`什么都没有,  我们要增加一个模板参数, 不用也不行, 所以我们可以用在`boost::mpl::if_`中定义一个type, 也方便我们用的时候获取真正需要的容器类型, `BOOST_FOREACH`中用继承的方式, 我们自然是沿用:
+于是, 我们需要一个带`IS_CONST`的`type2type`和`auto_any_cast`, 先来看`type2type`, 之前的`type2type`什么都没有,  我们要增加一个模板参数, 加了还得用, 所以我们可以在`boost::mpl::if_`中用这个新加的模板参数定义一个type, 也方便我们用的时候获取真正需要的容器类型, `BOOST_FOREACH`中用继承的方式, 我们自然是沿用:
 
 ~~~
 template<typename T, typename IS_CONST = boost::mpl::false_>
@@ -1262,7 +1262,7 @@ encode_type(T const &,  boost::mpl::true_*)  { return 0; }
     (true ? 0 : encode_type(COL,  is_const_(COL)))
 ~~~
 
-我们的`begin`函数需要再改成形参为`type2type`指针的样子:
+我们的`begin`函数需要再改成形参为`type2type`的指针的样子:
 
 ~~~
 template<typename T, typename IS_CONST>
@@ -1420,6 +1420,7 @@ deref(const auto_any_base& cur, type2type<T, IS_CONST>*) {
 * {:.ref} \[3]  Stack Overflow. [When to use addressof(x) instead of &x?](https://stackoverflow.com/questions/14820307/when-to-use-addressofx-instead-of-x)  
 * {:.ref} \[4]  fanster28_. [boost foreach 探究](https://blog.csdn.net/fanster28_/article/details/6077682). Dec. 15, 2010  
 * {:.ref} \[5]  夜雨_倚琴. [boost源码分析之 BOOST_FOREACH](https://blog.csdn.net/Lunar_lty/article/details/23966221). April. 18, 2014  
+* {:.ref} \[6] [More C++ Idioms/Address Of](https://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Address_Of)
 
 
 

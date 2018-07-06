@@ -998,7 +998,7 @@ inline auto_any<T *> contain(T &t, boost::mpl::false_ *) // lvalue
 
 contain可以通过第二参数的重载, 编译时选择不同分支, 而第一参数, 按`is_rvalue`的行为, 我们其实不再需要一个`variant`去包装col, 我们可以直接通过重载得到COL的类型. 那么, 应该返回什么呢?
 
-右值复制一遍, 左值只需引用, 我们最初的目标是这样的, 所以, 右值的时候返回`auto_any<T>`, 左值的时候返回`auto_any<T*>`, 用指针的话, 之后的`auto_any_cast`可以根据第二参数来重载.  所以, 右值版本返回t本身, 让其转换为`auto_any<T>`实例, 而左值版本应该返回t的指针. 
+右值复制一遍[7], 左值只需引用, 我们最初的目标是这样的, 所以, 右值的时候返回`auto_any<T>`, 左值的时候返回`auto_any<T*>`, 用指针的话, 之后的`auto_any_cast`可以根据第二参数来重载.  所以, 右值版本返回t本身, 让其转换为`auto_any<T>`实例, 而左值版本应该返回t的指针. 
 
 获取t的指针有个小问题, 根据参考文献[3], 可以使用`boost::addressof`确保得到模板类型的指针类型[6]. 于是`contain`应该是这样的:
 
@@ -1420,7 +1420,8 @@ deref(const auto_any_base& cur, type2type<T, IS_CONST>*) {
 * {:.ref} \[3]  Stack Overflow. [When to use addressof(x) instead of &x?](https://stackoverflow.com/questions/14820307/when-to-use-addressofx-instead-of-x)  
 * {:.ref} \[4]  fanster28_. [boost foreach 探究](https://blog.csdn.net/fanster28_/article/details/6077682). Dec. 15, 2010  
 * {:.ref} \[5]  夜雨_倚琴. [boost源码分析之 BOOST_FOREACH](https://blog.csdn.net/Lunar_lty/article/details/23966221). April. 18, 2014  
-* {:.ref} \[6] [More C++ Idioms/Address Of](https://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Address_Of)
+* {:.ref} \[6]  [More C++ Idioms/Address Of](https://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Address_Of)
+* {:.ref} \[7]  为什么是复制一次而不是用常量引用绑定呢? 因为参考文献[1]说的是绑定到基类的常量引用, 而不是参考文献[2]中不是基类的也行. 不同编译器对返回值优化的情况也可能不同, 笔者还没找到关键文献, 故此问题暂时搁置.
 
 
 

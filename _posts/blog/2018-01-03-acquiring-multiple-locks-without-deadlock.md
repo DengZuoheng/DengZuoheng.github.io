@@ -311,7 +311,7 @@ void lock(Lk1& lk1, Lk2& lk2, LkN&... lkn) {
 
 ## 总结
 
-要实现类似std::lock的加锁算法, 要求mutex具备lock, unlock, try_lock几个接口. 
+要实现类似std::lock的加锁算法, 要求mutex具备lock, unlock, try_lock几个接口.  总体策略就是不断try_lock, 如果失败, 就把之前成功的全部解锁, 直到全部mutex都成功锁上.
 
 boost的实现使用重载来提供近似变长参数的效果, 但最多支持9个参数, 也因为每个重载参数都是固定的, 所以会使用switch结构手动调整加锁顺序, 从上一次失败的开始加锁.
 

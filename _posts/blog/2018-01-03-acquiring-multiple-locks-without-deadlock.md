@@ -323,4 +323,4 @@ GCC的实现却是用tuple展开参数包, 编译时递归的写法, 让GCC没�
 **Reference:**  
 
 * {:.ref} \[1]  Anthony Williams. [Acquiring Multiple Locks Without Deadlock](https://www.justsoftwaresolutions.co.uk/threading/acquiring-multiple-locks-without-deadlock.html). 2008.
-* [:.ref} \[2] gcc-mirror. [mutex](https://github.com/gcc-mirror/gcc/blob/master/libstdc%2B%2B-v3/include/std/mutex). 2018
+* {:.ref} \[2] gcc-mirror. [mutex](https://github.com/gcc-mirror/gcc/blob/master/libstdc%2B%2B-v3/include/std/mutex). 2018

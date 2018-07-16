@@ -23,6 +23,14 @@ $(document).ready(function(){
 
     $('pre').addClass('prettyprint linenums'); //添加Google code Hight需要的class
 
+    $('del').each(function(index, element) {
+        $(element).replaceWith(
+            $("<span>")
+                .append($(this)
+                .contents())
+                .addClass("del")
+                .attr("title", "我什么都没说"));
+    });
     
     window.disqus_shortname = 'dengzuohenggithubio'; // required: replace example with your forum shortname
     $('#disqus_container .comment').on('click',function(){
@@ -56,7 +64,6 @@ $(document).ready(function(){
             var h3index = 0;
 
             $('.entry h2, .entry h3, .entry h4').each(function(index,item){
-                console.log($(item).html());
                 if(item.tagName.toLowerCase() == 'h2'){
                     var h2item = {};
                     h2item.name = $(item).text();
@@ -113,7 +120,6 @@ $(document).ready(function(){
                 }
             }
             tmpl += '</ul>';
-            console.log(tmpl);
             return tmpl;
         }
 

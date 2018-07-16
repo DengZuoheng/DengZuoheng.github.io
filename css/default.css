@@ -217,3 +217,12 @@ ul.ref_ul li{
 footer div{
     margin: 2px;
 }
+
+.del {
+    background-color: #252525;
+    color: #252525;
+}
+
+.del:hover {
+    color: #fff;
+}

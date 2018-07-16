@@ -1,6 +1,6 @@
 ---
 layout: post
-title: C++并发型模式#2&#58; 同步屏障barrier
+title: C++并发型模式#2&#58; 同步屏障 - Barrier
 description: 同步屏障是一种同步方法, 要求线程到达某一点后等待, 直到其他线程都到达这点才能继续执行. 
 category: blog
 ---
@@ -163,8 +163,20 @@ arrive_and_wait比较好理解, 跟boost::barrier::wait应该是一样的语义.
 
 毕竟C++20还比较遥远, 我们暂时还不知道`std::barrier`会怎么表示"current thread", 至于在生产环境用上更是有生之年. 综上所述, 还是用boost比较有希望.
 
+## barrier的用途
+
+不得不说, 要突然想一个日常开发会用上barrier的场景还是挺让人为难的. 查阅过的参考文献主要有以下几种例子:
+
+- 合并结果, 比如开头的排序, 文献[5]中的矩阵运算, 用于唤醒主线程以合并结果.
+- 前趋关系, 比如语句S1必须在语句S2前执行, 但是语句S1在线程1, 而语句S2在线程2, 就可以再S1后及S2前插barrier[6]
+- 构建测试, 比如想测试某些接口, 就起好一堆线程, 都等在barrier那, 最后一个线程wait时, 一堆线程都恢复执行去调你要测的接口.[7]
+
 **Reference:**  
 * {:.ref} \[1]  wikipedia. [Barrier](https://en.wikipedia.org/wiki/Barrier)  
 * {:.ref} \[2]  Rainer Grimm. [Latches And Barriers](http://www.modernescpp.com/index.php/latches-and-barriers). Feb. 2017.  
 * {:.ref} \[3]  Anthony Williams. [Condition Variable Spurious Wakes](https://www.justsoftwaresolutions.co.uk/threading/condition-variable-spurious-wakes.html). June.2008.  
-* {:.ref} \[4]  cpprefernece. [std::barrier](https://en.cppreference.com/w/cpp/experimental/barrier)
+* {:.ref} \[4]  cpprefernece. [std::barrier](https://en.cppreference.com/w/cpp/experimental/barrier)  
+* {:.ref} \[5]  Andrew S. Tanenbaum. 陈向群, 马洪兵等译. 现代操作系统(第三版). 机械工业出版社. 2012. p81~p82    
+* {:.ref} \[6]  汤小丹, 梁红兵, 哲凤屏, 汤之瀛. 计算机操作系统(第三版). 西安限制科技大学出版社. 2007. p56~p57  
+* {:.ref} \[7]  Lokesh Gupta. [Java concurrency – CountDownLatch Example](https://howtodoinjava.com/core-java/multi-threading/when-to-use-countdownlatch-java-concurrency-example-tutorial/). July. 2013.  
+

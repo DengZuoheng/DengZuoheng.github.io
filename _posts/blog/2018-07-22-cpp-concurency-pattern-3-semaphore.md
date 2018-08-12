@@ -25,7 +25,6 @@ P和V是荷兰语Proberen(测试)和Verhogen(增加)的首字母, 看着比较�
 
 class semaphore {
 public:
-    // 
     semaphore(unsigned int limit, unsigned int count); 
     void count_down_and_wait();
     void increase_and_notify();    

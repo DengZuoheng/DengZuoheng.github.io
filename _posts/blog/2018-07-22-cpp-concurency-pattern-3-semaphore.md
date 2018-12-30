@@ -63,7 +63,7 @@ mutex g_mtx;                                    // 互斥锁, 用于保护缓冲
 semaphore g_sem_slot(N, N);                     // 表示可用槽的数目, 初始为N
 semaphore g_sem_product(N, 0);                  // 表示可用产品数目, 初始为0
 
-class product;
+class production;
 
 void producer() {
     production item;

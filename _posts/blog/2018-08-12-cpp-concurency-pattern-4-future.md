@@ -1,6 +1,6 @@
 ---
 layout: post
-title: C++并发型模式#3&#58; 等待异步操作结果 - future/promise
+title: C++并发型模式#4&#58; 等待异步操作结果 - future/promise
 description: 如何获得工作线程的结果? 早期的boost中如何实现future/promise? wait_for_any又是什么原理?
 category: blog
 ---

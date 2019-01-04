@@ -7,7 +7,7 @@ category: blog
 
 ## 疑云
 
-某日, QA给我报了个bug, 说咱家软件用过我写的某个功能A后, 再用另外一个功能B可能会卡死, 听起来就像我的锅. 于是我把繁复的业务逻辑去掉, 代码看起来像下面这样的:
+某日, QA给我报了个bug, 说咱家软件用过我写的某个功能A后, 再用另外一个功能B可能会卡死, 说看起来就像我的锅. 于是我把繁复的业务逻辑去掉, 代码看起来像下面这样的:
 
 ~~~
 #include <QApplication>
@@ -87,7 +87,7 @@ int main() {
 }
 ~~~
 
-这代码没法跑到天荒地老, 可能会hang在`waitForFinished`那. 以下环境可以重现:
+Bug在于, 这代码没法跑到天荒地老, 可能会hang在`waitForFinished`那. 以下环境可以重现:
 
 ~~~
 Linux version 2.6.32-696.18.7.el6.x86_64; Qt4.7.4; GCC 3.4.5
@@ -99,7 +99,7 @@ Windows 7; Qt4.7.4; mingw 4.4.0
 
 首先`Task1`嵌套一个`QtConcurrent::map`是因为`Task1`要完成一部分操作之后, 才知道要起多少`Task2`, 而且这部分操作也挺耗时的. 
 
-`Task1`中间的`QThreadPool::globalInstance()->releaseThread()`是怎么回事呢? 因为等待`QtConcurrent::map`返回的QFuture是阻塞的(相对的QtConcurrent::Run返回的QFuture在自己的task还是开始运行的情况下, 可能会"偷"回来自己跑), 所以这个等待会占据一个线程在那傻等, 这种傻等的线程多了, 线程池的线程就都给占了. 所以要嵌套使用`QtConcurrent::map`肯定是要去动全局线程池的线程数的, 这里用的便是`releaseThread`:
+`Task1`中间的`QThreadPool::globalInstance()->releaseThread()`是怎么回事呢? 因为等待`QtConcurrent::map`返回的QFuture是阻塞的(相对的`QtConcurrent::Run`返回的QFuture在自己的task还是开始运行的情况下, 可能会"偷"回来自己跑), 所以这个等待会占据一个线程在那傻等, 这种傻等的线程多了, 线程池的线程就都给占了. 所以要嵌套使用`QtConcurrent::map`肯定是要去动全局线程池的线程数的, 这里用的便是`releaseThread`:
 
 > **void QThreadPool::releaseThread()**
 > Releases a thread previously reserved by a call to `reserveThread()`.
@@ -170,11 +170,11 @@ bool QThreadPoolPrivate::tooManyThreadsActive() const
 
 ## 线索
 
-如果我们在hang的时候gdb进去`info threads`看一下, 会发现hang住时线程数量并没有想象中那么多, 除主线程外, 就没两个了. 所以, 我猜测这是可能Qt的bug, QThreadPool可能没有维护好activeThreadCount().
+如果我们在hang的时候gdb进去`info threads`看一下, 会发现hang住时线程数量并没有想象中那么多, 除主线程外, 就没两个了. 所以, 我猜测这是可能Qt的bug, QThreadPool可能没有维护好`activeThreadCount()`.
 
-具体怎么没维护好, 我们得研究一下参与`activeThreadCount()`计算的几个值. gdb下在`activeThreadCount()`内打断点, 然后在hang住的时候, 通过gdb `print gti->activeThreadCount()`进到断点(gti是指向QThreadPool::globalInstance()的临时变量). 
+具体怎么没维护好, 我们得研究一下参与`activeThreadCount()`计算的几个值. gdb下在`activeThreadCount()`内打断点, 然后在hang住的时候, 通过gdb `print gti->activeThreadCount()`进到断点(gti是指向`QThreadPool::globalInstance()`的临时变量). 
 
-你要说哪个值不正常嘛... `reservedThreads`挺正常的, 就是我们设出来的, `allThreads`和`expiredThreads`其实看不出来. `waitingThreads`这时候是负的, 看起来就很可疑.
+你要说哪个值不正常嘛... `reservedThreads`挺正常的, 就是我们设出来的, `allThreads`和`expiredThreads`其实看不出来正不正常. `waitingThreads`这时候是负的, 看起来就很可疑.
 
 嗯, 确实很可疑, 咋一看, 代码里面没有让`waitingThreads`变成负数的场景. 会改变这个值的地方就两个, `QThreadPoolThread::run()`和`QThreadPoolPrivate::tryStart`.
 
@@ -260,10 +260,8 @@ void QThreadPoolThread::run()
 >
 > When this function returns false:
 > * The timeout has been reached
-> * Do not assume that a notification has not been received
+> * **Do not assume that a notification has not been received**
 > * Do not assume that the predicate has not been changed
-
-~~~
 
 也就是说, 我们可以知道确实超时了, 不知道有没有被signal. 那我们已经很接近真相了.
 

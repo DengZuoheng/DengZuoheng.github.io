@@ -32,7 +32,7 @@ public:
 
 ~~~
 
-特别的, limit等于1的信号量保证了只有一个线程能进入临界区, 这种信号量被称为binary semaphore, 跟mutex是等价的, 我们可以用semaphore定于出mutex来:
+特别的, limit等于1的信号量保证了只有一个线程能进入临界区, 这种信号量被称为binary semaphore, 跟mutex是等价的, 我们可以用semaphore定义出mutex来:
 
 ~~~
 class mutex {

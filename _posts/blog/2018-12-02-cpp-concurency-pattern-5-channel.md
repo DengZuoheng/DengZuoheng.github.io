@@ -128,7 +128,7 @@ private:
 };
 ~~~
 
-之前提到, buffer channel其实是bounded MPMC queue, 简单起见, 我们就不去实现一个bounded buffer了, 直接`std::queue`加个bound了事:
+之前提到, buffer channel其实是bounded MPMC queue, 简单起见, 我们就不去实现一个bounded buffer了, 直接`boost::circular_buffer`:
 
 ~~~
 class select;
@@ -136,13 +136,12 @@ class select;
 template <typename T>
 class channel_impl : boost::noncopyable {
     friend select;
-    std::queue<T> m_data;
+    boost::circular_buffer<T> m_data;
     boost::mutex m_mutex;
-    const size_t m_bound;
 }
 ~~~
 
-`m_mutex`是用来保护`m_data`和`m_bound`的. 
+`m_mutex`是用来保护`m_data`的. 
 
 也许你发现了, 这里还没加条件变量; 因为send和recv应当都是阻塞的, 所以这里确实需要两个提供`wait/signal`的机制, 一个给send, 一个给recv, 就像经典的生产者-消费者模型一样.
 
@@ -156,11 +155,9 @@ class select;
 template <typename T>
 class channel_impl : boost::noncopyable {
     friend select;
-    std::queue<T> m_data;
+    boost::circular_buffer<T> m_data;
     boost::mutex m_mutex;
     waitq m_waiting_consumers;
-
-    const size_t m_bound;
     waitq m_waiting_producers;
 
 public:
@@ -213,7 +210,7 @@ public:
 
 ~~~
 
-这里waitq的notify_one就是从等待队列中去队首来notify_one, 因为select的时候我们还会使用自定义的锁, 所以这里也需要用`boost::condition_variable_any`. 至于为什么要写remove, 我们稍后会提到.
+这里waitq的notify_one就是从等待队列中取队首来notify_one, 因为select的时候我们还会使用自定义的锁, 所以这里也需要用`boost::condition_variable_any`. 至于为什么要写remove, 我们稍后会提到.
 
 有了waitq, 我们就可以实现一下recv:
 
@@ -229,7 +226,7 @@ void recv(T& val) {
             m_waiting_consumers.remove(&cond);
         }
         val = m_data.front();
-        m_data.pop();
+        m_data.pop_front();
     }
 
     m_waiting_producers.notify_one();
@@ -266,7 +263,7 @@ bool try_recv(T& val) {
             return false;
         }
         val = m_data.front();
-        m_data.pop();
+        m_data.pop_front();
     }
     m_waiting_producers.notify_one();
     return true;
@@ -275,28 +272,26 @@ void send(const T& val) {
     {
         boost::unique_lock<boost::mutex> lk(m_mutex);
         boost::condition_variable_any cond;
-        while (is_full()) {
+        while (m_data.full()) {
             m_waiting_producers.enqueue(&cond);
             cond.wait(lk);
             m_waiting_producers.remove(&cond);
         }
-        m_data.push(val);
+        m_data.push_back(val);
     }
     m_waiting_consumers.notify_one();
 }
 bool try_send(const T& val) {
     {
         boost::unique_lock<boost::mutex> lk(m_mutex);
-        if (is_full()) {
+        if (m_data.full()) {
             return false;
         }
-        m_data.push(val);
+        m_data.push_back(val);
     }
     m_waiting_consumers.notify_one();
     return true;
 }
-
-bool is_full() { return m_data.size() >= m_bound; }
 ~~~
 
 至此, channel的send和recv就实现出来了. 下面, 我们接着去实现select.
@@ -497,7 +492,7 @@ bool try_recv_internal(T& val) {
         return false;
     }
     val = m_data.front();
-    m_data.pop();
+    m_data.pop_front();
     m_waiting_producers.notify_one();
     return true;
 }
@@ -506,7 +501,7 @@ bool try_send_internal(const T& val) {
     if (is_full()) {
         return false;
     }
-    m_data.push(val);
+    m_data.push_back(val);
     m_waiting_consumers.notify_one();
     return true;
 }

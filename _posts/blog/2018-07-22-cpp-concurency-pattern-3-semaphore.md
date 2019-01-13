@@ -237,7 +237,7 @@ private:
 
 但是事情总是不顺利, 假如那5个线程调度回来之前, 第7个线程调了wait, 把`m_sem`的值减了1, 那个5个线程中就会有一个线程就此等待了, 这又不符合condition_variable的语义了.
 
-要解决这个问题, 我们需要`notify_all`期间, 正在wait的线程可以唤醒或径直通过, 而其他调用wait的线程不参与此次`notify_all`. 最简单的方式就是, `notify_all`会等待正在wait的线程通过. `notify_all`能够等, 而线程通过能告诉`notify_all`说有线程已经通过了...另一个信号量呼之欲出! 对, 我们可以再加一个信号量:
+要解决这个问题, 我们需要`notify_all`期间, 正在wait的线程可以唤醒或径直通过, 而其他调用wait的线程不参与此次`notify_all`. 最简单的方式就是, `notify_all`等待正在wait的线程通过. 为了`notify_all`能够等, 而线程通过能告诉`notify_all`说有线程已经通过了...另一个信号量呼之欲出! 对, 我们可以再加一个信号量:
 
 ~~~
 class condition_variable {

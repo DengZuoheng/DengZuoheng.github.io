@@ -48,7 +48,7 @@ public:
         m_mutex_count.unlock();
     }
 
-}
+};
 ~~~
 
 因为boost及c++17中将读写锁称为shared_mutex, 所以这里的接口皆依boost, 读锁为`lock_shared()`, 写锁为`lock()`.
@@ -74,7 +74,7 @@ public:
     ~shared_lock_guard() {
         m_shared_mutex.unlock_shared();
     } 
-}
+};
 ~~~
 
 对于普通的mutex, 我们有raii的更灵活的unique_lock, 对shared_mutex, 自然也会有shared_lock<del>其实还有upgrade_lock以及相互转换的各种lock, 能把名字记住已经不容易了</del>:
@@ -157,7 +157,7 @@ class shared_mutex {
         unsigned shared_count;
         bool exclusived;
         bool exclusive_entered;
-    }
+    };
     state_data m_state;
     boost::mutex m_mutex_state;
     boost::condition_variable m_shared_cond;
@@ -168,11 +168,11 @@ public:
     ~shared_mutex(){}
 
     void lock_shared();
-    void try_lock_shared();
+    bool try_lock_shared();
     void unlock_shared();
 
     void lock();
-    void try_lock();
+    bool try_lock();
     void unlock();
 };
 ~~~
@@ -213,7 +213,7 @@ class shared_mutex {
             --shared_count;
         }
 
-    }
+    };
     
 };
 ~~~ 
@@ -239,7 +239,7 @@ void shared_mutex::lock() {
 `shared_mutex::try_lock()`有所不同, 因为它不会去等已有的读锁(其实`lk`也可以用`try_to_lock`):
 
 ~~~
-void shared_mutex::try_lock() {
+bool shared_mutex::try_lock() {
     boost::unique_lock<boost::mutex> lk(m_mutex_state);
     if (!m_state.can_lock()) {
         return false;
@@ -279,6 +279,15 @@ void shared_mutex::lock_shared() {
         m_shared_cond.wait(lk);
     }
     m_state.lock_shared();
+}
+
+bool try_lock_shared() {
+    boost::unique_lock<boost::mutex> lk(m_mutex_state);
+    if (m_state.can_lock_shared()) {
+        m_state.lock_shared();
+        return true;
+    }
+    return false;
 }
 ~~~
 
@@ -393,7 +402,7 @@ void shared_mutex::unlock_shared() {
             // As there is a thread doing a unlock_upgrade_and_lock that is waiting for state.no_shared()
             // avoid other threads to lock, lock_upgrade or lock_shared, so only this thread is notified.
             m_state.upgrade = false;
-            m_state.exclusive = true;
+            m_state.exclusived = true;
             m_upgrade_cond.notify_one();
         } else {
             m_state.exclusive_entered = false;
@@ -405,7 +414,7 @@ void shared_mutex::unlock_shared() {
 ~~~
 
 这里需要注意, 如果是最后一个读锁了, `m_state.upgrade`仍然为true, 说明有upgrade_lock在升级, 
-需要将`m_state.exclusive`设为true, 所以其他`lock`, `lock_upgrade`, `lock_shared`都无法进行了, 只有即将被notify的`unlock_upgrade_and_lock`; 因为`m_state.exclusive`现在是`true`, 所以`unlock_upgrade_and_lock`只能等`no_shared()`, 不能等`can_lock()`.
+需要将`m_state.exclusived`设为true, 所以其他`lock`, `lock_upgrade`, `lock_shared`都无法进行了, 只有即将被notify的`unlock_upgrade_and_lock`; 因为`m_state.exclusive`现在是`true`, 所以`unlock_upgrade_and_lock`只能等`no_shared()`, 不能等`can_lock()`.
 
 另外, 为什么将`m_state.upgrade`设为false, 其实我不是很明白, 十多年前最开始的版本就有了, 但似乎没有什么地方需要它是false, 因为`exclusive`就能保证其他锁加不上了. 为此我去so上提了个[问题](https://stackoverflow.com/questions/54105754/why-boost-shared-mutex-unlock-shared-need-to-set-state-upgrade-to-false-in-the-l), 有人指出, 从状态机的视角考虑, `exclusive`和`upgrade`不该同时为`true`.
 
@@ -530,7 +539,7 @@ void shared_mutex::lock()
 
 bool shared_mutex::try_lock()
 {
-    unique_lock<mutex> lk(mut_, try_to_lock);
+    std::unique_lock<std::mutex> lk(mut_, std::try_to_lock);
     if (lk.owns_lock() && _can_lock()) {
         _lock();
         return true;
@@ -549,7 +558,7 @@ bool shared_mutex::try_lock()
 void shared_mutex::unlock()
 {
     {
-        lock_guard<mutex> _(mut_);
+        std::lock_guard<std::mutex> _(mut_);
         _unlock();
     }
     gate1_.notify_all();
@@ -563,7 +572,7 @@ void shared_mutex::unlock()
 ~~~
 void shared_mutex::lock_shared()
 {
-    unique_lock<mutex> lk(mut_);
+    std::unique_lock<std::mutex> lk(mut_);
     while (!_can_lock_shared()) {
         gate1_.wait(lk);
     }
@@ -572,7 +581,7 @@ void shared_mutex::lock_shared()
 
 bool shared_mutex::try_lock_shared()
 {
-    unique_lock<mutex> lk(mut_, std::try_to_lock);
+    std::unique_lock<std::mutex> lk(mut_, std::try_to_lock);
     if (lk.owns_lock() && _can_lock_shared()) {
         _lock_shared();
         return true;
@@ -586,7 +595,7 @@ bool shared_mutex::try_lock_shared()
 ~~~
 void shared_mutex::unlock_shared()
 {
-    lock_guard<mutex> lk(mut_);
+    std::lock_guard<std::mutex> lk(mut_);
     const bool full_shared_before = _full_shared();
     _unlock_shared();
     if (_exclusive_entered()) {

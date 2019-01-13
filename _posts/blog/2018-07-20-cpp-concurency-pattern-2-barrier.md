@@ -58,15 +58,15 @@ class barrier
 
 ~~~
 
-`mutex`和`condition_variable`没什么好讨论的. `m_count`用来记录到达的线程的, m_count减到0就会唤醒所有等待这个barrier的线程, 没错, 所有到达这个barrier的线程都会等待.
+`mutex`和`condition_variable`没什么好讨论的. `m_count`用来记录到达的线程的, `m_count`减到0就会唤醒所有等待这个barrier的线程, 没错, 所有到达这个barrier的线程都会等待.
 
-`m_threshold`和`m_generation`得一起讲. boost.barrier被设计成可以玩好多轮, `m_generation`就是这个轮数, 而`m_threshold`是用来重置`m_count`的. 知道这个设定之后, wait函数就很好理解了: 对于先到的线程, 记录当前是第几轮, 如果被唤醒时, 还在那一轮, 说明是意外唤醒, 继续等[2]; 对于最后到的线程, `m_count`会减到0, `m_generation`增加, 使得其他线程唤醒时可以跳出循环. 另外`m_count`也会被重置, 唤醒所有等待的线程.
+`m_threshold`和`m_generation`得一起讲. boost.barrier被设计成可以玩好多轮, `m_generation`就是这个轮数, 而`m_threshold`是用来重置`m_count`的. 知道这个设定之后, wait函数就很好理解了: 对于先到的线程, 记录当前是第几轮, 如果被唤醒时, 还在那一轮, 说明是伪唤醒(spurious wakeup), 继续等[2]; 对于最后到的线程, `m_count`会减到0, `m_generation`增加, 使得其他线程唤醒时可以跳出循环. 另外`m_count`也会被重置, 唤醒所有等待的线程.
 
 上面这个代码是boost1.37的, 后来barrier被设置成不可复制的, 使其更难发生误用而导致死锁. 另外, 构造函数也增加了一个参数, 使用户可以注入一个函数, 用于定制重置`m_count`的行为.
 
 ## std::latch
 
-`std::latch`看起来就像一个只能玩一轮的barrier, boost里面也有一个`boost::latch`, 只是接口比`std::latch`稍多. 与上面的barrier不同的是, latch的count_down和wait是可以分开的, 比如一些线程只`count_down`, 另一些线程只wait, 当然也可以`count_down_and_wait`. 另外latch是一次性的, 不能像barrier一样重置, 用起来大概像这样:
+`std::latch`看起来就像一个只能玩一轮的barrier, boost里面也有一个`boost::latch`, 只是接口比`std::latch`稍多. 与上面的barrier不同的是, latch的`count_down`和`wait`是可以分开的, 比如一些线程只`count_down`, 另一些线程只wait, 当然也可以`count_down_and_wait`. 另外latch是一次性的, 不能像barrier一样重置, 用起来大概像这样:
 
 ~~~
 // 等待线程池里面的几个任务完成
@@ -152,7 +152,7 @@ public:
 };
 ~~~
 
-arrive_and_wait比较好理解, 跟boost::barrier::wait应该是一样的语义. 但arrive_and_drop就有趣了, 提案里面是这么说的:
+`arrive_and_wait`比较好理解, 跟`boost::barrier::wait`应该是一样的语义. 但`arrive_and_drop`就有趣了, 提案里面是这么说的:
 
 > Removes the current thread from the set of participating threads. Arrives
 > at the barrier's synchronization point. It is unspecified whether the function blocks

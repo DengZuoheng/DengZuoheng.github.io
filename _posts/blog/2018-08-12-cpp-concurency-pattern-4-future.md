@@ -64,11 +64,11 @@ int main() {
 
 future/promise的最早在1970年代就已经提出, <del>C++还不知道在哪呢</del>, 不同语言中的实现多少有不一样, C++中是通过库实现的, boost是1.41引入的第一版, 基于mutex/condition_variable, 代码比较简洁, 下面我们也是根据这个版本来重复造轮子. STL的实现可能会与平台有关, 比如GCC的STL里的实现就是基于futex的, 而MSVC却又是基于mutex/condition_variable.
 
-boost中shared_future和unique_future都是对future_object的包装, 而这个future_object则是mutex/condition_variable/flag的持有者, 真正的实现主体. 既然实现主体在future_object, 我们就暂且将之放到后面, 先看promise.
+boost中`shared_future`和`unique_future`都是对`future_object`的包装, 而这个`future_object`则是mutex/condition_variable/flag的持有者, 真正的实现主体. 既然实现主体在`future_object`, 我们就暂且将之放到后面, 先看promise.
 
 ### promise 
 
-promise一般不可复制, 可以get_future, set_value是其主要接口, 异常处理方面, 有set_exception, 特别地, promise析构的时候, 如果没有set过value, 那么就会设一个broken_promise的异常. 忽略移动语义, promise的接口可以如下:
+promise一般不可复制, `get_future`, `set_value`是其主要接口, 异常处理方面, 有`set_exception`, 特别地, promise析构的时候, 如果没有set过value, 那么就会设一个`broken_promise`的异常. 忽略移动语义, promise的接口可以如下:
 
 ~~~
 template<typename T>
@@ -88,9 +88,9 @@ public:
 };
 ~~~
 
-boost::exceptional_ptr是一个类似智能指针的东西, 用来跨线程转发异常的, 可参考文献[3]. 
+`boost::exceptional_ptr`是一个类似智能指针的东西, 用来跨线程转发异常的, 可参考文献[3]. 
 
-然后, 成员变量的话, 因为get_future按设定只能调用一次, 所以我们需要一个flag来维持, 下面称其为`m_future_obtained`. 除此之外, 就是一个future_object的智能指针了, 下面称其为`m_future_entity`. 也因为get_future只能调一次, boost中, future_object的智能指针是延迟初始化的, 所以boost的实现中会有lazy_init这个私有函数. 但是, promise本身没有锁, 而古老的boost 1.41又还没有atomic库, 所以老版本boost的lazy_init是不安全的, 这个问题后来版本的boost用atomic库解决, 但我们的系列文章还没有讨论到atomic, 所以这里我们就不用lazy_init了, 直接在构造函数中初始化future_object:
+然后, 成员变量的话, 因为`get_future`按设定只能调用一次, 所以我们需要一个flag来维持, 下面称其为`m_future_obtained`. 除此之外, 就是一个`future_object`的智能指针了, 下面称其为`m_future_entity`. 也因为`get_future`只能调一次, boost中, `future_object`的智能指针是延迟初始化的, 所以boost的实现中会有`lazy_init`这个私有函数. 但是, promise本身没有锁, 而古老的boost 1.41又还没有atomic库, 所以老版本boost的`lazy_init`是不安全的, 这个问题后来版本的boost用atomic库解决, 但我们的系列文章还没有讨论到atomic, 所以这里我们就不用`lazy_init`了, 直接在构造函数中初始化`future_object`:
 
 ~~~
 
@@ -155,11 +155,11 @@ private:
 };
 ~~~
 
-很明显这里的`get_future`只能调用一次的设定也不是线程安全的, 会出现`get_future被成功调用多次的情况, 但是调多了其实也没啥关系, 毕竟`shared_ptr`的复制是线程安全的, 所以直到boost1.66, 这个可能调多次的问题也没解决.
+很明显这里的`get_future`只能调用一次的设定也不是线程安全的, 会出现`get_future`被成功调用多次的情况, 但是调多了其实也没啥关系, 毕竟`shared_ptr`的复制是线程安全的, 所以直到boost1.66, 这个可能调多次的问题也没解决.
 
 `set_value`和`set_expection`都需要改变`future_object`的状态, 所以需要将`future_object`的锁暴露出来, 即`m_future_entity->mutex`. 另外, `set_value`或`set_expection`只能调一次, 所以`future_object`得把flag暴露出来, 即`m_future_entity->done`.
 
-几个异常也是派生自std::logic_error:
+几个异常也是派生自`std::logic_error`:
 
 ~~~
 class future_already_retrieved : public std::logic_error {
@@ -253,7 +253,7 @@ void unique_future::wait() const {
 }
 ~~~
 
-boost1.41中, `shared_future`与`unique_future`几近相同, 不同的是, 用`unique_future`构造`shared_future`时, 会使`unique_future`失效(m_future_entity被reset). 故而, 这里不赘述shared_future的实现.
+boost1.41中, `shared_future`与`unique_future`几近相同, 不同的是, 用`unique_future`构造`shared_future`时, 会使`unique_future`失效(`m_future_entity`被reset). 故而, 这里不赘述shared_future的实现.
 
 ### future_object & future_object_base
 
@@ -297,7 +297,7 @@ private:
 };
 ~~~
 
-先看future_object会简单一些, 因为没几个方法:
+先看`future_object`会简单一些, 因为没几个方法:
 
 ~~~
 void future_object::mark_result_finish_internal(const T& res) {
@@ -311,7 +311,7 @@ T future_object::get() {
 }
 ~~~
 
-future_object 的结果存在scoped_ptr中, set_value的时候会复制.
+`future_object` 的结果存在scoped_ptr中, `set_value`的时候会复制.
 
 `mark_result_finish_internal`没有加锁, 是因为只有`promise::set_value`会调, 而`promise::set_value`是锁了`future_object_base::mutex`的, 相当于加好锁才调用`mark_result_finish_internal`. 同理, `mark_execptional_finish_internal`和`mark_finished_internal`内也没有加锁.
 
@@ -370,7 +370,7 @@ void wait_for_all(F1& f1, F2& f2, F3& f3) {
 
 但是, `wait_for_any`在现有接口下就没有非侵入的实现了, 需要在future实现里面加callback, waiter list什么的, 就意味着`wait_for_any`只能用来wait同一库中的future了, 比如, boost的`wait_for_any`只能用来等boost的future, <del>好吧, 标准库没有wait_for_any</del>.
 
-boost1.41实现了`future_waiter`去执行等待, 而`future_waiter`做的事情, 实际上是向`future_object_base`注册了一个条件变量, `mark_finished_internal`的时候顺便notify一个注册进来的条件变量. 有notify自然是有future完成了, 然后就返回个整数, 指出是第几个future完成了.
+boost1.41实现了`future_waiter`去执行`wait_for_any`的等待, 而`future_waiter`做的事情, 实际上是向`future_object_base`注册了一个条件变量, `mark_finished_internal`的时候顺便notify一下注册进来的条件变量. 有notify自然是有future完成了, 然后就返回个整数, 指出是第几个future完成了.
 
 ~~~
 template<typename F1, typename F2, typename F3>
@@ -403,7 +403,7 @@ private:
 } // namespace future_waiter
 ~~~
 
-其中, m_waiting_futures表示正在等待的future.
+其中, `m_waiting_futures`表示正在等待的future.
 
 那么,  `registered_waiter`需要什么保存什么信息呢? 首先`future`或`future_object`, 这里可以用`future_object`的智能指针, 直接从future中拿就行; 其次, 某个标记, 以便`future_waiter`析构的时候, 从`future_object_base`中注销, 如果不注销, 就可能会notify一个已经销毁的条件变量; 最后就是future的顺序信息了, 毕竟得返回是第几个future ready了:
 
@@ -455,7 +455,7 @@ void future_waiter::add(F& f) {
 } // namespace detail
 ~~~
 
-这里需要调用`future_object_base`的`register_external_waiter`将m_cond的指针注册到`future_object_base`的`external_waiters`中, 并返回其迭代器, 这个迭代器需要保证其他元素删除后仍然有效, 所以`future_object_base::waiter_list`用的是`std::list`:
+这里需要调用`future_object_base`的`register_external_waiter`将`m_cond`的指针注册到`future_object_base`的`external_waiters`中, 并返回其迭代器, 这个迭代器需要保证其他元素删除后仍然有效, 所以`future_object_base::waiter_list`用的是`std::list`:
 
 ~~~
 namespace detail {
@@ -496,7 +496,7 @@ struct future_object_base {
 } // namespace detail
 ~~~
 
-剩下的是最复杂的`future_waiter::wait`, 为什么说最复杂呢? 因为我们把`future_waiter::m_cond`注册到`future_object_base`去了, 之后自然是要wait这个`m_cond`对吧, 但是`condition_variable_any::wait`需要一个锁作为参数呀! 被notify之后, 我们需要检查`m_waiter_futures`中的所有future, 所以这个锁等价于`m_waiting_futures`中的所有future的锁, 这个就需要一次锁一vector的mutex且避免死锁, 幸运的是, `boost::lock`已经提供了这个语义. 于是, 我们可以实现一个特别的锁结构`all_future_entity_lock` :
+剩下的是最复杂的`future_waiter::wait`, 为什么说最复杂呢? 因为我们把`future_waiter::m_cond`注册到`future_object_base`去了, 之后自然是要wait这个`m_cond`对吧, 但是`condition_variable_any::wait`需要一个锁作为参数呀! 被notify之后, 我们需要检查`m_waiter_futures`中的所有future, 所以这个锁等价于`m_waiting_futures`中的所有future的锁, 这个就需要一次锁一vector的mutex且避免死锁, 幸运的是, `boost::lock`已经提供了这个算法. 于是, 我们可以实现一个特别的锁结构`all_future_entity_lock` :
 
 ~~~
 namespace detail {
@@ -574,7 +574,7 @@ void mark_finished_internal() {
 
 首先, `future_waiter::wait`中, 如果有多于一个future已经ready了, 那返回的其实不是第一个ready的, 因为谁是第一个ready这个信号已经丢失了.
 
-如果走到`m_cond.wait(lk)`的时候仍没有future是ready的, 也就是, 该线程是挂起后被唤醒的情况, 比如, 两个线程t1和t2在很相近的时间notify同一个condition_variable: 
+如果走到`m_cond.wait(lk)`的时候仍没有future是ready的, 也就是, 该线程会被挂起后被唤醒, 比如, 两个线程t1和t2在很相近的时间notify同一个condition_variable: 
 
 t1 notify了之后, 因为还没有解锁, wait_for_any被唤醒后重新获得锁的过程还在阻塞, 但这时, `t2`的promise的future的锁可能没谁占有, 这就使得`t2`可以`set_value`, 于是又触发了一次notify, 然而, 因为condition_variable内部状态是有锁保护的, 所以这次notify是可以完成的, 虽然没有线程被唤醒. 于是乎, `t2`的promise的future被`mark_finished_internal`, 解了自己的锁. 再然后, `t1`可能现在才解锁, `wait_for_any`才重新所有锁, 这时去遍历`future`, 会发现有两个都ready了.
 
@@ -617,25 +617,26 @@ boost1.54后, 加入了`future::then`, 以提供future间的串联操作:
 int main() {
      boost::future<int> f1 = boost::async([](){return 42;});
      boost::future<std::string> f2 = f1.then([](boost::future<int> f) {
-          return boost::str(boost::format("%d") % f.get()); // 这里不会阻塞
-     });
-     assert("42" == f2.get());
+          return boost::str(boost::format("%d") % f.get()); 
+     }); // 这里不会阻塞
+     assert("42" == f2.get()); // 这里才会阻塞
      return 0;
 }
 ~~~
 
-而在使用then的场合下, `wait_for_any`的阻塞等待就不合适了, 于是boost1.56加入了`when_all/when_any`, 与`wait_for_any`不同, `when_any`是立即返回另一个`future`,  这使得我们在then串联中可以达到类似`wait_for_any`的效果, 但却是非阻塞的:
+而在使用then的场合下, `wait_for_all/wait_for_any`的阻塞等待就不合适了, 于是boost1.56加入了`when_all/when_any`, 与`wait_for_any`不同, `when_any`是立即返回又一个`future`,  这使得我们在then串联中可以达到类似`wait_for_any`的效果, 但却是非阻塞的:
 
 ~~~
 int main() {
      boost::future<int> f1 = boost::async([]() { return 42;});
      boost::future<int> f2 = boost::async([]() { return 233;});
-     auto f3 = boost::when_any(f1, f2);
+     auto f3 = boost::when_any(f1, f2); // 这里不会阻塞
      auto f4 = f3.then([](auto& f) {
           f.get();
           return 1234;
      });
-     assert(1234 == f4.get()); // 到这里才阻塞
+     assert(1234 == f4.get()); // 这里才会阻塞
+}
 ~~~
 
 boost1.56的发布时间虽然只是来到2015年后半, 然而then/when_any并没有进入C++17<del>C++17毛都没有!C++日常药丸!</del>. 不过从参考文献[2]可以看出, 以后应该是很有希望进标准的.

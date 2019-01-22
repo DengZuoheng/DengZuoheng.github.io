@@ -1,7 +1,7 @@
 ---
 layout: post
 title: C++并发型模式#7&#58; 读写锁 - shared_mutex
-description: 
+description: 本文介绍读写锁, 分析一下boost::shared_mutex和std::shared_mutex源码. 用与不用看需求吧 
 category: blog
 ---
 
@@ -622,7 +622,7 @@ void shared_mutex::unlock_shared()
 
 所以, 临界区很小的时候, 读写锁可能不会比直接粗暴的mutex快; 临界区很大又说明代码写得不好, 缩小临界区是我等毕生心愿. 所以用不用读写锁还是测过才知道.
 
-如果需要很高的性能, RCU(Read-Copy Update)是一种可行的选择[9], 不过需要系统支持. 我们以后讨论RCU的时候, 再具体评测读写锁和RCU的性能差异.
+如果需要很高的性能, RCU(Read-Copy Update)是一种可行的选择[9], 不过需要系统支持. 我们以后讨论RCU的时候<del>此坑有缘再填系列</del>, 再具体评测读写锁和RCU的性能差异.
 
 另外, 从正确性来说, 拿着读锁进行写操作也不是不可能, 这样就跟无保护并发写一样了; 实现上, 读锁是可重入的, 而写锁会阻塞其他读锁, 这可能造成读锁重入时死锁[8].
 

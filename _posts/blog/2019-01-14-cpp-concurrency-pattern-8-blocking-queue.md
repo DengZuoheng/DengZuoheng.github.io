@@ -35,7 +35,7 @@ public:
 
     size_t size() const;
     bool empty() const;
-}
+};
 ~~~
 
 事实上, `size()`和`empty()`的意义不是特别大, 因为在线程安全对象外部, 需要调两个方法的操作都可能有竟态(有些地方就干脆把它们命名为`size_unsafe`, `empty_unsafe`了). 所以这里`pop(T& val)`就会拿到队首并出队, 而不是像`std::queue`通过`front()`拿队首然后通过`pop()`出队.
@@ -45,7 +45,7 @@ push是简单的, 加锁入队就行, 然后notify_one:
 ~~~
 void blocking_queue::push(const T& val) {
     boost::unique_lock<boost::mutex> lk(m_mutex);
-    m_queue.push_back(val);
+    m_queue.push(val);
     m_cond.notify_one();
 }
 ~~~
@@ -56,7 +56,7 @@ pop则因为队列可能为空, 故而得等队列不为空:
 void blocking_queue::pop(T& val) {
     boost::unique_lock<boost::mutex> lk(m_mutex);
     while (m_queue.empty()) {
-        m_cond.wait(lk)
+        m_cond.wait(lk);
     }
     val = m_queue.front();
     m_queue.pop();
@@ -116,7 +116,7 @@ public:
     size_t capacity() const
     bool empty() const;
     bool full() const;
-}
+};
 ~~~
 
 通常可以用`boost::circular_buffer`作为底层容器. 所以`bounded_blocking_queue`实现也比较简单:
@@ -131,14 +131,14 @@ void bounded_blocking_queue::push(const T& val) {
     while (m_queue.full()) {
         m_cond_not_full.wait(lk);
     }
-    m_queue.push_back(x);
+    m_queue.push_back(val);
     m_cond_not_empty.notify_one();
 }
 
 bool bounded_blocking_queue::try_push(const T& val) {
     boost::unique_lock<boost::mutex> lk(m_mutex);
     if (!m_queue.full()) {
-        m_queue.push_back(x);
+        m_queue.push_back(val);
         m_cond_not_empty.notify_one();
         return true;
     }
@@ -213,7 +213,7 @@ boost里面确实有这么多, 虽然我并不打算讨论timeout.
 
 ~~~
 template <typename T>
-class sync_queue: public sync_queue_base {
+class sync_queue: public sync_queue_base<T> {
 public:
     typedef T value_type;
     sync_queue();
@@ -222,7 +222,7 @@ public:
     void push(const value_type& x);
     queue_op_status try_push(const value_type& x);
     queue_op_status nonblocking_push(const value_type& x);
-    queue_op_status wait_push(const value& x);
+    queue_op_status wait_push(const value_type& x);
     // 我们愉快地忽略右值版本
 
     void pull(value_type& elem);
@@ -331,15 +331,15 @@ void close() {
 ~~~
 template<typename T>
 void sync_queue<T>::push(const T& elem) {
-    boost::unique_lock<boost::mutex> lk(m_mtx);
-    sync_queue_base::throw_if_closed(lk);
+    boost::unique_lock<boost::mutex> lk(sync_queue_base<T>::m_mtx);
+    sync_queue_base<T>::throw_if_closed(lk);
     push(elem, lk);
 }
 
 template<typename T>
 void sync_queue<T>::push(const T& elem, boost::unique_lock<boost::mutex>& lk) {
     m_data.push_back(elem);
-    sync_queue_base::notify_not_empty_if_needed(lk);
+    sync_queue_base<T>::notify_not_empty_if_needed(lk);
 }
 ~~~
 
@@ -351,17 +351,17 @@ void sync_queue<T>::push(const T& elem, boost::unique_lock<boost::mutex>& lk) {
 template<typename T>
 void sync_queue<T>::pull(T& elem) {
     boost::unique_lock<boost::mutex> lk(m_mtx);
-    const bool has_been_closed = sync_queue_base::wait_until_not_empty_or_closed(lk);
+    const bool has_been_closed = sync_queue_base<T>::wait_until_not_empty_or_closed(lk);
     if (has_beed_closed) {
-        sync_queue_base::throw_if_closed(lk);
+        sync_queue_base<T>::throw_if_closed(lk);
     }
     pull(elem, lk);
 }
 
 template<typename T>
 void sync_queue<T>::pull(T& elem, boost::unique_lock<boost::mutex>& lk) {
-    elem = m_data.front(); // 这里应该用move
-    m_data.pop_front();
+    elem = sync_queue_base<T>::m_data.front(); // 这里应该用move
+    sync_queue_base<T>::m_data.pop_front();
 }
 }
 ~~~
@@ -371,13 +371,13 @@ void sync_queue<T>::pull(T& elem, boost::unique_lock<boost::mutex>& lk) {
 ~~~
 template<typename T>
 queue_op_status sync_queue<T>::try_push(const T& elem) {
-    boost::unique_lock<boost::mutex> lk(m_mtx);
+    boost::unique_lock<boost::mutex> lk(sync_queue_base<T>::m_mtx);
     return try_push(elem, lk);
 }
 
 template<typename T>
 queue_op_status sync_queue<T>::try_push(const T& elem, boost::unique_lock<boost::mutex>& lk) {
-    if (sync_queue_base::closed(lk)) {
+    if (sync_queue_base<T>::closed(lk)) {
         return queue_op_status::closed;
     }
     push(elem, lk);
@@ -390,13 +390,13 @@ queue_op_status sync_queue<T>::try_push(const T& elem, boost::unique_lock<boost:
 ~~~
 template<typename T>
 queue_op_status sync_queue<T>::wait_push(const T& elem) {
-    boost::unique_lock<boost::mutex> lk(m_mtx);
+    boost::unique_lock<boost::mutex> lk(sync_queue_base<T>::m_mtx);
     return wait_push(elem, lk);
 }
 
 template<typename T>
 queue_op_status sync_queue<T>::wait_push(const T& elem, boost::unique_lock<boost::mutex>& lk) {
-    if (sync_queue_base::closed(lk)) {
+    if (sync_queue_base<T>::closed(lk)) {
         return queue_op_status::closed;
     }
     push(elem, lk);
@@ -408,7 +408,7 @@ queue_op_status sync_queue<T>::wait_push(const T& elem, boost::unique_lock<boost
 ~~~
 template<typename T>
 queue_op_status sync_queue<T>::nonblocking_push(const T& elem) {
-    boost::unique_lock<boost::mutex> lk(m_mtx, boost::try_to_lock);
+    boost::unique_lock<boost::mutex> lk(sync_queue_base<T>::m_mtx, boost::try_to_lock);
     if (!lk.owns_lock()) {
         return queue_op_status::busy;
     }
@@ -421,14 +421,14 @@ queue_op_status sync_queue<T>::nonblocking_push(const T& elem) {
 ~~~
 template<typename T>
 queue_op_status sync_queue<T>::try_pull(T& elem) {
-    boost::unique_lock<boost::mutex> lk(m_mtx);
+    boost::unique_lock<boost::mutex> lk(sync_queue_base<T>::m_mtx);
     return try_pull(elem, lk);
 }
 
 template<typename T>
 queue_op_status sync_queue<T>::try_pull(T& elem, boost::unique_lock<boost::mutex>& lk) {
-    if (sync_queue_base::empty(lk)) {
-        if (sync_queue_base::closed(lk)) {
+    if (sync_queue_base<T>::empty(lk)) {
+        if (sync_queue_base<T>::closed(lk)) {
             return queue_op_status::closed;
         }
         return queue_op_status::empty;
@@ -439,7 +439,7 @@ queue_op_status sync_queue<T>::try_pull(T& elem, boost::unique_lock<boost::mutex
 
 template<typename T>
 queue_op_status sync_queue<T>::nonblocking_pull(T& elem) {
-    boost::unique_lock<boost::mutex> lk(m_mtx, boost::try_to_lock);
+    boost::unique_lock<boost::mutex> lk(sync_queue_base<T>::m_mtx, boost::try_to_lock);
     if (!lk.owns_lock()) {
         return queue_op_status::busy;
     }
@@ -448,13 +448,13 @@ queue_op_status sync_queue<T>::nonblocking_pull(T& elem) {
 
 template<typename T>
 queue_op_status sync_queue<T>::wait_pull(T& elem) {
-    boost::unique_lock<boost::mutex> lk(m_mtx);
+    boost::unique_lock<boost::mutex> lk(sync_queue_base<T>::m_mtx);
     return wait_pull(elem, lk);
 }
 
 template<typename T>
 queue_op_status sync_queue<T>::wait_pull(T& elem, boost::unique_lock<boost::mutex>& lk) {
-    const bool has_been_closed = sync_queue_base::wait_until_not_empty_or_closed(lk);
+    const bool has_been_closed = sync_queue_base<T>::wait_until_not_empty_or_closed(lk);
     if (has_been_closed) {
         return queue_op_status::closed;
     }
@@ -465,17 +465,17 @@ queue_op_status sync_queue<T>::wait_pull(T& elem, boost::unique_lock<boost::mute
 template<typename T>
 sync_queue<T>::value_type sync_queue<T>::pull() {
     boost::unique_lock<boost::mutex> lk(m_mtx);
-    const bool has_been_closed = sync_queue_base::wait_until_not_empty_or_closed(lk);
+    const bool has_been_closed = sync_queue_base<T>::wait_until_not_empty_or_closed(lk);
     if (has_beed_closed) {
-        sync_queue_base::throw_if_closed(lk);
+        sync_queue_base<T>::throw_if_closed(lk);
     }
 }
 
 template<typename T>
 T sync_queue<T>::pull(boost::unique_lock<boost::mutex>& lk) {
     // 还是有move的时候才提供这个版本比较好
-    typename T ret = std::move(m_data.front()); 
-    m_data.pop_front();
+    typename T ret = std::move(sync_queue_base<T>::m_data.front()); 
+    sync_queue_base<T>::m_data.pop_front();
     return ret;
 }
 
@@ -503,6 +503,61 @@ inline boost::shared_ptr<value_type> ptr_pull(unique_lock<mutex>& lk)
 这里的xxx_if_needed是因为`sync_bounded_queue`记录了入队和等待出队数量. 
 
 然而却没有`shared_ptr`版本的push, 好吧, 他们开心就好.
+
+## 性能测试
+
+为了对比我们之前写的channel, 我们这里用一下代码(传递一个`shared_ptr`)测量一下性能:
+
+~~~
+int test(const int concurrency) {
+    const int num = 1000 * 1000;
+    typedef boost::shared_ptr<int> data_type;
+    blocking_queue<data_type> queue;
+    boost::thread_group thg;
+
+    const auto begin = boost::chrono::steady_clock::now();
+    for (int tr = 0; tr < concurrency; ++tr) {
+        thg.create_thread([&]() {
+            data_type dat;
+            for (int i = 0; i < num; ++i) {
+                queue.wait_pull_front(dat);
+            }
+        });
+    }
+    for (int tr = 0; tr < concurrency; ++tr) {
+        thg.create_thread([&]() {
+            data_type dat(new int(42));
+            for (int i = 0; i < num; ++i) {
+                queue.wait_push_back(dat);
+            }
+        });
+    }
+    thg.join_all();
+    const auto end = boost::chrono::steady_clock::now();
+    return boost::chrono::duration_cast<boost::chrono::milliseconds>(end - begin).count();
+}
+~~~
+
+`concurrency`表示起多少读写线程, `concurrency`等于1时, 一个读线程, 一个写线程. 得到以下结果, xxx(n)表示buffer size是n:
+
+
+| (ms) | 1 | 2 | 4 | 6| 8 | 16 | 32 |
+| --- | --- | --- | --- | --- | --- | --- |
+| blocking queue | 149 | 282 | 606 | 842 | 1145 | 2355 | 4700 |
+| sync_queue | 130 | 350 | 733 | 1109 | 1470 | 3056 | 6246 |
+| channel(100) | 340 | 1484 | 5194 | 8812 | 12687 | - | - |
+| bounded blocking queue(100) | 140 | 344 | 677 | 1038 | 1423 | 2902 | 6084 |
+| boost.sync_bounded_queue(100)| 268 | 1467 | 3432 | 6556 | 11642 | - | - |
+| channel(1000) | 198 | 460 | 1025 | 1602 | 2113 | 4743 | 10864 |
+| bounded blocking queue(1000) | 178 | 326 | 664 | 993 | 1351 | 2836 | 5894 |
+| boost.sync_bounded_queue(1000) | 120 | 431 | 826 | 1463 | 2465 | 9696 | - |
+| channel(10000) | 152 | 343 | 677 | 1013 | 1372 | 2740 | 5591 |
+| bounded blocking queue(10000) | 155 | 308 | 672 | 1039 | 1393 | 2896 | 5831 |
+| boost.sync_bounded_queue(10000) | 98 | 284 | 580 | 798 | 1152 | 3006 | 19308 |
+
+测试平台: VS 2017, Intel i3 7100(双核四线程, 请原谅我如此贫穷), Windows 10, 开优化, 50次取平均.
+
+可以看到, buffer size比较小的时候, channel和boost.sync_bounded_queue的性能明显不及其他, 但buffer大了以后, 差距就不明显了
 
 ## 总结
 

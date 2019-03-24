@@ -161,7 +161,7 @@ class channel_impl : boost::noncopyable {
     waitq m_waiting_producers;
 
 public:
-    explicit channel_impl(size_t bound) : m_bound(bound) {}
+    explicit channel_impl(size_t bound) : m_data(bound) {}
     void recv(T& val);
     bool try_recv(T& val);
     void send(const T& val);
@@ -170,33 +170,27 @@ public:
 ~~~
 
 
-我们先来实现一下`waitq`:
+我们先来实现一下`waitq`, `waitq`本身不带锁, 由`channel_impl`的锁保护:
 
 ~~~
 class waitq {
     std::list<boost::condition_variable_any*> m_q;
-    boost::mutex m_mutex;
 
 public:
     waitq() {}
     void enqueue(boost::condition_variable_any* cond) {
         assert(cond);
-        boost::unique_lock<boost::mutex> lk(m_mutex);
         m_q.push_back(cond);
     }
     boost::condition_variable_any* dequeue() {
         boost::condition_variable_any* ret = NULL;
-        {
-            boost::unique_lock<boost::mutex> lk(m_mutex);
-            if (!m_q.empty()) {
-                ret = m_q.front();
-                m_q.pop_front();
-            }
+        if (!m_q.empty()) {
+            ret = m_q.front();
+            m_q.pop_front();
         }
         return ret;
     }
     void remove(boost::condition_variable_any* cond) {
-        boost::unique_lock<boost::mutex> lk(m_mutex);
         m_q.remove(cond);
     }
     void notify_one() {
@@ -216,19 +210,16 @@ public:
 
 ~~~
 void recv(T& val) {
-    {
-        boost::unique_lock<boost::mutex> lk(m_mutex);
-        boost::condition_variable_any cond;
+    boost::condition_variable_any cond;
 
-        while (m_data.empty()) {
-            m_waiting_consumers.enqueue(&cond);
-            cond.wait(lk);
-            m_waiting_consumers.remove(&cond);
-        }
-        val = m_data.front();
-        m_data.pop_front();
+    boost::unique_lock<boost::mutex> lk(m_mutex);
+    while (m_data.empty()) {
+        m_waiting_consumers.enqueue(&cond);
+        cond.wait(lk);
+        m_waiting_consumers.remove(&cond);
     }
-
+    val = m_data.front();
+    m_data.pop_front();
     m_waiting_producers.notify_one();
 }
 ~~~
@@ -257,38 +248,36 @@ m_waiting_consumers.remove(&cond);
 
 ~~~
 bool try_recv(T& val) {
-    {
-        boost::unique_lock<boost::mutex> lk(m_mutex);
-        if (m_data.empty()) {
-            return false;
-        }
-        val = m_data.front();
-        m_data.pop_front();
+    boost::unique_lock<boost::mutex> lk(m_mutex);
+    if (m_data.empty()) {
+        return false;
     }
+    val = m_data.front();
+    m_data.pop_front();
+
     m_waiting_producers.notify_one();
     return true;
 }
 void send(const T& val) {
-    {
-        boost::unique_lock<boost::mutex> lk(m_mutex);
-        boost::condition_variable_any cond;
-        while (m_data.full()) {
-            m_waiting_producers.enqueue(&cond);
-            cond.wait(lk);
-            m_waiting_producers.remove(&cond);
-        }
-        m_data.push_back(val);
+    boost::condition_variable_any cond;
+    
+    boost::unique_lock<boost::mutex> lk(m_mutex);
+    while (m_data.full()) {
+        m_waiting_producers.enqueue(&cond);
+        cond.wait(lk);
+        m_waiting_producers.remove(&cond);
     }
+    m_data.push_back(val);
+
     m_waiting_consumers.notify_one();
 }
 bool try_send(const T& val) {
-    {
-        boost::unique_lock<boost::mutex> lk(m_mutex);
-        if (m_data.full()) {
-            return false;
-        }
-        m_data.push_back(val);
+    boost::unique_lock<boost::mutex> lk(m_mutex);
+    if (m_data.full()) {
+        return false;
     }
+    m_data.push_back(val);
+
     m_waiting_consumers.notify_one();
     return true;
 }
@@ -452,6 +441,7 @@ struct select_case {
 这么一来, 我们就很容易实现select的send, recv和fall了:
 
 ~~~
+template <typename T>
 select& recv(channel<T>& chan, T& val, boost::function<void()> callback) {
     boost::shared_ptr<select_case> c(new select_case);
     c->m_mutex = &chan.m_impl->m_mutex;
@@ -464,6 +454,7 @@ select& recv(channel<T>& chan, T& val, boost::function<void()> callback) {
     return *this;
 }
 template <typename T>
+
 select& send(channel<T>& chan, const T& val, boost::function<void()> callback) {
     boost::shared_ptr<select_case> c(new select_case);
     c->m_mutex = &chan.m_impl->m_mutex;
@@ -475,6 +466,7 @@ select& send(channel<T>& chan, const T& val, boost::function<void()> callback) {
     m_cases.push_back(c);
     return *this;
 }
+
 select& fall(boost::function<void()> callback) {
     boost::shared_ptr<select_case> c(new select_case);
     c->m_type = select_case::DEFAULT_CASE;

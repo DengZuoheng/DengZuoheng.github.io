@@ -274,29 +274,29 @@ template <typename T>
 class sync_queue_base {
     // ...
 protected:
-    bool empty(boost::unique_lock<std::mutex>&) const {
+    bool empty(boost::unique_lock<boost::mutex>&) const {
         return m_data.empty();
     }
-    size_type size(boost::unique_lock<std::mutex>&) const {
+    size_type size(boost::unique_lock<boost::mutex>&) const {
         return m_data.size();
     }
-    bool closed(boost::unique_lock<std::mutex>&) const {
+    bool closed(boost::unique_lock<boost::mutex>&) const {
         return m_closed;
     }
-    bool full(boost::unique_lock<std::mutex>&) const {
+    bool full(boost::unique_lock<boost::mutex>&) const {
         return false;
     }
 
     // 有一些是给派生类准备的
-    void throw_if_closed(boost::unique_lock<std::mutex>& lk) {
+    void throw_if_closed(boost::unique_lock<boost::mutex>& lk) {
         if (closed(lk)) {
             BOOST_THROW_EXCEPTION( sync_queue_is_closed() );
         }
     }
-    bool not_empty_or_closed(boost::unique_lock<std::mutex>& lk) {
+    bool not_empty_or_closed(boost::unique_lock<boost::mutex>& lk) {
         return !m_data.empty() || m_closed;
     }
-    bool wait_until_not_empty_or_closed(boost::unique_lock<std::mutex>& lk) {
+    bool wait_until_not_empty_or_closed(boost::unique_lock<boost::mutex>& lk) {
         while (empty(lk) && !closed(lk)) {
             m_cond_not_empty.wait(lk);
         }
@@ -305,7 +305,7 @@ protected:
         }
         return true; // closed;
     }
-    void notify_not_empty_if_needed(boost::unique_lock<std::mutex>& lk) {
+    void notify_not_empty_if_needed(boost::unique_lock<boost::mutex>& lk) {
         m_cond_not_empty.notify_all();
     }
     // ...
@@ -548,7 +548,7 @@ int test(const int concurrency) {
 | channel(100) | 340 | 1484 | 5194 | 8812 | 12687 | - | - |
 | bounded blocking queue(100) | 140 | 344 | 677 | 1038 | 1423 | 2902 | 6084 |
 | boost.sync_bounded_queue(100)| 268 | 1467 | 3432 | 6556 | 11642 | - | - |
-| channel(1000) | 198 | 460 | 1025 | 1602 | 2113 | 4743 | 10864 |
+| channel(1000) | 161 | 417 | 874 | 1325 | 1743 | 3642 | 10864 |
 | bounded blocking queue(1000) | 178 | 326 | 664 | 993 | 1351 | 2836 | 5894 |
 | boost.sync_bounded_queue(1000) | 120 | 431 | 826 | 1463 | 2465 | 9696 | - |
 | channel(10000) | 152 | 343 | 677 | 1013 | 1372 | 2740 | 5591 |

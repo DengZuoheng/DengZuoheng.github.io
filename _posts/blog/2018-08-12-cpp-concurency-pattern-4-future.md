@@ -191,7 +191,7 @@ template<typename T> class shared_future;
 template<typename T>
 class unique_future {
      friend class shared_future<T>;
-     firend class promise<T>;
+     friend class promise<T>;
 private:
      unique_future(unique_future& rhs); // = delete
      unique_future(boost::shared_ptr<detail::future_object<T> > future_entity)
@@ -262,7 +262,7 @@ boost1.41中, `future_object`派生自`future_object_base`, `future_object`持�
 ~~~
 namespace detail {
 struct future_object_base {
-     boost::exception_ptr excpetion;
+     boost::exception_ptr exception;
      bool done;
      boost::mutex mutex;
      boost::condition_variable cond;

@@ -33,8 +33,8 @@ int main() {
     // wait for finished
     return 0;
 }
-
 ~~~
+
 {:.lang-cpp}
 
 通过模板(或者接口), 我们可以灵活地指定executor, 或者为不同性质的任务指定不同的executor.
@@ -42,7 +42,7 @@ int main() {
 实际上, 根据不同的线程数(number of execution contexts), 不同的任务排序策略(how they are prioritized), 不同的选择策略(how they are selected), executor分为几大类, 好多种[1]:
 
 1. 线程池(Thread Pools)
-   
+
    - **simple unbounded thread pool**: 将工作单元放到任务队列中, 然后维护一堆线程, 每个线程去任务队列取工作单元, 然后执行, 如此往复. 
    - **bounded thread pool**: 跟无界线程池很类似, 但是它的任务队列是有界的, 这限制了线程是中排队的工作单元的数量. 
    - **thread-spawning executor**: 总是为新任务创建新线程.
@@ -554,4 +554,4 @@ boost executor框架给我们提供了一系列executor实现, 其中包括比�
 
 * {:.ref} \[1] boost, [Executors and Schedulers -- EXPERIMENTAL](https://www.boost.org/doc/libs/1_69_0/doc/html/thread/synchronization.html#thread.synchronization.executors), 1.69.0  
 * {:.ref} \[2] Chris Mysen, Niklas Gustafsson, Matt Austern, Jeffrey Yasskin, [Executors and schedulers, revision 3](http://www.open-std.org/JTC1/SC22/WG21/docs/papers/2013/n3785.pdf), Qct. 2013  
-
+* {:.ref} \[3] Brian Goetz等著, 童云兰等译. Java并发编程实战, 北京, 机械工业出版社. 2012.2 P93~p109  

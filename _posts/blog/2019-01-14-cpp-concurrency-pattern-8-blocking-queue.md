@@ -481,7 +481,7 @@ T sync_queue<T>::pull(boost::unique_lock<boost::mutex>& lk) {
 
 ~~~
 
-`wait_pull`只能返回`closed`或`success`.
+`wait_pull`只能返回`closed`或`success`. 需要注意的是, 已经关闭的`sync_queue`也是可以继续`pull`出元素的, 队列空了的时候才抛异常.
 
 ## boost.sync_bounded_queue
 

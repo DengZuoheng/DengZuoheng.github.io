@@ -13,7 +13,7 @@ category: blog
 
 这样, `condition_variable::wait`可以简单地写成:
 
-~~~
+~~~c++
 inline void condition_variable::wait(unique_lock<mutex>& m) {
     if (!m.owns_lock()) {
         boost::throw_excpetion(condition_error(-1, "mutex not owned"));
@@ -191,7 +191,7 @@ void condition_variable_any::wait(Lock& external) {
 
 ## 总结
 
-到这里也许我们已经明白为什么标准库和boost都提供了`condition_variable_any`而不是让用户去自己实现, 因为写出正确的`condition_variable_any`确实不是一件容易的事情, 你需要考虑异常安全性, `unlock/wait`的原子性语义, 以及避免退出`wait`时可能的死锁; 虽然拢共就没几行代码, 但即使是专业人士也很容易出现疏漏.
+到这里也许我们已经明白为什么标准库和boost都提供了`condition_variable_any`而不是让用户去自己实现, 因为写出正确的`condition_variable_any`确实不是一件容易的事情, 你需要考虑异常安全性, `unlock/wait`的原子性语义, 以及避免退出`wait`时可能的死锁; 虽然总共就没几行代码, 但即使是专业人士也很容易出现疏漏.
 
 顺带一提, 因为其内部增加了一个mutex, 性能大概有所损失, 所以虽然`condition_variable_any`很方便, 什么类型的锁都能用, 但在只需要配合`unique_lock<mutex>`使用的情况下, 用`condition_variable`可能会有更好的性能[2].
 

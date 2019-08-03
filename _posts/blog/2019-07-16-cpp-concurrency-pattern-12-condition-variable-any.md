@@ -62,8 +62,8 @@ public:
 class condition_variable_any
 {
 public:
-    condition_variable_any();
-    ~condition_variable_any();
+    condition_variable_any() {}
+    ~condition_variable_any() {}
 
 public:
     template<typename Lock>
@@ -182,7 +182,7 @@ template<typename Lock>
 void condition_variable_any::wait(Lock& external) {
     boost::unique_lock<boost::mutex> lk(m_mutex);
     relock_guard<Lock> guard(external);
-    boost::lock_guard<boost::unique_lock<boost::mutex> > unlocker(lk, boost::already_locked);
+    boost::lock_guard<boost::unique_lock<boost::mutex> > unlocker(lk, boost::adopt_lock);
     m_cond.wait(lk);
 }
 ~~~

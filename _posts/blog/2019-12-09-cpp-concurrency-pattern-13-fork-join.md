@@ -1,6 +1,6 @@
 ---
 layout: post
-title: C++并发型模式#12&#58; 动态任务分解 - fork/join
+title: C++并发型模式#13&#58; 动态任务分解 - fork/join
 description: 在某些程序中, 并发任务的数量随程序执行而变化, 这种动态性使得简单的控制结构(如简单的线程池)无法实现良好的并行化. 那么如何围绕复杂动态任务集构造并行程序呢?
 category: blog
 ---
@@ -638,9 +638,9 @@ work stealing(工作窃取)帮助我们达成负载均衡后, 对于很多算法
 
 - {:.ref} \[1] Daug Lea, [A Java Fork/Join Framework](http://gee.cs.oswego.edu/dl/papers/fj.pdf), June. 2000  
 
-- {:.ref} \[2] Pablo Halpern, Arch Robison, Hong Hong, Artur Laksberg, Gor Nishanov, Herb Sutter, [Task Region R3 | N4088](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2014/n4088.pdf), June. 2014  
+- {:.ref} \[2] Pablo Halpern, Arch Robison, Hong Hong, Artur Laksberg, Gor Nishanov, Herb Sutter, [Task Region R3 \| N4088](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2014/n4088.pdf), June. 2014  
 
-- {:.ref} \[3] Pablo Halpern, Arch Robison, Hong Hong, Artur Laksberg, Gor Nishanov, Herb Sutter, [N4411 | Task Block (formerly Task Region) R4](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2015/n4411.pdf), June. 2014
+- {:.ref} \[3] Pablo Halpern, Arch Robison, Hong Hong, Artur Laksberg, Gor Nishanov, Herb Sutter, [N4411 \| Task Block (formerly Task Region) R4](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2015/n4411.pdf), June. 2014
   
 - {:.ref} \[4] IPCC, [Fork-Join Pattern](http://ipcc.cs.uoregon.edu/lectures/lecture-9-fork-join.pdf), UO CIS, 2014  
 

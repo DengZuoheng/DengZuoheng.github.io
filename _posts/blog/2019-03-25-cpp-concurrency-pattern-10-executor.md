@@ -201,7 +201,7 @@ public:
 
 boost的`basic_thread_pool`是比较简单的线程池实现, 构造时创建所有工作线程, 使用简单的`sync_queue`做任务队列, 析构时中断所有工作线程.
 
-~~~
+~~~c++
 class basic_thread_pool {
     boost::thread_group m_threads;
     sync_queue<work> m_tasks;
@@ -222,7 +222,7 @@ public:
 
 首先是构造函数创建工作线程:
 
-~~~
+~~~c++
 basic_thread_pool::basic_thread_pool(size_t thread_count) {
     try {
         for (size_t i = 0; i < thread_count; ++i) {
@@ -554,4 +554,4 @@ boost executor框架给我们提供了一系列executor实现, 其中包括比�
 
 * {:.ref} \[1] boost, [Executors and Schedulers -- EXPERIMENTAL](https://www.boost.org/doc/libs/1_69_0/doc/html/thread/synchronization.html#thread.synchronization.executors), 1.69.0  
 * {:.ref} \[2] Chris Mysen, Niklas Gustafsson, Matt Austern, Jeffrey Yasskin, [Executors and schedulers, revision 3](http://www.open-std.org/JTC1/SC22/WG21/docs/papers/2013/n3785.pdf), Qct. 2013  
-* {:.ref} \[3] Brian Goetz等著, 童云兰等译. Java并发编程实战, 北京, 机械工业出版社. 2012.2 P93~p109  
+* {:.ref} \[3] Brian Goetz等著, 童云兰等译. Java并发编程实战, 北京, 机械工业出版社. 2012.2, p93~p109  

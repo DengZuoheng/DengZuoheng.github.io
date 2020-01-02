@@ -637,14 +637,9 @@ work stealing(工作窃取)帮助我们达成负载均衡后, 对于很多算法
 **Reference:**  
 
 - {:.ref} \[1] Daug Lea, [A Java Fork/Join Framework](http://gee.cs.oswego.edu/dl/papers/fj.pdf), June. 2000  
-
 - {:.ref} \[2] Pablo Halpern, Arch Robison, Hong Hong, Artur Laksberg, Gor Nishanov, Herb Sutter, [Task Region R3 \| N4088](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2014/n4088.pdf), June. 2014  
-
-- {:.ref} \[3] Pablo Halpern, Arch Robison, Hong Hong, Artur Laksberg, Gor Nishanov, Herb Sutter, [N4411 \| Task Block (formerly Task Region) R4](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2015/n4411.pdf), June. 2014
-  
+- {:.ref} \[3] Pablo Halpern, Arch Robison, Hong Hong, Artur Laksberg, Gor Nishanov, Herb Sutter, [N4411 \| Task Block (formerly Task Region) R4](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2015/n4411.pdf), June. 2014  
 - {:.ref} \[4] IPCC, [Fork-Join Pattern](http://ipcc.cs.uoregon.edu/lectures/lecture-9-fork-join.pdf), UO CIS, 2014  
-
-- {:.ref} \[5] James Reinders著, 聂雪军译, *Intel Threading Building Blocks编程指南*. 北京, 机械工业出版社, 第1版, Jan. 2009
-
+- {:.ref} \[5] James Reinders著, 聂雪军译, *Intel Threading Building Blocks编程指南*. 北京, 机械工业出版社, 第1版, Jan. 2009  
 - {:.ref} \[6] Timothy G. Mattson, Beverly A. Sanders, Berna L. Massingill著, 张云泉, 贾海鹏, 袁良译, 并行编程模式. 北京, 机械出版社. 2014.11, p120~p124
  

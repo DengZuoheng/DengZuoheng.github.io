@@ -261,7 +261,7 @@ fork_join_thread_pool::fork_join_thread_pool(size_t thread_count) {
 
 ~~~c++
 void fork_join_thread_pool::run() {
-try {
+    try {
         assert(m_per_thread_tasks.find(boost::this_thread::get_id()) != m_per_thread_tasks.end());
         sync_deque<work>& local_task = *m_per_thread_tasks.at(boost::this_thread::get_id());
         for (;;) {

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 计时等待引发的血案&#58; 一个不可避免的超时竟态
+title: 计时等待引发的Bug&#58; 一个不可避免的超时竟态
 description: 条件变量计时等待, 返回超时不代表没被notify, 导致了Qt4.7.4线程池的一个bug
 category: blog
 ---
